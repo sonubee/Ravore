@@ -1,5 +1,6 @@
 package gllc.ravore.app.Messaging;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -18,15 +19,15 @@ import gllc.ravore.app.R;
  */
 public class LoadProfilePhoto {
 
-    public LoadProfilePhoto(ImageView giverImage, ImageView receiverImage, boolean amIGiver, Bracelet bracelet){
+    public LoadProfilePhoto(ImageView giverImage, ImageView receiverImage, boolean amIGiver, Bracelet bracelet, Context context){
 
         if (amIGiver){
             loadLocalPath(giverImage, bracelet);
-            loadOtherPerson(receiverImage, bracelet, "receiver");
+            loadOtherPerson(receiverImage, bracelet, "receiver", context);
         }
         else {
             loadLocalPath(receiverImage, bracelet);
-            loadOtherPerson(giverImage, bracelet, "giver");
+            loadOtherPerson(giverImage, bracelet, "giver", context);
         }
     }
 
@@ -55,14 +56,29 @@ public class LoadProfilePhoto {
         imageView.setImageBitmap(myBitmap);
     }
 
-    public void loadOtherPerson(ImageView imageView, Bracelet bracelet, String giverReceiver){
-        /*
+    public void loadOtherPerson(ImageView imageView, Bracelet bracelet, String giverReceiver, Context context){
+
+
         if (giverReceiver.equals("receiver")){
-            String url = MyApplication.cloudinary.url().format("jpg")
-                    .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getReceiverId());
-            Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(receiverImage);
+
+            for (int i = 0; i < MyApplication.allAnon.size(); i++) {
+                if (MyApplication.allAnon.get(i).getUserId().equals(bracelet.getReceiverId())) {
+                    String url = MyApplication.cloudinary.url().format("jpg")
+                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + bracelet.getReceiverId());
+                    Picasso.with(context).load(url).placeholder(R.drawable.anon).into(imageView);
+                }
+            }
         }
-        */
+
+        if (giverReceiver.equals("giver")){
+            for (int i = 0; i < MyApplication.allAnon.size(); i++) {
+                if (MyApplication.allAnon.get(i).getUserId().equals(bracelet.getGiverId())) {
+                    String url = MyApplication.cloudinary.url().format("jpg")
+                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + bracelet.getGiverId());
+                    Picasso.with(context).load(url).placeholder(R.drawable.anon).into(imageView);
+                }
+            }
+        }
     }
 
 }

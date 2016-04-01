@@ -103,26 +103,7 @@ public class MessagingActivity extends AppCompatActivity {
         setupImages();
         setupSenderReceiver();
 
-        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging);
-
-        if (MyApplication.currentUserIsGiver) {
-            for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-                if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getReceiverId())) {
-
-                    String url = MyApplication.cloudinary.url().format("jpg")
-                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getReceiverId());
-                    Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(receiverImage);}}
-        }
-
-        else {
-            for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-                if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getGiverId())) {
-
-                    String url = MyApplication.cloudinary.url().format("jpg")
-                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getGiverId());
-                    Log.i("MessagingActivity", "URL is: " + url);
-                    Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(giverImage);}}
-        }
+        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context);
 
         giverImage.setOnClickListener(new View.OnClickListener() {
             @Override
