@@ -26,8 +26,6 @@ import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.Objects.UserInfo;
 import me.pushy.sdk.Pushy;
 
-//import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
-
 /**
  * Created by bhangoo on 2/5/2016.
  */
