@@ -103,7 +103,6 @@ public class MessagingActivity extends AppCompatActivity {
         setupImages();
         setupSenderReceiver();
 
-        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context);
 
         giverImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,9 +269,6 @@ public class MessagingActivity extends AppCompatActivity {
                     }
 
                     sendMessage.setText("");
-                    //sendMessage.requestFocus();
-                    //InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
-                    //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 }
                 return false;
             }
@@ -312,14 +308,11 @@ public class MessagingActivity extends AppCompatActivity {
 
     public void setupSenderReceiver() {
         if (MyApplication.currentUserIsGiver) {
-
             messageSender = braceletForMessaging.getGiverId();
-            messageReceiver = braceletForMessaging.getReceiverId();
-        }
+            messageReceiver = braceletForMessaging.getReceiverId();}
         else {
             messageSender = braceletForMessaging.getReceiverId();
-            messageReceiver = braceletForMessaging.getGiverId();
-        }
+            messageReceiver = braceletForMessaging.getGiverId();}
     }
 
     public void setupImages(){
@@ -327,6 +320,8 @@ public class MessagingActivity extends AppCompatActivity {
         receiverImage = (ImageView)findViewById(R.id.receiver_image);
         giverImage.setImageResource(R.drawable.anon);
         receiverImage.setImageResource(R.drawable.anon);
+
+        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context);
     }
 
     public void createJSON (){
