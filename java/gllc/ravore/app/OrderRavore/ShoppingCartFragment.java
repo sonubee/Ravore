@@ -43,7 +43,7 @@ public class ShoppingCartFragment extends Fragment {
         clearButton = (TextView)getActivity().findViewById(R.id.clearButton);
 
         clearButton.setVisibility(View.INVISIBLE);
-        
+
         OrderRavoreActivity.whichFragment = "ShoppingCartFragment";
     }
 }
