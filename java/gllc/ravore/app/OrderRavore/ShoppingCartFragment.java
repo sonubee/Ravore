@@ -28,6 +28,7 @@ public class ShoppingCartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.actual_order_screen, container, false);
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         return view;
     }
 
