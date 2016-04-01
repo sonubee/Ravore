@@ -86,7 +86,7 @@ public class ShowAllMessages extends Fragment {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 
                 MyApplication.selectedId = MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId();
-                LoginActivity.setSelectedBracelet(MyApplication.selectedId);
+                MyApplication.setSelectedBracelet(MyApplication.selectedId);
 
                 if (swipeDetector.swipeDetected()) {
                     if (swipeDetector.getAction() == SwipeDetector.Action.RL) {

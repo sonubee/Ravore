@@ -1,5 +1,6 @@
 package gllc.ravore.app.Automation;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class DownloadObjects {
     GoToMainActivity goToMainActivity;
 
     public DownloadObjects (Context context, final GoToMainActivity goToMainActivity){
+
+
 
         this.goToMainActivity = goToMainActivity;
 
@@ -334,4 +337,5 @@ public class DownloadObjects {
             }
         });
     }
+
 }

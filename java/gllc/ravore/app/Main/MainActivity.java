@@ -120,8 +120,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     }
 
     public void SDKinitializations() {
-        //Localytics.registerPush("234512336590");
-        //Localytics.setCustomerId(MyApplication.android_id);
 
         Firebase.setAndroidContext(this);
 
@@ -266,29 +264,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         public void onClick(View v) {
         }
     };
-
-
-/*
-    @Override
-    public void onBackPressed() {
-
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Exiting App")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();
-
-    }
-*/
 
     @Override
     protected void onPause() {

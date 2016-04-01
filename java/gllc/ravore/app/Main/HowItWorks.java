@@ -15,6 +15,7 @@ import gllc.ravore.app.Kandi.OrderRavore;
 public class HowItWorks {
 
     public HowItWorks(final Context context, TextView HIW, TextView getRavore, final Context context2){
+
         HIW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

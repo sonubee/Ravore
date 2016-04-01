@@ -445,6 +445,12 @@ public class OrderRavore extends AppCompatActivity {
                         Log.i("MyActivity", "Success Posting nonce");
                         dialog.dismiss();
 
+                        if (MyApplication.cameFromLogin){
+                            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                            startActivity(intent);
+                            MyApplication.cameFromLogin = false;
+                        }
+
                         Log.i("MyActivity", "Result: " + responseString);
 
                         finish();

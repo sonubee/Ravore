@@ -1,6 +1,7 @@
 package gllc.ravore.app;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
@@ -16,15 +17,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gllc.ravore.app.Automation.DownloadObjects;
+import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.Main.MainActivity;
+import gllc.ravore.app.Main.RegisterPushy;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.DJs;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.Objects.UserInfo;
+import me.pushy.sdk.Pushy;
 
 //import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
 
@@ -35,7 +39,6 @@ public class MyApplication extends Application {
 
     public final static String devStatus = "sandbox";
 
-    public static String channelId;
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<String, String>();
     public static String selectedId="";
@@ -44,6 +47,7 @@ public class MyApplication extends Application {
     public static boolean isAlreadyUser = false;
     public static String registrationId;
     public static boolean firstOpen = true;
+    public static boolean cameFromLogin = false;
 
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();
@@ -57,14 +61,14 @@ public class MyApplication extends Application {
     public static String useFirebase = "";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-
-
     @Override
     public void onCreate()
     {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
+        Pushy.listen(this);
+        new RegisterPushy(getApplicationContext()).execute();
 
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -77,18 +81,16 @@ public class MyApplication extends Application {
         }
     }
 
-    public static String getChannelId() {
-/*
-        channelId = UAirship.shared().getPushManager().getChannelId();
-        Log.i("MyActivity", "My Application Channel ID: " + channelId);
-*/
-        return channelId;
-    }
-
     public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {
         if (firstOpen){
             new DownloadObjects(context, goToMainActivity);
             firstOpen=false;
         }
     }
+
+    public static void setSelectedBracelet(String selectedId){
+        new SetBracelet(selectedId);
+    }
+
+
 }
