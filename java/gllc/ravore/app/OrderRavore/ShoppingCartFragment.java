@@ -46,16 +46,7 @@ public class ShoppingCartFragment extends Fragment {
 
         Log.i("MyActivity", "Got to Order Ravore Fragment");
 
-/*
-        total.setText("$0");
-        subtotal.setText("$0");
-        shipping.setText("$0");
-        beadCart.setText("Cart: 0");
-        kandiCart.setText("Cart: 0");
-        clearButton.setVisibility(View.INVISIBLE);
 
-        total.setVisibility(View.VISIBLE);
-*/
         OrderRavoreActivity.whichFragment = "ShoppingCartFragment";
     }
 }
