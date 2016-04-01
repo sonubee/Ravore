@@ -31,8 +31,6 @@ public class DownloadObjects {
 
     public DownloadObjects (Context context, final GoToMainActivity goToMainActivity){
 
-
-
         this.goToMainActivity = goToMainActivity;
 
         Firebase downloadBracelets = new Firebase(MyApplication.useFirebase+"Bracelets");

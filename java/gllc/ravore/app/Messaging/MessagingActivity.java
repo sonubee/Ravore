@@ -67,13 +67,14 @@ import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.GCM.MyGcmListenerService;
 import gllc.ravore.app.Automation.UploadImage;
+import gllc.ravore.app.Interfaces.StartCamera;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.R;
 
-public class MessagingActivity extends AppCompatActivity {
+public class MessagingActivity extends AppCompatActivity implements StartCamera {
 
     public static ArrayList<Message> messageArrayList = new ArrayList<>();
     public static MessagingAdapter adapter;
@@ -82,11 +83,11 @@ public class MessagingActivity extends AppCompatActivity {
     public static Context context;
     AlertDialog.Builder alertadd;
     AsyncHttpClient client;
+    StartCamera startCamera;
 
     String fileName;
     String selectedId = MyApplication.selectedId;
-    public static String messageSender = "";
-    public static String messageReceiver = "";
+    public static String messageSender = "", messageReceiver = "", messageReceiverToken = "", messageReceiverOs = "";
 
     public static ImageView giverImage, receiverImage;
     public static TextView giverName, receiverName, braceletNum;
@@ -103,7 +104,7 @@ public class MessagingActivity extends AppCompatActivity {
         setupImages();
         setupSenderReceiver();
 
-
+/*
         giverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +123,6 @@ public class MessagingActivity extends AppCompatActivity {
                             Picasso.with(getApplicationContext()).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
                         }
                     }
-
 
                     alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dlg, int sumthin) {
@@ -166,7 +166,7 @@ public class MessagingActivity extends AppCompatActivity {
                 }
             }
         });
-
+*/
         sendMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -287,6 +287,7 @@ public class MessagingActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);}
 
         alertadd = new AlertDialog.Builder(this);
+        startCamera = this;
 
         braceletForMessaging = GetBracelet.getBracelet(selectedId);
 
@@ -313,6 +314,13 @@ public class MessagingActivity extends AppCompatActivity {
         else {
             messageSender = braceletForMessaging.getReceiverId();
             messageReceiver = braceletForMessaging.getGiverId();}
+
+        for (int i= 0 ; i < MyApplication.allTokens.size(); i++) {
+            if (messageReceiver.equals(MyApplication.allTokens.get(i).getUserId())) {
+                messageReceiverToken = MyApplication.allTokens.get(i).getToken();
+                messageReceiverOs = MyApplication.allTokens.get(i).getOs();
+            }
+        }
     }
 
     public void setupImages(){
@@ -321,7 +329,7 @@ public class MessagingActivity extends AppCompatActivity {
         giverImage.setImageResource(R.drawable.anon);
         receiverImage.setImageResource(R.drawable.anon);
 
-        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context);
+        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context, MessagingActivity.this, startCamera);
     }
 
     public void createJSON (){
@@ -377,7 +385,9 @@ public class MessagingActivity extends AppCompatActivity {
             uploadMessage.push().setValue(message);
             Log.i("MessagingActivity", "After Set Value");
 
-            sendPush(sendMessage.getText().toString());
+            new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
+
+            //sendPush(sendMessage.getText().toString());
         }
 
         else {
@@ -421,128 +431,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public void startCamera() {
-        final CharSequence[] items = { "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(MessagingActivity.this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
 
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-
-                        }
-                        // Continue only if the File was successfully created
-                        if (photoFile != null) {
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(photoFile));
-                            startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-                        }
-                    }
-                } else if (items[item].equals("Choose from Library")) {
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-
-                        }
-                        // Continue only if the File was successfully created
-                        if (photoFile != null) {
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(photoFile));
-                            startActivityForResult(Intent.createChooser(intent, "Select File"),
-                                    MyApplication.SELECT_FILE);
-                        }
-                    }
-                } else if (items[item].equals("View Photo")) {
-                    LayoutInflater factory = LayoutInflater.from(getApplicationContext());
-                    View view = factory.inflate(R.layout.full_photo, null);
-                    ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
-
-                    if (MyApplication.f.exists()) {
-
-                        Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-
-                        try {
-                            ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
-                            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                            Log.d("EXIF", "Exif: " + orientation);
-                            Matrix matrix = new Matrix();
-                            if (orientation == 6) {
-                                matrix.postRotate(90);
-                            } else if (orientation == 3) {
-                                matrix.postRotate(180);
-                            } else if (orientation == 8) {
-                                matrix.postRotate(270);
-                            }
-                            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                            giverImage.setImageBitmap(myBitmap);
-                        } catch (Exception e) {
-
-                        }
-                        fullImageView.setImageBitmap(myBitmap);
-                    }
-
-
-                    alertadd.setView(view);
-                    alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dlg, int sumthin) {
-
-                        }
-                    });
-
-                    alertadd.show();
-
-                } else if (items[item].equals("Delete Photo")) {
-                    File file = new File("sdcard/ravore/profile_pic.jpg");
-
-                    if (file.exists()) {
-                        boolean deleted = file.delete();
-                        if (deleted) {
-                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                            if (MyApplication.currentUserIsGiver) {
-                                MessagingActivity.giverImage.setImageResource(R.drawable.anon);
-                                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
-
-                                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                                removeProfilePhoto.setValue(removeAnon);
-                            } else {
-                                MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
-                                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
-
-                                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                                removeProfilePhoto.setValue(removeAnon);
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(getApplicationContext(), "No Profile Photo Exists", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
     }
 
     public void amIgiver(){
@@ -673,13 +562,130 @@ public class MessagingActivity extends AppCompatActivity {
         MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
     }
 
-    public void sendPush(String message){
+    @Override
+    public void StartCamera() {
+        Log.i("MessagingActivity", "Clicked Start Camera!");
+        final CharSequence[] items = { "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(MessagingActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Take Photo")) {
 
-        for (int i= 0 ; i < MyApplication.allTokens.size(); i++){
-            if (messageReceiver.equals(MyApplication.allTokens.get(i).getUserId())){
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Ensure that there's a camera activity to handle the intent
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
 
-                new SendPush(message, MyApplication.allTokens.get(i).getToken(), braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), MyApplication.allTokens.get(i).getOs());
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                            startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                        }
+                    }
+                } else if (items[item].equals("Choose from Library")) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                            startActivityForResult(Intent.createChooser(intent, "Select File"),
+                                    MyApplication.SELECT_FILE);
+                        }
+                    }
+                } else if (items[item].equals("View Photo")) {
+                    LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+                    View view = factory.inflate(R.layout.full_photo, null);
+                    ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
+
+                    if (MyApplication.f.exists()) {
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
+
+                        try {
+                            ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
+                            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                            Log.d("EXIF", "Exif: " + orientation);
+                            Matrix matrix = new Matrix();
+                            if (orientation == 6) {
+                                matrix.postRotate(90);
+                            } else if (orientation == 3) {
+                                matrix.postRotate(180);
+                            } else if (orientation == 8) {
+                                matrix.postRotate(270);
+                            }
+                            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
+                            giverImage.setImageBitmap(myBitmap);
+                        } catch (Exception e) {
+
+                        }
+                        fullImageView.setImageBitmap(myBitmap);
+                    }
+
+
+                    alertadd.setView(view);
+                    alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dlg, int sumthin) {
+
+                        }
+                    });
+
+                    alertadd.show();
+
+                } else if (items[item].equals("Delete Photo")) {
+                    File file = new File("sdcard/ravore/profile_pic.jpg");
+
+                    if (file.exists()) {
+                        boolean deleted = file.delete();
+                        if (deleted) {
+                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                            if (MyApplication.currentUserIsGiver) {
+                                MessagingActivity.giverImage.setImageResource(R.drawable.anon);
+                                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+
+                                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                                removeProfilePhoto.setValue(removeAnon);
+                            } else {
+                                MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
+                                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+
+                                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                                removeProfilePhoto.setValue(removeAnon);
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No Profile Photo Exists", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
             }
-        }
+        });
+        builder.show();
     }
 }
