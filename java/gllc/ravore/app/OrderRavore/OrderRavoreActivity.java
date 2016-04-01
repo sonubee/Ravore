@@ -206,6 +206,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
             ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
             ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
             ShoppingCartFragment.kandiCart.setText("Cart: " + kandiCount);
+            //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
+
     }
 
     public void addBead (View v) {

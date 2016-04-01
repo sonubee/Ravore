@@ -17,14 +17,10 @@ import gllc.ravore.app.R;
 public class ShoppingCartFragment extends Fragment {
 
     public static TextView total, subtotal, shipping, kandiCart, beadCart, clearButton;
-    public static Double totalPrice = 0.0;
-    public static int subTotalPrice = 0;
-    public static Double shippingPrice = 0.0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
