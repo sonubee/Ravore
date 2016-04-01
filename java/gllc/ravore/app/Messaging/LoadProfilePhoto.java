@@ -25,11 +25,13 @@ import gllc.ravore.app.R;
 public class LoadProfilePhoto {
 
     AlertDialog.Builder alertadd;
+    AlertDialog.Builder alertadd2;
     StartCamera startCamera;
 
     public LoadProfilePhoto(ImageView giverImage, ImageView receiverImage, boolean amIGiver, Bracelet bracelet, Context context, Context alertDialogContext, StartCamera startCamera){
 
         alertadd = new AlertDialog.Builder(alertDialogContext);
+        alertadd2 = new AlertDialog.Builder(alertDialogContext);
         this.startCamera = startCamera;
 
         if (amIGiver){
@@ -70,7 +72,21 @@ public class LoadProfilePhoto {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startCamera.StartCamera();
+
+                Log.i("LoadProfilePhoto", "Clicked On Own Picture");
+
+                final CharSequence[] items = { "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
+                alertadd2.setTitle(" Photo Options!");
+
+                alertadd2.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        startCamera.StartCamera(items[item].toString());
+                    }
+                });
+
+                alertadd2.show();
+
             }
         });
     }
@@ -100,8 +116,11 @@ public class LoadProfilePhoto {
 
                 String userId;
 
-                if (MyApplication.currentUserIsGiver){userId = bracelet.getReceiverId();}
-                else {userId = bracelet.getGiverId();}
+                if (MyApplication.currentUserIsGiver) {
+                    userId = bracelet.getReceiverId();
+                } else {
+                    userId = bracelet.getGiverId();
+                }
 
 
                 for (int i = 0; i < MyApplication.allAnon.size(); i++) {

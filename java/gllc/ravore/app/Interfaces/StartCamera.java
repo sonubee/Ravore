@@ -5,5 +5,5 @@ package gllc.ravore.app.Interfaces;
  */
 public interface StartCamera {
 
-    void StartCamera();
+    void StartCamera(String itemSelected);
 }
