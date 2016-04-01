@@ -97,100 +97,31 @@ public class MessagingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
 
-
         setup();
         amIgiver();
         setupAdapter();
         setupImages();
         setupSenderReceiver();
-        //loadFromDiskSpace();
+
+        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging);
 
         if (MyApplication.currentUserIsGiver) {
-            if (MyApplication.f.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-                try {
-                    ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                    Log.d("EXIF", "Exif: " + orientation);
-                    Matrix matrix = new Matrix();
-                    if (orientation == 6) {
-                        matrix.postRotate(90);
-                    }
-                    else if (orientation == 3) {
-                        matrix.postRotate(180);
-                    }
-                    else if (orientation == 8) {
-                        matrix.postRotate(270);
-                    }
-                    myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                    giverImage.setImageBitmap(myBitmap);
-                }
-                catch (Exception e) {
-
-                }
-                giverImage.setImageBitmap(myBitmap);
-
-
-            }
-
-            else {giverImage.setImageResource(R.drawable.anon);}
-
             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-
-                Log.i("MyActivity", "Anon UserID: " + MyApplication.allAnon.get(i).getUserId());
-                Log.i("MyActivity", "Selected Bracelet Receiver ID: " + braceletForMessaging.getReceiverId());
-
-
                 if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getReceiverId())) {
 
                     String url = MyApplication.cloudinary.url().format("jpg")
                             .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getReceiverId());
-                    Log.i("MyActivity", "URL is: " + url);
-
-                    Log.i("MyActivity", "Found Receiver ID and loading from Cloud");
                     Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(receiverImage);}}
         }
 
         else {
-            if (MyApplication.f.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-                try {
-                    ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                    Log.d("EXIF", "Exif: " + orientation);
-                    Matrix matrix = new Matrix();
-                    if (orientation == 6) {
-                        matrix.postRotate(90);
-                    }
-                    else if (orientation == 3) {
-                        matrix.postRotate(180);
-                    }
-                    else if (orientation == 8) {
-                        matrix.postRotate(270);
-                    }
-                    myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                    receiverImage.setImageBitmap(myBitmap);
-                }
-                catch (Exception e) {
-                    Log.i("MyActivity", "In Exception of Loading Receiver Image through Matrix");
-                }
-
-                receiverImage.setImageBitmap(myBitmap);
-
-            }
-            else {receiverImage.setImageResource(R.drawable.anon);}
-
-
             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-
                 if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getGiverId())) {
-
 
                     String url = MyApplication.cloudinary.url().format("jpg")
                             .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getGiverId());
-                    Log.i("MyActivity", "URL is: " + url);
+                    Log.i("MessagingActivity", "URL is: " + url);
                     Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(giverImage);}}
-
         }
 
         giverImage.setOnClickListener(new View.OnClickListener() {
@@ -260,10 +191,10 @@ public class MessagingActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_GO) {
-                    Log.i("MyActivity", "in send");
+                    Log.i("MessagingActivity", "in send");
 
                     if (!sendMessage.getText().toString().equals("")) {
-                        Log.i("MyActivity", "selectedId is: " + MyApplication.selectedId);
+                        Log.i("MessagingActivity", "selectedId is: " + MyApplication.selectedId);
 
                         Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/" + MyApplication.selectedId);
 
@@ -279,9 +210,9 @@ public class MessagingActivity extends AppCompatActivity {
 
                         Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
 
-                        Log.i("MyActivity", "Before Set Value");
+                        Log.i("MessagingActivity", "Before Set Value");
                         uploadMessage.push().setValue(message);
-                        Log.i("MyActivity", "After Set Value");
+                        Log.i("MessagingActivity", "After Set Value");
 
 
                         JSONObject theMessage = new JSONObject();
@@ -315,7 +246,7 @@ public class MessagingActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Log.i("MyActivity", "JSON String: " + notifyReceiver);
+                        Log.i("MessagingActivity", "JSON String: " + notifyReceiver);
 
                         AsyncHttpClient sendPush = new AsyncHttpClient();
                         //sendPush.addHeader(
@@ -331,7 +262,7 @@ public class MessagingActivity extends AppCompatActivity {
                         try {
                             entity = new StringEntity(notifyReceiver.toString());
                         } catch (Exception e) {
-                            Log.i("MyActivity", "Exception from StringEntity");
+                            Log.i("MessagingActivity", "Exception from StringEntity");
                         }
 
 
@@ -341,16 +272,16 @@ public class MessagingActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                        Log.i("MyActivity", "Failure sending message");
-                                        Log.i("MyActivity", "Response: " + responseString);
-                                        Log.i("MyActivity", "Headers: " + headers);
+                                        Log.i("MessagingActivity", "Failure sending message");
+                                        Log.i("MessagingActivity", "Response: " + responseString);
+                                        Log.i("MessagingActivity", "Headers: " + headers);
                                     }
 
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                        Log.i("MyActivity", "Success sending message");
-                                        Log.i("MyActivity", "Response: " + responseString);
-                                        Log.i("MyActivity", "Headers: " + headers);
+                                        Log.i("MessagingActivity", "Success sending message");
+                                        Log.i("MessagingActivity", "Response: " + responseString);
+                                        Log.i("MessagingActivity", "Headers: " + headers);
                                     }
                                 });
                     } else {
@@ -380,6 +311,8 @@ public class MessagingActivity extends AppCompatActivity {
 
         alertadd = new AlertDialog.Builder(this);
 
+        braceletForMessaging = GetBracelet.getBracelet(selectedId);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         MyGcmListenerService.displayNotifications=false;
@@ -393,7 +326,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         client = new AsyncHttpClient();
 
-        braceletForMessaging = GetBracelet.getBracelet(selectedId);
+
     }
 
     public void setupSenderReceiver() {
@@ -438,19 +371,19 @@ public class MessagingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.i("MyActivity", "JSON: " + fullMessage);
+        Log.i("MessagingActivity", "JSON: " + fullMessage);
     }
 
     public void send (View v) {
 
-        Log.i("MyActivity", "in send");
+        Log.i("MessagingActivity", "in send");
 
         if (!sendMessage.getText().toString().equals("")){
-            Log.i("MyActivity", "selectedId is: " + MyApplication.selectedId);
+            Log.i("MessagingActivity", "selectedId is: " + MyApplication.selectedId);
 
             Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId);
 
-            Log.i("MyActivity", "Message Count (before adding message) is: " + MessagingAdapter.messageArrayList.size());
+            Log.i("MessagingActivity", "Message Count (before adding message) is: " + MessagingAdapter.messageArrayList.size());
 
             SimpleDateFormat date = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy");
             date.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -464,9 +397,9 @@ public class MessagingActivity extends AppCompatActivity {
 
             Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
 
-            Log.i("MyActivity", "Before Set Value");
+            Log.i("MessagingActivity", "Before Set Value");
             uploadMessage.push().setValue(message);
-            Log.i("MyActivity", "After Set Value");
+            Log.i("MessagingActivity", "After Set Value");
 
             sendPush(sendMessage.getText().toString());
         }
@@ -651,7 +584,7 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("MyActivity", "In Activity Results");
+        Log.i("MessagingActivity", "In Activity Results");
 
         if (resultCode == RESULT_OK) {
             if (requestCode == MyApplication.REQUEST_CAMERA) {
@@ -742,7 +675,7 @@ public class MessagingActivity extends AppCompatActivity {
         File myDir = new File("sdcard/ravore");
         myDir.mkdirs();
         File file = new File(myDir, "profile_pic.jpg");
-        Log.i("MyActivity", "File: " + file);
+        Log.i("MessagingActivity", "File: " + file);
         if (file.exists())
             file.delete();
         try {
@@ -758,7 +691,7 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("MyActivity", "Reached Destroy");
+        Log.i("MessagingActivity", "Reached Destroy");
         messageArrayList.clear();
         adapter.clear();
         MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
