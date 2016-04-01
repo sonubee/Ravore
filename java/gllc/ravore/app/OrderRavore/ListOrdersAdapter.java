@@ -1,4 +1,4 @@
-package gllc.ravore.app.Kandi;
+package gllc.ravore.app.OrderRavore;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.R;

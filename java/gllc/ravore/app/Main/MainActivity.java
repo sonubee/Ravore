@@ -1,20 +1,11 @@
 package gllc.ravore.app.Main;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -22,18 +13,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+
 import com.firebase.client.Firebase;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.gcm.GcmListenerService;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 //import com.localytics.android.Localytics;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,20 +24,15 @@ import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.ravore.app.GCM.MyGcmListenerService;
 import gllc.ravore.app.GCM.PushReceiver;
-import gllc.ravore.app.GCM.QuickstartPreferences;
-import gllc.ravore.app.GCM.RegistrationIntentService;
-import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.Kandi.OrderRavore;
-import gllc.ravore.app.Kandi.OrderScreen;
+import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
+import gllc.ravore.app.OrderRavore.ListOrdersFragment;
 //import gllc.ravore.app.Messaging.IntentReceiver;
 import gllc.ravore.app.Messaging.MessagingActivity;
 import gllc.ravore.app.Messaging.MessagingAdapter;
-import gllc.ravore.app.Messaging.ShowAllMessages;
+import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Token;
-import gllc.ravore.app.Other.Feedback;
 import gllc.ravore.app.R;
 
 public class MainActivity extends NavigationLiveo implements OnItemClickListener{
@@ -106,13 +83,13 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         switch (position) {
 
             case 0:
-                mFragment = new ShowAllMessages();
+                mFragment = new ShowAllMessagesFragment();
                 break;
 
             case 1:
-                Intent intent = new Intent(getBaseContext(), OrderRavore.class);
+                Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
                 startActivity(intent);
-                mFragment = new ShowAllMessages();
+                mFragment = new ShowAllMessagesFragment();
                 break;
 
             case 2:
@@ -120,11 +97,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 3:
-                mFragment = new OrderScreen();
+                mFragment = new ListOrdersFragment();
                 break;
 
             default:
-                mFragment = new ShowAllMessages();
+                mFragment = new ShowAllMessagesFragment();
                 break;
         }
 

@@ -1,4 +1,4 @@
-package gllc.ravore.app.Kandi;
+package gllc.ravore.app.OrderRavore;
 
 import android.content.Context;
 import android.os.Bundle;

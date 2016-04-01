@@ -23,7 +23,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import gllc.ravore.app.Automation.AddBracelet;
-import gllc.ravore.app.Kandi.OrderRavoreActivity;
+import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.R;

@@ -1,4 +1,4 @@
-package gllc.ravore.app.Kandi;
+package gllc.ravore.app.OrderRavore;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

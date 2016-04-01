@@ -22,7 +22,7 @@ import gllc.ravore.app.Automation.AddBracelet;
 import gllc.ravore.app.GCM.QuickstartPreferences;
 import gllc.ravore.app.GCM.RegistrationIntentService;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.Kandi.OrderRavore;
+import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.UserInfo;
 import gllc.ravore.app.R;
@@ -89,7 +89,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
             @Override
             public void onClick(View v) {
                 MyApplication.cameFromLogin = true;
-                Intent intent = new Intent(getBaseContext(), OrderRavore.class);
+                Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,12 +1,8 @@
 package gllc.ravore.app;
 
 import android.app.Application;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -21,9 +17,7 @@ import java.util.Map;
 import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.Main.LoginActivity;
-import gllc.ravore.app.Main.MainActivity;
-import gllc.ravore.app.Main.RegisterPushy;
+import gllc.ravore.app.GCM.RegisterPushy;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.DJs;

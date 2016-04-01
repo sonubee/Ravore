@@ -1,8 +1,6 @@
 package gllc.ravore.app.Automation;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.firebase.client.ChildEventListener;
@@ -13,11 +11,9 @@ import com.firebase.client.Query;
 import com.squareup.picasso.Picasso;
 
 import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.Main.LoginActivity;
-import gllc.ravore.app.Main.MainActivity;
 import gllc.ravore.app.Messaging.ListAllMessagesAdapter;
 import gllc.ravore.app.Messaging.MessagingActivity;
-import gllc.ravore.app.Messaging.ShowAllMessages;
+import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
@@ -82,7 +78,7 @@ public class DownloadObjects {
                                         Log.i("ChildChanged", "Found Inside Adapter");
                                         ListAllMessagesAdapter.braceletsAdapter.set(j, bracelet);
                                         Log.i("ChildChanged", "After Setting Bracelet");
-                                        ShowAllMessages.adapterAllMessages.notifyDataSetChanged();
+                                        ShowAllMessagesFragment.adapterAllMessages.notifyDataSetChanged();
                                         foundInAdapter = true;
                                         Log.i("ChildChanged", "After Adapter");
                                     }
@@ -97,13 +93,13 @@ public class DownloadObjects {
                                 if (bracelet.getGiverId().equals(MyApplication.android_id)) {
                                     MyApplication.allGivenAndReceivedBraceletsObjects.add(bracelet);
                                     ListAllMessagesAdapter.braceletsAdapter.add(bracelet);
-                                    ShowAllMessages.adapterAllMessages.notifyDataSetChanged();
+                                    ShowAllMessagesFragment.adapterAllMessages.notifyDataSetChanged();
                                     Log.i("ChildChanged", "Adding Giver from Child Changed");
                                 }
                                 if (bracelet.getReceiverId().equals(MyApplication.android_id)) {
                                     MyApplication.allGivenAndReceivedBraceletsObjects.add(bracelet);
                                     ListAllMessagesAdapter.braceletsAdapter.add(bracelet);
-                                    ShowAllMessages.adapterAllMessages.notifyDataSetChanged();
+                                    ShowAllMessagesFragment.adapterAllMessages.notifyDataSetChanged();
                                     Log.i("ChildChanged", "Adding Receiver from Child Changed");
                                 }
                             }
@@ -152,11 +148,8 @@ public class DownloadObjects {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
                 Anon anonUser = snapshot.getValue(Anon.class);
-                Log.i("MyActivity", "User ID: " + anonUser.getUserId());
-                Log.i("MyActivity", "URL: " + anonUser.getUrl());
                 if (anonUser.getUserId() != null) {
                     MyApplication.allAnon.add(anonUser);
-                    //Log.i("MyActivity", "Loaded: " + anonUser.getFullPhotoVersion());
                 }
             }
 
@@ -166,40 +159,24 @@ public class DownloadObjects {
                 boolean changeImage = false;
 
                 String url = "";
-                Log.i("MyActivity", "New Data: " + dataSnapshot.getValue());
 
                 for (int i = 0; i < MyApplication.allAnon.size(); i++) {
 
-                    Log.i("MyActivity", "Anon ID: " + MyApplication.allAnon.get(i).getUserId());
-
                     if (anonUser.getUserId().equals(MyApplication.allAnon.get(i).getUserId())) {
-
-                        Log.i("MyActivity", "User ID Matched: " + MyApplication.allAnon.get(i).getUserId());
-
-                        Log.i("MyActivity", "Array Anon URL: " + MyApplication.allAnon.get(i).getUrl());
-                        Log.i("MyActivity", "Updated URL: " + anonUser.getUrl());
-
                         MyApplication.allAnon.set(i, anonUser);
                         try {
                             if (!anonUser.getUserId().equals(MyApplication.android_id) && ((MyApplication.selectedBracelet.getGiverId().equals(anonUser.getUserId())) || (MyApplication.selectedBracelet.getReceiverId().equals(anonUser.getUserId())))) {
-/*
-                                url = MainActivity.cloudinary.url().format("jpg")
-                                        .transformation(new Transformation().width(70).height(70).crop("fill"))
-                                        .generate("v" + anonUser.getUrlVersion() + "/" + anonUser.getUserId());
-*/
                                 url = MyApplication.cloudinary.url().format("jpg")
                                         .generate("v" + anonUser.getUrlVersion() + "/" + anonUser.getUserId());
                                 changeImage = true;
                             }
                         } catch (Exception e) {
-                            Log.i("MyActivity", "Reached Exception at Login Screen for not having selected bracelet");
+                            Log.i("MyActivity", "---Reached Exception at Login Screen for not having selected bracelet---");
                         }
 
                     }
                 }
                 if (changeImage) {
-                    //ShowAllMessages.adapterAllMessages.notifyDataSetChanged();
-                    Log.i("MyActivity", "Got into change image");
                     if (!anonUser.getUserId().equals(MyApplication.android_id) && ((MyApplication.selectedBracelet.getGiverId().equals(anonUser.getUserId())) || (MyApplication.selectedBracelet.getReceiverId().equals(anonUser.getUserId())))) {
                         if (MyApplication.currentUserIsGiver) {
                             Picasso.with(MessagingActivity.context).load(url).placeholder(R.drawable.anon).into(MessagingActivity.receiverImage);
@@ -259,25 +236,13 @@ public class DownloadObjects {
             }
         });
 
-        Firebase downloadOrders;
-
-        if (MyApplication.devStatus.equals("sandbox")){
-            downloadOrders = new Firebase(MyApplication.useFirebase+"OrdersTest");}
-        else {
-            downloadOrders = new Firebase(MyApplication.useFirebase+"Orders");}
-
+        Firebase downloadOrders = new Firebase(MyApplication.useFirebase+"Orders");
         downloadOrders.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Orders orders = dataSnapshot.getValue(Orders.class);
-                Log.i("MyActivity", "Order Child Add");
-
-                Log.i("MyActivity", "Order1: " + orders.getDeviceId());
-                Log.i("MyActivity", "Order2: " + MyApplication.android_id);
-
                 if (orders.getDeviceId().equals(MyApplication.android_id)) {
                     MyApplication.allOrders.add(orders);
-                    Log.i("MyActivity", "Added Order: " + orders.getDeviceId());
                 }
 
             }
@@ -310,10 +275,6 @@ public class DownloadObjects {
 
                 Token newToken = dataSnapshot.getValue(Token.class);
                 MyApplication.allTokens.add(newToken);
-
-                Log.i("MyActivity", "Added: " + newToken.getToken());
-
-                //gcmTokens.put(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
             }
 
             @Override

@@ -3,11 +3,8 @@ package gllc.ravore.app.Main;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
-
-import gllc.ravore.app.Kandi.OrderRavore;
 
 /**
  * Created by bhangoo on 3/31/2016.
@@ -43,7 +40,7 @@ public class HowItWorks {
         //getRavore.setOnClickListener(new View.OnClickListener() {
         //    @Override
         //    public void onClick(View v) {
-        //        Intent intent = new Intent(getBaseContext(), OrderRavore.class);
+        //        Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
         //        startActivity(intent);
         //    }
         //});

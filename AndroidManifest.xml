@@ -31,7 +31,7 @@
             android:label="Messaging" >
         </activity>
         <activity
-            android:name=".Kandi.OrderRavore"
+            android:name=".OrderRavore.OrderRavoreActivity"
             android:label="Get Ravoré" >
         </activity>
         <activity

@@ -1,9 +1,7 @@
 package gllc.ravore.app.Automation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -14,8 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.Main.LoginActivity;
-import gllc.ravore.app.Messaging.SendPush;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Bracelet;
 

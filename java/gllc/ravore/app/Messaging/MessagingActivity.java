@@ -15,7 +15,6 @@
  */
 package gllc.ravore.app.Messaging;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,7 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,8 +46,6 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.Base64;
-import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -67,15 +63,13 @@ import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.GCM.MyGcmListenerService;
-import gllc.ravore.app.Main.LoginActivity;
-import gllc.ravore.app.Main.MainActivity;
-import gllc.ravore.app.Main.UploadImage;
+import gllc.ravore.app.Automation.UploadImage;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Message;
-import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.R;
 
 public class MessagingActivity extends AppCompatActivity {
