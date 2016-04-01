@@ -20,14 +20,14 @@ import gllc.ravore.app.R;
 /**
  * Created by bhangoo on 3/14/2016.
  */
-public class ListOrderAdapter extends BaseAdapter {
+public class ListOrdersAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private Context context;
     OrderViewHolder holder = new OrderViewHolder();
     public static ArrayList<Bracelet> orderArray;
 
-    public ListOrderAdapter(Context context){
+    public ListOrdersAdapter(Context context){
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         Log.i("MyActivity", "Came to Adapter Constructor");

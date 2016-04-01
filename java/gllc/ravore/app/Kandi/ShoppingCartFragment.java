@@ -14,7 +14,7 @@ import gllc.ravore.app.R;
 /**
  * Created by bhangoo on 3/5/2016.
  */
-public class OrderRavoreFragment extends Fragment {
+public class ShoppingCartFragment extends Fragment {
 
     public static TextView total, subtotal, shipping, kandiCart, beadCart, clearButton;
 
@@ -56,6 +56,6 @@ public class OrderRavoreFragment extends Fragment {
 
         total.setVisibility(View.VISIBLE);
 */
-        OrderRavore.whichFragment = "OrderRavoreFragment";
+        OrderRavoreActivity.whichFragment = "ShoppingCartFragment";
     }
 }

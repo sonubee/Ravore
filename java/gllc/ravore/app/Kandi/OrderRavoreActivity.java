@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +42,6 @@ import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import gllc.ravore.app.Main.LoginActivity;
-import gllc.ravore.app.Messaging.ShowAllMessages;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.R;
@@ -52,10 +49,10 @@ import gllc.ravore.app.R;
 /**
  * Created by bhangoo on 3/5/2016.
  */
-public class OrderRavore extends AppCompatActivity {
+public class OrderRavoreActivity extends AppCompatActivity {
 
     BraintreeFragment mBraintreeFragment;
-    OrderRavoreFragment orderFragment;
+    ShoppingCartFragment orderFragment;
     AsyncHttpClient client;
     AlertDialog.Builder alertadd;
 
@@ -78,7 +75,7 @@ public class OrderRavore extends AppCompatActivity {
     public static String sandboxHeroku = "https://hidden-river-58763.herokuapp.com";
     public static String herokuToUse;
 
-    public static String whichFragment = "OrderRavoreFragment";
+    public static String whichFragment = "ShoppingCartFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,12 +122,12 @@ public class OrderRavore extends AppCompatActivity {
 
     public void setupFragments() {
         //setup first fragment
-        orderFragment = new OrderRavoreFragment();
+        orderFragment = new ShoppingCartFragment();
         //make it happen
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, orderFragment).commit();
         //get second fragment ready
-        orderFragment = (OrderRavoreFragment)getSupportFragmentManager().
+        orderFragment = (ShoppingCartFragment)getSupportFragmentManager().
                 findFragmentById(R.id.address_fragment);
     }
 
@@ -142,7 +139,7 @@ public class OrderRavore extends AppCompatActivity {
             case android.R.id.home:
                 Log.i("MyActivity", "In Home");
 
-                if (whichFragment.equals("OrderRavoreFragment")){
+                if (whichFragment.equals("ShoppingCartFragment")){
                     //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     subTotalPrice =0;
                     totalPrice=0.0;
@@ -150,18 +147,18 @@ public class OrderRavore extends AppCompatActivity {
                     beadCount=0;
                     kandiCount=0;
 
-                    OrderRavoreFragment.total.setText("$0");
-                    OrderRavoreFragment.subtotal.setText("$0");
-                    OrderRavoreFragment.shipping.setText("$0");
-                    OrderRavoreFragment.beadCart.setText("Cart: 0");
-                    OrderRavoreFragment.kandiCart.setText("Cart: 0");
-                    OrderRavoreFragment.clearButton.setVisibility(View.INVISIBLE);
+                    ShoppingCartFragment.total.setText("$0");
+                    ShoppingCartFragment.subtotal.setText("$0");
+                    ShoppingCartFragment.shipping.setText("$0");
+                    ShoppingCartFragment.beadCart.setText("Cart: 0");
+                    ShoppingCartFragment.kandiCart.setText("Cart: 0");
+                    ShoppingCartFragment.clearButton.setVisibility(View.INVISIBLE);
                     finish();
                 }
 
-                else if (whichFragment.equals("BuyKandi")){
+                else if (whichFragment.equals("PurchaseScreenFragment")){
                     //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    whichFragment = "OrderRavoreFragment";
+                    whichFragment = "ShoppingCartFragment";
                     getSupportFragmentManager().popBackStack();}
 
                 return true;
@@ -177,11 +174,11 @@ public class OrderRavore extends AppCompatActivity {
         totalPrice = subTotalPrice + shippingPrice;
         kandiCount++;
 
-        OrderRavoreFragment.total.setText("$" + String.format("%.2f", totalPrice));
-        OrderRavoreFragment.subtotal.setText("$"+subTotalPrice);
-        OrderRavoreFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-        OrderRavoreFragment.kandiCart.setText("Cart: " + kandiCount);
-        //OrderRavoreFragment.clearButton.setVisibility(View.VISIBLE);
+        ShoppingCartFragment.total.setText("$" + String.format("%.2f", totalPrice));
+        ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
+        ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
+        ShoppingCartFragment.kandiCart.setText("Cart: " + kandiCount);
+        //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
     }
 
     public void subtractKandi (View v) {
@@ -205,11 +202,11 @@ public class OrderRavore extends AppCompatActivity {
 
             totalPrice = subTotalPrice + shippingPrice;
 
-            OrderRavoreFragment.total.setText("$" + String.format("%.2f", totalPrice));
-            OrderRavoreFragment.subtotal.setText("$"+subTotalPrice);
-            OrderRavoreFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-            OrderRavoreFragment.kandiCart.setText("Cart: " + kandiCount);
-            //OrderRavoreFragment.clearButton.setVisibility(View.VISIBLE);
+            ShoppingCartFragment.total.setText("$" + String.format("%.2f", totalPrice));
+            ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
+            ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
+            ShoppingCartFragment.kandiCart.setText("Cart: " + kandiCount);
+            //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -222,11 +219,11 @@ public class OrderRavore extends AppCompatActivity {
         totalPrice = subTotalPrice + shippingPrice;
 
 
-        OrderRavoreFragment.total.setText("$"+String.format("%.2f", totalPrice));
-        OrderRavoreFragment.subtotal.setText("$"+subTotalPrice);
-        OrderRavoreFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-        OrderRavoreFragment.beadCart.setText("Cart: " + beadCount);
-        //OrderRavoreFragment.clearButton.setVisibility(View.VISIBLE);
+        ShoppingCartFragment.total.setText("$"+String.format("%.2f", totalPrice));
+        ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
+        ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
+        ShoppingCartFragment.beadCart.setText("Cart: " + beadCount);
+        //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
     }
 
     public void subtractBead (View v) {
@@ -248,17 +245,17 @@ public class OrderRavore extends AppCompatActivity {
 
             totalPrice = subTotalPrice + shippingPrice;
 
-            OrderRavoreFragment.total.setText("$"+String.format("%.2f", totalPrice));
-            OrderRavoreFragment.subtotal.setText("$"+subTotalPrice);
-            OrderRavoreFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-            OrderRavoreFragment.beadCart.setText("Cart: " + beadCount);
+            ShoppingCartFragment.total.setText("$"+String.format("%.2f", totalPrice));
+            ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
+            ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
+            ShoppingCartFragment.beadCart.setText("Cart: " + beadCount);
 
     }
 
     public void enterShippingInfo (View v){
 
         if (totalPrice > 1){
-            BuyKandi shippingFragment = new BuyKandi();
+            PurchaseScreenFragment shippingFragment = new PurchaseScreenFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragment_container, shippingFragment);
             transaction.addToBackStack(null);
@@ -406,12 +403,12 @@ public class OrderRavore extends AppCompatActivity {
         final RequestParams params = new RequestParams();
         params.put("payment_method_nonce", nonce);
 
-        final ProgressDialog dialog = new ProgressDialog(OrderRavore.this);
+        final ProgressDialog dialog = new ProgressDialog(OrderRavoreActivity.this);
         dialog.setMessage("Processing");
         dialog.show();
 
 
-        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrder.get("email") + "&amount=" + OrderRavore.totalPrice + "&devProd=" + MyApplication.devStatus,
+        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrder.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
                 new TextHttpResponseHandler() {
 
                     @Override
@@ -449,7 +446,7 @@ public class OrderRavore extends AppCompatActivity {
                 });
     }
     public void supportFAQ (View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(OrderRavore.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(OrderRavoreActivity.this);
         builder.setTitle("How It Works");
         builder.setMessage("1. Add your Kandi ID into app as a Giver\n\n2. Hand it to someone\n\n3. S/he adds as a Receiver! Now chat!\n\n\nOrders arrived in 5 Business Days.\nEmail: info@jobsmeplatform.com");
         builder.show();

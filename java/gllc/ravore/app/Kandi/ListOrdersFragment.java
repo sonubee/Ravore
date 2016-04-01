@@ -10,16 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import gllc.ravore.app.Messaging.ListAllMessagesAdapter;
 import gllc.ravore.app.R;
 
 /**
  * Created by bhangoo on 3/14/2016.
  */
-public class OrderScreen extends Fragment {
+public class ListOrdersFragment extends Fragment {
 
 
-    public static ListOrderAdapter adapterAllOrders;
+    public static ListOrdersAdapter adapterAllOrders;
     public static Context context;
     public static ListView orderScreenListView;
 
@@ -43,7 +42,7 @@ public class OrderScreen extends Fragment {
 
         context=getContext();
         Log.i("MyActivity", "SAM Activity Created");
-        adapterAllOrders = new ListOrderAdapter(getActivity().getBaseContext());
+        adapterAllOrders = new ListOrdersAdapter(getActivity().getBaseContext());
 
         adapterAllOrders.notifyDataSetChanged();
 

@@ -19,20 +19,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
 
 import gllc.ravore.app.Automation.AddBracelet;
-import gllc.ravore.app.Kandi.OrderRavore;
-import gllc.ravore.app.Main.LoginActivity;
+import gllc.ravore.app.Kandi.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.R;
@@ -40,7 +31,7 @@ import gllc.ravore.app.R;
 /**
  * Created by bhangoo on 2/14/2016.
  */
-public class ShowAllMessages extends Fragment {
+public class ShowAllMessagesFragment extends Fragment {
 
     ArrayList<ArrayList<Message>> allSendAndReceivedMessagesDoubleArray;
     public static ListView listView;
@@ -159,7 +150,7 @@ public class ShowAllMessages extends Fragment {
 
             case R.id.menu_buy:
                 //mSearchCheck = true;
-                Intent intent = new Intent(getContext(), OrderRavore.class);
+                Intent intent = new Intent(getContext(), OrderRavoreActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -4,13 +4,13 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="gllc.ravore.app.Kandi.BuyKandi"
+        android:name="gllc.ravore.app.Kandi.PurchaseScreenFragment"
         android:id="@+id/order_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <fragment
-        android:name="gllc.ravore.app.Kandi.OrderRavoreFragment"
+        android:name="gllc.ravore.app.Kandi.ShoppingCartFragment"
         android:id="@+id/address_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

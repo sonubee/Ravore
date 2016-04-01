@@ -1,4 +1,4 @@
-package gllc.ravore.app.Other;
+package gllc.ravore.app.Main;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

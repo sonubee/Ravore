@@ -1,4 +1,4 @@
-package gllc.ravore.app.Main;
+package gllc.ravore.app.GCM;
 
 import android.content.Context;
 import android.os.AsyncTask;
