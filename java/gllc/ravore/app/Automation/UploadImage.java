@@ -31,16 +31,8 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
         if (MyApplication.android_id!=null){
             try {
-/*
-                if (requestCode==MainActivity.SELECT_FILE){
-                    Bitmap forUpload = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-                    forUpload = MainActivity.RotateBitmap(forUpload, 270);
-                    MainActivity.storeImage(forUpload);}
 
-
-*/
-
-                if (requestCode== MessagingActivity.SELECT_FILE){
+                if (requestCode== MyApplication.SELECT_FILE){
                     Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
                     newURL = uploadResult.get("url").toString();
@@ -52,7 +44,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
                     urlVersion2 = uploadResult2.get("version").toString();
                 }
 
-                else if (requestCode==MessagingActivity.REQUEST_CAMERA){
+                else if (requestCode==MyApplication.REQUEST_CAMERA){
                     Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
                     newURL = uploadResult.get("url").toString();
@@ -83,7 +75,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
         Log.i("MyActivity", "url (upload) is: " + newURL);
         Log.i("MyActivity", "url2 (upload) is: " + newURL2);
 
-        if (requestCode==MessagingActivity.REQUEST_CAMERA){
+        if (requestCode==MyApplication.REQUEST_CAMERA){
             Log.i("MyActivity", "Inside Request Camera");
             updateAnon = new Anon(MyApplication.android_id, newURL, urlVersion, newURL2, urlVersion2);
 
@@ -93,7 +85,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
                 uploadNewURL.setValue(updateAnon);}
         }
 
-        if (requestCode==MessagingActivity.SELECT_FILE){
+        if (requestCode==MyApplication.SELECT_FILE){
 
             updateAnon = new Anon(MyApplication.android_id, newURL, urlVersion, newURL2, urlVersion2);
 

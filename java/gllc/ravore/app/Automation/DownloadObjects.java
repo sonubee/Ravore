@@ -111,7 +111,7 @@ public class DownloadObjects {
                             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
                                 if (MyApplication.allAnon.get(i).getUserId().equals(bracelet.getReceiverId())) {
                                     Picasso.with(MessagingActivity.context).load(MyApplication.allAnon.get(i).getUrl()).placeholder(R.drawable.anon).into(MessagingActivity.receiverImage);
-                                    MessagingActivity.selectedBraceletFromLogin = bracelet;
+                                    MessagingActivity.braceletForMessaging = bracelet;
                                 }
                             }
                         }

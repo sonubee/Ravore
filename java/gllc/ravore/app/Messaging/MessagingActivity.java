@@ -63,6 +63,7 @@ import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.GCM.MyGcmListenerService;
 import gllc.ravore.app.Automation.UploadImage;
@@ -77,79 +78,36 @@ public class MessagingActivity extends AppCompatActivity {
     public static ArrayList<Message> messageArrayList = new ArrayList<>();
     public static MessagingAdapter adapter;
     public static ListView listView;
-    public static ImageView giverImage, receiverImage;
-    public static TextView giverName, receiverName, braceletNum;
-    public static final int REQUEST_CAMERA = 1;
-    public static final int SELECT_FILE = 2;
-    EditText sendMessage;
-    AlertDialog.Builder alertadd;
-
-    String selectedId = MyApplication.selectedId;
-    public static Bracelet selectedBraceletFromLogin = new Bracelet();
-    String fileName;
-
+    public static Bracelet braceletForMessaging;
     public static Context context;
-    //public static Activity messagingActivity = this;
+    AlertDialog.Builder alertadd;
+    AsyncHttpClient client;
 
+    String fileName;
+    String selectedId = MyApplication.selectedId;
     public static String messageSender = "";
     public static String messageReceiver = "";
 
-    File f;
-
-    AsyncHttpClient client;
+    public static ImageView giverImage, receiverImage;
+    public static TextView giverName, receiverName, braceletNum;
+    EditText sendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
 
-        //IntentReceiver.displayNotifications=false;
 
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);}
-
-        alertadd = new AlertDialog.Builder(this);
-
-        MyGcmListenerService.displayNotifications=false;
-
-        client = new AsyncHttpClient();
-
-        giverImage = (ImageView)findViewById(R.id.giver_image);
-        receiverImage = (ImageView)findViewById(R.id.receiver_image);
-
-        sendMessage = (EditText)findViewById(R.id.message_to_send);
-
-        braceletNum = (TextView)findViewById(R.id.braceletNumber);
-
-        context=getApplicationContext();
-
-        giverImage.setImageResource(R.drawable.anon);
-        receiverImage.setImageResource(R.drawable.anon);
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
+        setup();
+        amIgiver();
         setupAdapter();
-
-        f = new File("sdcard/ravore/profile_pic.jpg");
-
-        for (int i=0; i<MyApplication.allBracelets.size(); i++){
-            if (selectedId.equals(MyApplication.allBracelets.get(i).getBraceletId())){
-                selectedBraceletFromLogin = MyApplication.allBracelets.get(i);}}
-
-        braceletNum.setText("Kandi# " + selectedBraceletFromLogin.getBraceletId());
+        setupImages();
+        setupSenderReceiver();
+        //loadFromDiskSpace();
 
         if (MyApplication.currentUserIsGiver) {
-
-            messageSender = selectedBraceletFromLogin.getGiverId();
-            messageReceiver = selectedBraceletFromLogin.getReceiverId();
-
-            if (f.exists()) {
-
+            if (MyApplication.f.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-
                 try {
                     ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
                     int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
@@ -180,13 +138,13 @@ public class MessagingActivity extends AppCompatActivity {
             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
 
                 Log.i("MyActivity", "Anon UserID: " + MyApplication.allAnon.get(i).getUserId());
-                Log.i("MyActivity", "Selected Bracelet Receiver ID: " + selectedBraceletFromLogin.getReceiverId());
+                Log.i("MyActivity", "Selected Bracelet Receiver ID: " + braceletForMessaging.getReceiverId());
 
 
-                if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getReceiverId())) {
+                if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getReceiverId())) {
 
                     String url = MyApplication.cloudinary.url().format("jpg")
-                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + selectedBraceletFromLogin.getReceiverId());
+                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getReceiverId());
                     Log.i("MyActivity", "URL is: " + url);
 
                     Log.i("MyActivity", "Found Receiver ID and loading from Cloud");
@@ -194,14 +152,8 @@ public class MessagingActivity extends AppCompatActivity {
         }
 
         else {
-
-            messageSender = selectedBraceletFromLogin.getReceiverId();
-            messageReceiver = selectedBraceletFromLogin.getGiverId();
-
-            if (f.exists()) {
-
+            if (MyApplication.f.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
-
                 try {
                     ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
                     int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
@@ -231,11 +183,11 @@ public class MessagingActivity extends AppCompatActivity {
 
             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
 
-                if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getGiverId())) {
+                if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getGiverId())) {
 
 
                     String url = MyApplication.cloudinary.url().format("jpg")
-                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + selectedBraceletFromLogin.getGiverId());
+                            .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + braceletForMessaging.getGiverId());
                     Log.i("MyActivity", "URL is: " + url);
                     Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(giverImage);}}
 
@@ -255,8 +207,10 @@ public class MessagingActivity extends AppCompatActivity {
 
 
                     for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-                        if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getGiverId())) {
-                            Picasso.with(getApplicationContext()).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);}}
+                        if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getGiverId())) {
+                            Picasso.with(getApplicationContext()).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
+                        }
+                    }
 
 
                     alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
@@ -283,7 +237,7 @@ public class MessagingActivity extends AppCompatActivity {
                     View view = factory.inflate(R.layout.full_photo, null);
                     alertadd.setView(view);
                     for (int i = 0; i < MyApplication.allAnon.size(); i++) {
-                        if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getReceiverId())) {
+                        if (MyApplication.allAnon.get(i).getUserId().equals(braceletForMessaging.getReceiverId())) {
 
                             ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
                             Picasso.with(getApplicationContext()).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
@@ -416,6 +370,51 @@ public class MessagingActivity extends AppCompatActivity {
 
     }
 
+    public void setup() {
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);}
+
+        alertadd = new AlertDialog.Builder(this);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        MyGcmListenerService.displayNotifications=false;
+
+        sendMessage = (EditText)findViewById(R.id.message_to_send);
+
+        braceletNum = (TextView)findViewById(R.id.braceletNumber);
+        braceletNum.setText("Kandi# " + braceletForMessaging.getBraceletId());
+
+        context=getApplicationContext();
+
+        client = new AsyncHttpClient();
+
+        braceletForMessaging = GetBracelet.getBracelet(selectedId);
+    }
+
+    public void setupSenderReceiver() {
+        if (MyApplication.currentUserIsGiver) {
+
+            messageSender = braceletForMessaging.getGiverId();
+            messageReceiver = braceletForMessaging.getReceiverId();
+        }
+        else {
+            messageSender = braceletForMessaging.getReceiverId();
+            messageReceiver = braceletForMessaging.getGiverId();
+        }
+    }
+
+    public void setupImages(){
+        giverImage = (ImageView)findViewById(R.id.giver_image);
+        receiverImage = (ImageView)findViewById(R.id.receiver_image);
+        giverImage.setImageResource(R.drawable.anon);
+        receiverImage.setImageResource(R.drawable.anon);
+    }
+
     public void createJSON (){
         JSONObject message = new JSONObject();
         try {
@@ -536,7 +535,7 @@ public class MessagingActivity extends AppCompatActivity {
                         if (photoFile != null) {
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                                     Uri.fromFile(photoFile));
-                            startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+                            startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
                         }
                     }
                 } else if (items[item].equals("Choose from Library")) {
@@ -559,7 +558,7 @@ public class MessagingActivity extends AppCompatActivity {
                             intent.putExtra(MediaStore.EXTRA_OUTPUT,
                                     Uri.fromFile(photoFile));
                             startActivityForResult(Intent.createChooser(intent, "Select File"),
-                                    SELECT_FILE);
+                                    MyApplication.SELECT_FILE);
                         }
                     }
                 } else if (items[item].equals("View Photo")) {
@@ -567,7 +566,7 @@ public class MessagingActivity extends AppCompatActivity {
                     View view = factory.inflate(R.layout.full_photo, null);
                     ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
 
-                    if (f.exists()) {
+                    if (MyApplication.f.exists()) {
 
                         Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
 
@@ -637,6 +636,11 @@ public class MessagingActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public void amIgiver(){
+        if (braceletForMessaging.getGiverId().equals(MyApplication.android_id)){MyApplication.currentUserIsGiver = true;}
+        else {MyApplication.currentUserIsGiver = false;}
+    }
+
     private File createImageFile() throws IOException {
         File folder = new File("sdcard/ravore");
         File destination = new File (folder, "profile_pic.jpg");
@@ -650,7 +654,7 @@ public class MessagingActivity extends AppCompatActivity {
         Log.i("MyActivity", "In Activity Results");
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CAMERA) {
+            if (requestCode == MyApplication.REQUEST_CAMERA) {
 
                 ImageView view;
                 if (MyApplication.currentUserIsGiver){view = (ImageView)this.findViewById(R.id.giver_image);}
@@ -684,7 +688,7 @@ public class MessagingActivity extends AppCompatActivity {
                 new UploadImage(requestCode).execute();
             }
 
-            else if (requestCode == SELECT_FILE) {
+            else if (requestCode == MyApplication.SELECT_FILE) {
 
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -765,7 +769,7 @@ public class MessagingActivity extends AppCompatActivity {
         for (int i= 0 ; i < MyApplication.allTokens.size(); i++){
             if (messageReceiver.equals(MyApplication.allTokens.get(i).getUserId())){
 
-                new SendPush(message, MyApplication.allTokens.get(i).getToken(), selectedBraceletFromLogin.getBraceletId(), "message", selectedBraceletFromLogin.getBraceletId(), MyApplication.allTokens.get(i).getOs());
+                new SendPush(message, MyApplication.allTokens.get(i).getToken(), braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), MyApplication.allTokens.get(i).getOs());
             }
         }
     }

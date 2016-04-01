@@ -10,6 +10,7 @@ import com.firebase.client.Firebase;
 //import com.urbanairship.UAirship;
 //import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,9 @@ public class MyApplication extends Application {
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static final int REQUEST_NONCE = 3;
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
+    public static final int REQUEST_CAMERA = 1;
+    public static final int SELECT_FILE = 2;
+    public static File f = new File("sdcard/ravore/profile_pic.jpg");
 
     @Override
     public void onCreate()
