@@ -8,6 +8,8 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
 //import com.urbanairship.UAirship;
 //import com.urbanairship.push.notifications.DefaultNotificationFactory;
@@ -59,7 +61,10 @@ public class MyApplication extends Application {
     public static ArrayList<Token> allTokens = new ArrayList<>();
 
     public static String useFirebase = "";
+    public static Cloudinary cloudinary;
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    public static final int REQUEST_NONCE = 3;
+    public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
 
     @Override
     public void onCreate()
@@ -71,6 +76,11 @@ public class MyApplication extends Application {
         new RegisterPushy(getApplicationContext()).execute();
 
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "do3jsfnn5",
+                "api_key", "178784351611733",
+                "api_secret", "YCXhoirSpE72oyokrShYcHM1cfg"));
 
         if (devStatus.equals("production")){
             useFirebase = "https://liveravore.firebaseio.com/";

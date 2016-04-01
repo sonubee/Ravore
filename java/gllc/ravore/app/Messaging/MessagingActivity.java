@@ -191,16 +191,13 @@ public class MessagingActivity extends AppCompatActivity {
 
                 if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getReceiverId())) {
 
-                    String url = MainActivity.cloudinary.url().format("jpg")
+                    String url = MyApplication.cloudinary.url().format("jpg")
                             .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + selectedBraceletFromLogin.getReceiverId());
                     Log.i("MyActivity", "URL is: " + url);
 
                     Log.i("MyActivity", "Found Receiver ID and loading from Cloud");
                     Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(receiverImage);}}
-
         }
-
-
 
         else {
 
@@ -243,7 +240,7 @@ public class MessagingActivity extends AppCompatActivity {
                 if (MyApplication.allAnon.get(i).getUserId().equals(selectedBraceletFromLogin.getGiverId())) {
 
 
-                    String url = MainActivity.cloudinary.url().format("jpg")
+                    String url = MyApplication.cloudinary.url().format("jpg")
                             .generate("v" + MyApplication.allAnon.get(i).getUrlVersion() + "/" + selectedBraceletFromLogin.getGiverId());
                     Log.i("MyActivity", "URL is: " + url);
                     Picasso.with(getApplicationContext()).load(url).placeholder(R.drawable.anon).into(giverImage);}}

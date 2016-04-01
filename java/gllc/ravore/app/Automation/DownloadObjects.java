@@ -187,7 +187,7 @@ public class DownloadObjects {
                                         .transformation(new Transformation().width(70).height(70).crop("fill"))
                                         .generate("v" + anonUser.getUrlVersion() + "/" + anonUser.getUserId());
 */
-                                url = MainActivity.cloudinary.url().format("jpg")
+                                url = MyApplication.cloudinary.url().format("jpg")
                                         .generate("v" + anonUser.getUrlVersion() + "/" + anonUser.getUserId());
                                 changeImage = true;
                             }

@@ -55,20 +55,20 @@ import gllc.ravore.app.R;
 public class OrderRavore extends AppCompatActivity {
 
     BraintreeFragment mBraintreeFragment;
+    OrderRavoreFragment orderFragment;
+    AsyncHttpClient client;
+    AlertDialog.Builder alertadd;
+
     EditText fullName;
-
-    public static final int REQUEST_NONCE = 3;
-
     TextView shippingAddress, suiteApt;
-    final Map<String, String> sendOrder = new HashMap<String, String>();
-
     public static Double totalPrice = 0.0;
-    int subTotalPrice = 0;
-    Double shippingPrice = 0.0;
+    public static int subTotalPrice = 0;
+    public static Double shippingPrice = 0.0;
+    int beadCount, kandiCount;
 
-    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
+    final Map<String, String> sendOrder = new HashMap<>();
 
-    Firebase sendOrderToFirebase;
+    Firebase sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders");
 
     public static String sandboxTokenBT = "sandbox_yrwnshf3_9j46c9m8t3mjfwwq";
     public static String productionTokenBT = "production_thxywyhz_69ppkf6h8fqh9cxb";
@@ -80,67 +80,58 @@ public class OrderRavore extends AppCompatActivity {
 
     public static String whichFragment = "OrderRavoreFragment";
 
-    int beadCount, kandiCount;
-
-    OrderRavoreFragment orderFragment;
-
-    AsyncHttpClient client;
-
-    AlertDialog.Builder alertadd;
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_screen);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);}
 
-        orderFragment = new OrderRavoreFragment();
-
+        setupFragments();
         setupVariables();
+        wakeupServer();
+    }
 
-
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, orderFragment).commit();
-
+    public void setupVariables(){
+//initialization variables
         beadCount = 0;
         kandiCount= 0;
         shippingPrice=0.0;
-
+//setup dialog
+        alertadd = new AlertDialog.Builder(this);
+//asynchttpclient
         client = new AsyncHttpClient();
-
+//initilialize braintree
         try {
             mBraintreeFragment = BraintreeFragment.newInstance(this, tokenToUse);
         } catch (InvalidArgumentException e1) {
             e1.printStackTrace();
         }
+//setup toolbar
+        ActionBar actionBar = getSupportActionBar();
 
-        orderFragment = (OrderRavoreFragment)getSupportFragmentManager().
-                findFragmentById(R.id.address_fragment);
-
-        wakeupServer();
-
-        alertadd = new AlertDialog.Builder(this);
-
-
-    }
-
-    public void setupVariables(){
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);}
+//set production or dev mode
         if (MyApplication.devStatus.equals("production")){
-            sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders");
             herokuToUse=productionHeroku;
             tokenToUse = productionTokenBT;}
 
         if (MyApplication.devStatus.equals("sandbox")){
-            sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"OrdersTest");
             herokuToUse=productionHeroku;
             tokenToUse = sandboxTokenBT;}
 
 
+    }
+
+    public void setupFragments() {
+        //setup first fragment
+        orderFragment = new OrderRavoreFragment();
+        //make it happen
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, orderFragment).commit();
+        //get second fragment ready
+        orderFragment = (OrderRavoreFragment)getSupportFragmentManager().
+                findFragmentById(R.id.address_fragment);
     }
 
     @Override
@@ -220,8 +211,6 @@ public class OrderRavore extends AppCompatActivity {
             OrderRavoreFragment.kandiCart.setText("Cart: " + kandiCount);
             //OrderRavoreFragment.clearButton.setVisibility(View.VISIBLE);
 
-
-
     }
 
     public void addBead (View v) {
@@ -291,7 +280,7 @@ public class OrderRavore extends AppCompatActivity {
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
                             .build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
             // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {
@@ -303,7 +292,7 @@ public class OrderRavore extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+        if (requestCode == MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 String address = (String) place.getAddress();
@@ -320,7 +309,7 @@ public class OrderRavore extends AppCompatActivity {
             }
         }
 
-        if (requestCode == REQUEST_NONCE) {
+        if (requestCode == MyApplication.REQUEST_NONCE) {
             if (resultCode == Activity.RESULT_OK) {
                 PaymentMethodNonce paymentMethodNonce = data.getParcelableExtra(
                         BraintreePaymentActivity.EXTRA_PAYMENT_METHOD_NONCE
@@ -388,7 +377,7 @@ public class OrderRavore extends AppCompatActivity {
 
                                 PaymentRequest paymentRequest = new PaymentRequest()
                                         .clientToken(tokenToUse);
-                                startActivityForResult(paymentRequest.getIntent(getApplicationContext()), REQUEST_NONCE);
+                                startActivityForResult(paymentRequest.getIntent(getApplicationContext()), MyApplication.REQUEST_NONCE);
                             }
                         }
 
@@ -402,7 +391,7 @@ public class OrderRavore extends AppCompatActivity {
                             PaymentRequest paymentRequest = new PaymentRequest()
 //
                                     .clientToken(tokenToUse);
-                            startActivityForResult(paymentRequest.getIntent(getApplicationContext()), REQUEST_NONCE);
+                            startActivityForResult(paymentRequest.getIntent(getApplicationContext()), MyApplication.REQUEST_NONCE);
                         }
 
                     })

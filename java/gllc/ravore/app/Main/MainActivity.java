@@ -62,71 +62,21 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     private HelpLiveo mHelpLiveo;
-    public static Cloudinary cloudinary;
-    Button sendFeedback;
-    Firebase uploadFeedback;
-    public static ImageView fullPhoto;
-    public static Context context;
-    EditText feedbackMessage;
 
+    Button sendFeedback;
+    EditText feedbackMessage;
 
 
 
     @Override
     public void onInt(Bundle savedInstanceState) {
-
-        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
-        //String registrationId = Pushy.register(getApplicationContext());
-
         SDKinitializations();
         materialDesignSetup();
-
-        context = getApplicationContext();
-
-        fullPhoto = (ImageView) findViewById(R.id.fullPhotoImageview);
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-    }
-
-    public void materialDesignSetup() {
-        //this.userName.setText("Check Out Other Features Below!");
-        //this.userEmail.setText("Or Keep Chatting!");
-
-        this.userBackground.setImageResource(R.drawable.kandi);
-
-        // Creating items navigation
-        mHelpLiveo = new HelpLiveo();
-        mHelpLiveo.add(getString(R.string.inbox), R.mipmap.ic_drafts_black_24dp);
-//        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
-        //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);
-        mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
-        mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
-//        mHelpLiveo.addSeparator(); // Item separator
-        mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
-//        mHelpLiveo.add(getString(R.string.spam), R.mipmap.ic_report_black_24dp, 120);
-
-        //with(this, Navigation.THEME_DARK). add theme dark
-        //with(this, Navigation.THEME_LIGHT). add theme light
-
-        with(this) // default theme is dark
-                .startingPosition(0) //Starting position in the list
-                .addAllHelpItem(mHelpLiveo.getHelp())
-                        //.footerItem(R.string.settings, R.mipmap.ic_settings_black_24dp)
-                .setOnClickUser(onClickPhoto)
-                .setOnPrepareOptionsMenu(onPrepare)
-                .setOnClickFooter(onClickFooter)
-                .build();
     }
 
     public void SDKinitializations() {
 
-        Firebase.setAndroidContext(this);
-
-        cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "do3jsfnn5",
-                "api_key", "178784351611733",
-                "api_secret", "YCXhoirSpE72oyokrShYcHM1cfg"));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
         boolean foundToken = false;
@@ -145,25 +95,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     }
 
-    private OnPrepareOptionsMenuLiveo onPrepare = new OnPrepareOptionsMenuLiveo() {
-        @Override
-        public void onPrepareOptionsMenu(Menu menu, int position, boolean visible) {
-            Log.i("MyActivity", "Options Selected");
 
-            InputMethodManager inputManager = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    };
-
-    private View.OnClickListener onClickFooter = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            closeDrawer();
-        }
-    };
 
     @Override
     public void onItemClick(int position) {
@@ -174,24 +106,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         switch (position) {
 
             case 0:
-                //Localytics.tagEvent("All Messages");
                 mFragment = new ShowAllMessages();
                 break;
 
-            //case 1:
-            //    //Localytics.tagEvent("Choose Favorite DJ");
-            //    mFragment = new ChooseFavoriteDJ();
-            //    break;
-
             case 1:
-                //Localytics.tagEvent("Free Kandi");
                 Intent intent = new Intent(getBaseContext(), OrderRavore.class);
                 startActivity(intent);
                 mFragment = new ShowAllMessages();
                 break;
 
             case 2:
-                //Localytics.tagEvent("Feedback");
                 mFragment = new Feedback();
                 break;
 
@@ -211,8 +135,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
             } catch (Exception e) {
             }
-            //ft.addToBackStack(null);
-
 
             ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.container, mFragment).commit();
@@ -237,7 +159,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                     long miliSeconds = System.currentTimeMillis();
                     currentDateandTime = currentDateandTime + miliSeconds;
 
-                    uploadFeedback = new Firebase(MyApplication.useFirebase+"Feedback/" + currentDateandTime);
+                    Firebase uploadFeedback = new Firebase(MyApplication.useFirebase+"Feedback/" + currentDateandTime);
                     uploadFeedback.child("timestamp").setValue(currentDateandTime);
                     uploadFeedback.child("userId").setValue(MyApplication.android_id);
                     uploadFeedback.child("feedback").setValue(feedbackMessage.getText().toString());
@@ -284,6 +206,56 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         PushReceiver.chatIdKey.clear();
 
         Log.i("MyActivity", "Do Not Display Notifications");
+    }
+
+    private OnPrepareOptionsMenuLiveo onPrepare = new OnPrepareOptionsMenuLiveo() {
+        @Override
+        public void onPrepareOptionsMenu(Menu menu, int position, boolean visible) {
+            Log.i("MyActivity", "Options Selected");
+
+            InputMethodManager inputManager = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    };
+
+    private View.OnClickListener onClickFooter = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            closeDrawer();
+        }
+    };
+
+    public void materialDesignSetup() {
+        //this.userName.setText("Check Out Other Features Below!");
+        //this.userEmail.setText("Or Keep Chatting!");
+
+        this.userBackground.setImageResource(R.drawable.kandi);
+
+        // Creating items navigation
+        mHelpLiveo = new HelpLiveo();
+        mHelpLiveo.add(getString(R.string.inbox), R.mipmap.ic_drafts_black_24dp);
+//        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
+        //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);
+        mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
+        mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
+//        mHelpLiveo.addSeparator(); // Item separator
+        mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
+//        mHelpLiveo.add(getString(R.string.spam), R.mipmap.ic_report_black_24dp, 120);
+
+        //with(this, Navigation.THEME_DARK). add theme dark
+        //with(this, Navigation.THEME_LIGHT). add theme light
+
+        with(this) // default theme is dark
+                .startingPosition(0) //Starting position in the list
+                .addAllHelpItem(mHelpLiveo.getHelp())
+                        //.footerItem(R.string.settings, R.mipmap.ic_settings_black_24dp)
+                .setOnClickUser(onClickPhoto)
+                .setOnPrepareOptionsMenu(onPrepare)
+                .setOnClickFooter(onClickFooter)
+                .build();
     }
 
 }
