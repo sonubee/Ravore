@@ -30,6 +30,7 @@ public class ShoppingCartFragment extends Fragment {
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         return view;
     }
 
