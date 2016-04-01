@@ -82,6 +82,7 @@
         android:layout_alignParentBottom="true"
         android:onClick="HIW"
         android:layout_alignParentEnd="true"
+        android:clickable="true"
         android:textColor="#FFF"/>
 
     <TextView
@@ -89,12 +90,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Get Ravoré"
-        android:id="@+id/textView14"
+        android:id="@+id/getRavore"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:textColor="#FFF"
         android:onClick="buyRavore"
         android:padding="20dp"
+
         />
 
 </RelativeLayout>

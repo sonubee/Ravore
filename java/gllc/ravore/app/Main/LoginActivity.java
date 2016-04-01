@@ -48,7 +48,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
     ProgressDialog loadingDialog;
 
     EditText inputID;
-    TextView HIW;
+    TextView HIW, getRavore;
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
@@ -72,7 +72,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
 
         setChannelId();
 
-        setUpHowItWorksButton();
+        setUpHowItWorksAndOrderRavoreButton();
 
         setUpGCM();
 
@@ -82,6 +82,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
 
     public void loginSetup(){
         HIW = (TextView)findViewById(R.id.how_it_works_button);
+        getRavore = (TextView)findViewById(R.id.getRavore);
         goToMainActivity = this;
 
         if (MyApplication.allBracelets.size() < 2){
@@ -154,8 +155,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
 
 
     public void buyRavore (View v){
-        Intent intent = new Intent(getBaseContext(), OrderRavore.class);
-        startActivity(intent);
+
     }
 
     public static void setChannelId(){
@@ -166,35 +166,43 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
     }
 
 
-    public void setUpHowItWorksButton(){
+    public void setUpHowItWorksAndOrderRavoreButton(){
         HIW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final CharSequence[] items = {"I Received A Bracelet", "I Want To Give A Bracelet", "No Account Needed?"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("How It Works");
 
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (items[item].equals("I Received A Bracelet")) {
+                            showHowToReceive();
+                        } else if (items[item].equals("I Want To Give A Bracelet")) {
+                            showHowToGive();
+                        } else if (items[item].equals("No Account Needed?")) {
+                            showNoAccount();
+                        }
+
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        getRavore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), OrderRavore.class);
+                startActivity(intent);
             }
         });
     }
 
     public void HIW (View v){
         //Localytics.tagEvent("How It Works");
-        final CharSequence[] items = {"I Received A Bracelet", "I Want To Give A Bracelet", "No Account Needed?"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle("How It Works");
 
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("I Received A Bracelet")) {
-                    showHowToReceive();
-                } else if (items[item].equals("I Want To Give A Bracelet")) {
-                    showHowToGive();
-                } else if (items[item].equals("No Account Needed?")) {
-                    showNoAccount();
-                }
-
-            }
-        });
-        builder.show();
     }
 
     public void setUpGCM(){
