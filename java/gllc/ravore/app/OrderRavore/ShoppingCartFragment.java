@@ -29,6 +29,7 @@ public class ShoppingCartFragment extends Fragment {
         View view = inflater.inflate(R.layout.actual_order_screen, container, false);
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
         return view;
     }
 
