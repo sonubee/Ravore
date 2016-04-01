@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    >
+
+    <ImageView
+        android:layout_width="62dp"
+        android:layout_height="70dp"
+        android:id="@+id/leftOrderPic"
+        android:src="@drawable/beads_medium"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_horizontal" />
+
+    <ImageView
+        android:layout_width="62dp"
+        android:layout_height="70dp"
+        android:id="@+id/rightOrderPic"
+        android:src="@drawable/bg_small"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/leftOrderPic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Beads (1)"
+        android:id="@+id/textView10"
+        android:layout_alignBottom="@+id/rightOrderPic"
+        android:layout_toEndOf="@+id/rightOrderPic"
+        android:textColor="#7ab0be"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Kandi (1)"
+        android:id="@+id/textView11"
+        android:textColor="#7ab0be"
+        android:layout_above="@+id/textView10"
+        android:layout_toEndOf="@+id/rightOrderPic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Order #1023"
+        android:id="@+id/textView13"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="#9fd27f"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Processing..."
+        android:id="@+id/textView15"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_alignParentEnd="true"
+        android:textColor="#ce9f9f"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:background="#FFFFFF"
+        android:layout_alignBottom="@+id/textView15"
+        android:id="@+id/line"
+        android:layout_marginLeft="120dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Total: $$$"
+        android:id="@+id/textView16"
+        android:layout_above="@+id/textView15"
+        android:layout_alignParentEnd="true"
+        android:textColor="#5eff3a"/>
+
+</RelativeLayout>

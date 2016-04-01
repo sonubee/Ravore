@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Ravore</string>
+    <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="add">Add</string>
+
+    <string name="inbox">Messages</string>
+    <string name="starred">Favorites</string>
+    <string name="sent_mail">Buy Kandi</string>
+    <string name="drafts">Feedback</string>
+    <string name="categories">Categories</string>
+    <string name="trash">Orders Update</string>
+    <string name="spam">Spam</string>
+    <string name="settings">Settings</string>
+    <string name="favorites">Favorites</string>
+
+    <string name="number1hiw">1. A "Giver" Logs the Bracelet into the System</string>
+    <string name="number2hiw">2. A "Receiver" Logs the Bracelet into the System and now the two can chat again!</string>
+    <string name="number3hiw">3. A "Giver" Logs the Bracelet into the System</string>
+
+
+</resources>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="gllc.ravore.app" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="gllc.ravore.app.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <permission
+        android:name="gllc.ravore.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Messaging.MessagingActivity"
+            android:label="Messaging" >
+        </activity>
+        <activity
+            android:name=".Kandi.OrderRavore"
+            android:label="Get Ravoré" >
+        </activity>
+        <activity
+            android:name=".Main.LoginActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="ampddd119ad20d7eecd8dd2545-dd4aa8ca-c6e8-11e5-63af-002dea3c3994" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Main.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/nLiveoDrawer" >
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAU7aSYMObVJeiodF2ctESaZYpe4yO50yk" />
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="gllc.ravore.app" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+
+        <!-- [START gcm_listener] -->
+        <service
+            android:name=".GCM.MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+        <!-- [START instanceId_listener] -->
+        <service
+            android:name=".GCM.MyInstanceIDListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener] -->
+        <service
+            android:name=".GCM.RegistrationIntentService"
+            android:exported="false" >
+        </service>
+
+        <!-- Pushy Declarations -->
+
+        <!-- Pushy Notification Receiver -->
+        <!-- Incoming pushes will be redirected to the following BroadcastReceiver class -->
+        <receiver android:name=".GCM.PushReceiver" android:exported="false">
+            <intent-filter>
+                <!-- Do not modify this -->
+                <action android:name="pushy.me" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Pushy Update Receiver -->
+        <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
+        <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="gllc.ravore.app" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Pushy Boot Receiver -->
+        <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
+        <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Pushy Socket Service -->
+        <!-- Do not modify - internal socket background service -->
+        <service android:name="me.pushy.sdk.services.PushySocketService"/>
+
+        <!-- End Pushy Declarations -->
+
+    </application>
+
+</manifest>
