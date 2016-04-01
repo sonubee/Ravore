@@ -145,6 +145,8 @@ public class OrderRavore extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.i("MyActivity", "Options Selected");
         switch (item.getItemId()) {
             case android.R.id.home:
                 Log.i("MyActivity", "In Home");
@@ -163,7 +165,8 @@ public class OrderRavore extends AppCompatActivity {
                     OrderRavoreFragment.beadCart.setText("Cart: 0");
                     OrderRavoreFragment.kandiCart.setText("Cart: 0");
                     OrderRavoreFragment.clearButton.setVisibility(View.INVISIBLE);
-                    finish();}
+                    finish();
+                }
 
                 else if (whichFragment.equals("BuyKandi")){
                     //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

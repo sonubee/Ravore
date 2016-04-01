@@ -65,12 +65,8 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         turnOnLoadingDialog();
 
         Pushy.listen(this);
-        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
-        Log.i("MyActivity", "FIIIIIIIIIIIIIIIIIINDMEEEE");
 
         new registerForPushNotificationsAsync().execute();
-
-        setChannelId();
 
         setUpHowItWorksAndOrderRavoreButton();
 
@@ -86,13 +82,8 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         goToMainActivity = this;
 
         if (MyApplication.allBracelets.size() < 2){
-            new DownloadObjects(getBaseContext(), goToMainActivity);
+            MyApplication.beginDownload(goToMainActivity, getBaseContext());
         }
-        else {
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            startActivity(intent);
-        }
-
     }
 
     public void turnOnLoadingDialog(){
@@ -158,15 +149,10 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
 
     }
 
-    public static void setChannelId(){
-        /*
-        Firebase setChannelId = new Firebase(MyApplication.useFirebase+"Users/ChannelIDs/" + MyApplication.android_id);
-        setChannelId.setValue(MyApplication.getChannelId());
-        */
-    }
-
-
     public void setUpHowItWorksAndOrderRavoreButton(){
+
+        new HowItWorks(getBaseContext(), HIW, getRavore, LoginActivity.this);
+        /*
         HIW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,11 +176,11 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
                 builder.show();
             }
         });
-
+*/
         getRavore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), OrderRavore.class);
+                Intent intent = new Intent(LoginActivity.this, OrderRavore.class);
                 startActivity(intent);
             }
         });
@@ -244,6 +230,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("MyActivity", "Came to OnResume");
         registerReceiver();
     }
 

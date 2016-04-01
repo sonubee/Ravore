@@ -1,6 +1,7 @@
 package gllc.ravore.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
     public static boolean currentUserIsGiver;
     public static boolean isAlreadyUser = false;
     public static String registrationId;
+    public static boolean firstOpen = true;
 
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();
@@ -63,6 +65,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
+
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         if (devStatus.equals("production")){
@@ -80,5 +83,12 @@ public class MyApplication extends Application {
         Log.i("MyActivity", "My Application Channel ID: " + channelId);
 */
         return channelId;
+    }
+
+    public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {
+        if (firstOpen){
+            new DownloadObjects(context, goToMainActivity);
+            firstOpen=false;
+        }
     }
 }
