@@ -163,72 +163,6 @@ public class OrderRavoreActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addBracelet (View v) {
-        if (beadCount == 0 && kandiCount == 0){shippingPrice = 0.30;}
-
-        subTotalPrice += 5;
-        shippingPrice += 0.35;
-        totalPrice = subTotalPrice + shippingPrice;
-        kandiCount++;
-
-        ShoppingCartFragment.total.setText("$" + String.format("%.2f", totalPrice));
-        ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
-        ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-        ShoppingCartFragment.kandiCart.setText("Cart: " + kandiCount);
-        //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
-    }
-
-    public void subtractKandi (View v) {
-
-        if (beadCount == 0 && kandiCount == 1){
-            kandiCount--;
-            shippingPrice = 0.0;
-            subTotalPrice = 0;
-        }
-
-        else if (beadCount == 0 && kandiCount == 0){
-            shippingPrice = 0.0;
-            subTotalPrice = 0;
-        }
-
-        else if (kandiCount > 0) {
-            kandiCount--;
-            subTotalPrice -= 5;
-            shippingPrice -= 0.35;
-        }
-
-            totalPrice = subTotalPrice + shippingPrice;
-
-            ShoppingCartFragment.total.setText("$" + String.format("%.2f", totalPrice));
-            ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
-            ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-            ShoppingCartFragment.kandiCart.setText("Cart: " + kandiCount);
-            //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
-
-    }
-
-    public void addBead (View v) {
-        if (beadCount == 0 && kandiCount == 0){shippingPrice = 0.30;}
-
-        beadCount++;
-        subTotalPrice += 3;
-        shippingPrice += 0.15;
-        totalPrice = subTotalPrice + shippingPrice;
-
-
-        ShoppingCartFragment.total.setText("$"+String.format("%.2f", totalPrice));
-        ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
-        ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-        ShoppingCartFragment.beadCart.setText("Cart: " + beadCount);
-        //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
-    }
-
-    public void subtractBead (View v) {
-
-
-
-    }
-
     public void enterShippingInfo (View v){
 
         if (totalPrice > 1){
@@ -236,36 +170,15 @@ public class OrderRavoreActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragment_container, shippingFragment);
             transaction.addToBackStack(null);
-            transaction.commit();
-        }
+            transaction.commit();}
 
-        else {
-            Toast.makeText(getApplicationContext(), "Add Something to the Cart", Toast.LENGTH_SHORT).show();
-        }
-        //getSupportFragmentManager().beginTransaction()
-        //        .add(R.id.fragment_container, shippingFragment).commit();
-
-    }
-
-    public void enterShipping (View v){
-
-
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-
+        else {Toast.makeText(getApplicationContext(), "Add Something to the Cart", Toast.LENGTH_SHORT).show();}
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
@@ -276,7 +189,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
-                Log.i("MyActivity", status.getStatusMessage());
+                Log.i("--AllORActivity", status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.

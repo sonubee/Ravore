@@ -18,7 +18,7 @@ import gllc.ravore.app.R;
 public class ShoppingCartFragment extends Fragment {
 
     public static TextView total, subtotal, shipping, kandiCart, beadCart, clearButton;
-    Button subtractBead;
+    Button subtractBead, addBead, addKandi, subtractKandi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,9 @@ public class ShoppingCartFragment extends Fragment {
         clearButton = (TextView)view.findViewById(R.id.clearButton);
         clearButton.setVisibility(View.INVISIBLE);
         subtractBead = (Button)view.findViewById(R.id.subtractBeadButton);
+        addBead = (Button)view.findViewById(R.id.addBeadButton);
+        addKandi = (Button)view.findViewById(R.id.addBraceletButton);
+        subtractKandi = (Button)view.findViewById(R.id.subtractKandiButton);
 
         return view;
     }
@@ -74,6 +77,75 @@ public class ShoppingCartFragment extends Fragment {
                 ShoppingCartFragment.subtotal.setText("$"+OrderRavoreActivity.subTotalPrice);
                 ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
                 ShoppingCartFragment.beadCart.setText("Cart: " + OrderRavoreActivity.beadCount);
+            }
+        });
+
+        addBead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){OrderRavoreActivity.shippingPrice = 0.30;}
+
+                OrderRavoreActivity.beadCount++;
+                OrderRavoreActivity.subTotalPrice += 3;
+                OrderRavoreActivity.shippingPrice += 0.15;
+                OrderRavoreActivity.totalPrice = OrderRavoreActivity.subTotalPrice + OrderRavoreActivity.shippingPrice;
+
+
+                ShoppingCartFragment.total.setText("$"+String.format("%.2f", OrderRavoreActivity.totalPrice));
+                ShoppingCartFragment.subtotal.setText("$"+OrderRavoreActivity.subTotalPrice);
+                ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
+                ShoppingCartFragment.beadCart.setText("Cart: " + OrderRavoreActivity.beadCount);
+                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        subtractKandi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 1){
+                    OrderRavoreActivity.kandiCount--;
+                    OrderRavoreActivity.shippingPrice = 0.0;
+                    OrderRavoreActivity.subTotalPrice = 0;
+                }
+
+                else if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){
+                    OrderRavoreActivity.shippingPrice = 0.0;
+                    OrderRavoreActivity.subTotalPrice = 0;
+                }
+
+                else if (OrderRavoreActivity.kandiCount > 0) {
+                    OrderRavoreActivity.kandiCount--;
+                    OrderRavoreActivity.subTotalPrice -= 5;
+                    OrderRavoreActivity.shippingPrice -= 0.35;
+                }
+
+                OrderRavoreActivity.totalPrice = OrderRavoreActivity.subTotalPrice + OrderRavoreActivity.shippingPrice;
+
+                ShoppingCartFragment.total.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
+                ShoppingCartFragment.subtotal.setText("$"+ OrderRavoreActivity.subTotalPrice);
+                ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
+                ShoppingCartFragment.kandiCart.setText("Cart: " + OrderRavoreActivity.kandiCount);
+                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        addKandi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){OrderRavoreActivity.shippingPrice = 0.30;}
+
+                OrderRavoreActivity.subTotalPrice += 5;
+                OrderRavoreActivity.shippingPrice += 0.35;
+                OrderRavoreActivity.totalPrice = OrderRavoreActivity.subTotalPrice + OrderRavoreActivity.shippingPrice;
+                OrderRavoreActivity.kandiCount++;
+
+                ShoppingCartFragment.total.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
+                ShoppingCartFragment.subtotal.setText("$"+OrderRavoreActivity.subTotalPrice);
+                ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
+                ShoppingCartFragment.kandiCart.setText("Cart: " + OrderRavoreActivity.kandiCount);
+                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
             }
         });
     }
