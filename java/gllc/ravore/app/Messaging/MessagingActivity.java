@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,15 +23,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.client.Firebase;
 import com.loopj.android.http.AsyncHttpClient;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
-
 import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.RotateBitmap;
@@ -237,29 +230,19 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("MessagingActivity", "In Activity Results");
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == MyApplication.REQUEST_CAMERA) {
+            ImageView imageView;
+            if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
+            else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 
-                ImageView imageView;
-                if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
-                else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
+            if (requestCode == MyApplication.REQUEST_CAMERA) {new LoadProfilePhoto(imageView, this);}
 
-                new LoadProfilePhoto(imageView, this);
-                new UploadImage(requestCode).execute();
-            }
+            else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
 
-            else if (requestCode == MyApplication.SELECT_FILE) {
-
-                ImageView imageView;
-                if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
-                else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
-
-                new LoadProfilePhoto(data.getData(), imageView, this);
-                new UploadImage(requestCode).execute();
-            }
+            new UploadImage(requestCode).execute();
         }
+        else {Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT);}
     }
 
     @Override
