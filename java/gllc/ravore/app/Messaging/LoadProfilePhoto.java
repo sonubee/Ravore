@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +78,24 @@ public class LoadProfilePhoto {
         bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
 
         imageView.setImageBitmap(bitmap);
+    }
+
+    public LoadProfilePhoto(Uri uri, ImageView imageView, Activity activity){
+        Uri selectedImage = uri;
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = activity.getContentResolver().query(
+                selectedImage, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String galleryImageFilePath = cursor.getString(columnIndex);
+        cursor.close();
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(galleryImageFilePath);
+
+        imageView.setImageBitmap(myBitmap);
+        MyApplication.file.storeImage(myBitmap);
     }
 
     public void loadLocalPath(ImageView imageView, Bracelet bracelet){

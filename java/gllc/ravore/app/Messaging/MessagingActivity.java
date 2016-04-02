@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import gllc.ravore.app.Automation.GetBracelet;
+import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.RotateBitmap;
 import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.GCM.MyGcmListenerService;
@@ -56,7 +57,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     AsyncHttpClient client;
     StartCamera startCamera;
 
-    String fileName;
     String selectedId = MyApplication.selectedId;
     public static String messageSender = "", messageReceiver = "", messageReceiverToken = "", messageReceiverOs = "";
 
@@ -85,6 +85,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             actionBar.setHomeButtonEnabled(true);}
 
         alertadd = new AlertDialog.Builder(this);
+
         startCamera = this;
 
         braceletForMessaging = GetBracelet.getBracelet(selectedId);
@@ -106,23 +107,10 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     public void send (View v) {
         if (!sendMessage.getText().toString().equals("")){
 
-            Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId);
-
-            String dateString = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy").format(new Date());
-
-            SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            timestamp.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String currentDateandTime = timestamp.format(new Date());
-            long miliSeconds = System.currentTimeMillis();
-            currentDateandTime = currentDateandTime + miliSeconds;
-
-            Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
-
-            uploadMessage.push().setValue(message);
-
+            Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, GetDateTimeInstance.getRegDate(), MyApplication.selectedId, GetDateTimeInstance.getTimeStamp());
+            new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId).push().setValue(message);
             new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
         }
-
         else {Toast.makeText(getApplicationContext(), "Please Enter Something to Send", Toast.LENGTH_SHORT).show();}
 
         sendMessage.setText("");
@@ -181,8 +169,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         if (braceletForMessaging.getGiverId().equals(MyApplication.android_id)){MyApplication.currentUserIsGiver = true;}
         else {MyApplication.currentUserIsGiver = false;}
     }
-
-
 
     @Override
     public void StartCamera(String itemSelected) {
@@ -262,29 +248,18 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
                 new LoadProfilePhoto(imageView, this);
                 new UploadImage(requestCode).execute();
-
             }
 
             else if (requestCode == MyApplication.SELECT_FILE) {
 
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                ImageView imageView;
+                if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
+                else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 
-                Cursor cursor = getContentResolver().query(
-                        selectedImage, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String filePath = cursor.getString(columnIndex);
-                cursor.close();
-                
-                Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
-
-                if (MyApplication.currentUserIsGiver){giverImage.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));}
-                else {receiverImage.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));}
-
-                MyApplication.file.storeImage(myBitmap);
-                new UploadImage(requestCode).execute();}}
+                new LoadProfilePhoto(data.getData(), imageView, this);
+                new UploadImage(requestCode).execute();
+            }
+        }
     }
 
     @Override

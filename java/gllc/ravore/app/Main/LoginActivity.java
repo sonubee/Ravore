@@ -29,7 +29,6 @@ import gllc.ravore.app.R;
 
 
 public class LoginActivity extends FragmentActivity implements GoToMainActivity {
-    //String dateString = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy").format(new Date());
 
     EditText inputID;
     TextView HIW, getRavore;
