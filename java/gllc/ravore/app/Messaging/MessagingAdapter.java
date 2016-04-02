@@ -33,7 +33,7 @@ public class MessagingAdapter extends ArrayAdapter<Message> {
     public static Firebase pullMessages;
     public static ChildEventListener firebaseChildListenerMessages;
     String selectedId = MyApplication.selectedId;
-    Bracelet selectedBraceletFromLogin = new Bracelet();
+    Bracelet adapterBracelet = new Bracelet();
 
     public MessagingAdapter(Context context, int textViewResourceId, ArrayList<Message> messages) {
         super(context, textViewResourceId, messages);
@@ -79,32 +79,27 @@ public class MessagingAdapter extends ArrayAdapter<Message> {
             }
             // ....
         });
-
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View rowView = inflater.inflate(R.layout.message_text_layout, parent, false);
 
-        selectedBraceletFromLogin = GetBracelet.getBracelet(selectedId);
+        adapterBracelet = GetBracelet.getBracelet(selectedId);
 
         TextView textView = (TextView) rowView.findViewById(R.id.message_text);
-        String message = messageArrayList.get(position).getMessage();
 
-        if (messageArrayList.get(position).getSender().equals(selectedBraceletFromLogin.getReceiverId())){
-
+        if (messageArrayList.get(position).getSender().equals(adapterBracelet.getReceiverId())){
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             textView.setLayoutParams(params);}
 
-        textView.setText(message);
+        textView.setText(messageArrayList.get(position).getMessage());
 
-        if (messageArrayList.get(position).getSender().equals(selectedBraceletFromLogin.getGiverId())) {textView.setTextColor(Color.GREEN);}
+        if (messageArrayList.get(position).getSender().equals(adapterBracelet.getGiverId())) {textView.setTextColor(Color.GREEN);}
         else {textView.setTextColor(Color.CYAN);}
 
         textView.setTextSize(15);

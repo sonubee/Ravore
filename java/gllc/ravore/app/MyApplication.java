@@ -44,6 +44,7 @@ public class MyApplication extends Application {
     public static String registrationId;
     public static boolean firstOpen = true;
     public static boolean cameFromLogin = false;
+    public static boolean displayNotifications = false;
 
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();

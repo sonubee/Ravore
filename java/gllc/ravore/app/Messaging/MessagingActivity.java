@@ -263,9 +263,18 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("MessagingActivity", "Reached Destroy");
+        Log.i("AllMessagingActivity", "Reached Destroy from Messaging");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("AllMessagingActivity", "Reached onPause from Messaging");
+
         messageArrayList.clear();
         adapter.clear();
+        //Killing Firebase listener otherwise the text messages double since a new listener gets created each time the activity opens
         MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.firebaseChildListenerMessages);
     }
 

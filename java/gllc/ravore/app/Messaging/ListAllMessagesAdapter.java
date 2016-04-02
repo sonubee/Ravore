@@ -31,7 +31,7 @@ import gllc.ravore.app.R;
 /**
  * Created by bhangoo on 2/14/2016.
  */
-public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButton.OnCheckedChangeListener {
+public class ListAllMessagesAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private Context context;
@@ -41,11 +41,8 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
     public ListAllMessagesAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        braceletsAdapter = new ArrayList<>();
-        braceletsAdapter.clear();
-        Log.i("MyActivity", "ALL GR: " + MyApplication.allGivenAndReceivedBraceletsObjects.size());
         braceletsAdapter = (ArrayList<Bracelet>)MyApplication.allGivenAndReceivedBraceletsObjects.clone();
-        Log.i("MyActivity", "(After)Size of Bracelets Adapter: " + braceletsAdapter.size());
+
     }
 
     @Override
@@ -76,8 +73,6 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
 
         holder.picture = (ImageView) convertView.findViewById(R.id.imageOfOther);
 
-        //Log.i("MyActivity", "Size of All G&R Bracelets Objects: " + braceletsAdapter.size());
-
             if (MyApplication.android_id.equals(braceletsAdapter.get(position).getReceiverId())){
                 if (braceletsAdapter.get(position).getGiverId().equals("NA")){
                     holder.picture.setImageResource(R.drawable.anon);}
@@ -88,8 +83,6 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
 
             if (MyApplication.android_id.equals(braceletsAdapter.get(position).getGiverId())){
                 if (braceletsAdapter.get(position).getReceiverId().equals("NA")){
-                    Log.i("MyActivity", "ReceiverID: " + braceletsAdapter.get(position).getReceiverId());
-                    Log.i("MyActivity", "For Bracelet ID: " + braceletsAdapter.get(position).getBraceletId());
                     holder.picture.setImageResource(R.drawable.anon);}
                 else {
                     for (int j=0; j < MyApplication.allAnon.size(); j++){
@@ -115,13 +108,6 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
         holder.lastMessage.setVisibility(View.INVISIBLE);
 
         return convertView;
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        // Get a reference to our posts
-
-
     }
 
     static class ViewHolder {

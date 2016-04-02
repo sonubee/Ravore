@@ -117,6 +117,13 @@ public class ShowAllMessagesFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i("--AllSAMessagesFragment", "OnDestroyView from ShowAllMessages");
+        listView.setAdapter(null);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Auto-generated method stub
         super.onCreateOptionsMenu(menu, inflater);
@@ -202,4 +209,8 @@ public class ShowAllMessagesFragment extends Fragment {
                 // implement your search here
             }
             return false;}};
+
+
+
+
 }

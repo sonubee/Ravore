@@ -78,7 +78,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("MyActivity", "On Destroy from MainActivity");
+        Log.i("--AllMyActivity", "On Destroy from MainActivity");
     }
 
 
@@ -91,28 +91,28 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("MyActivity", "On Pause from MainActivity");
+        Log.i("AllMyActivity", "On Pause from MainActivity");
 
         PushReceiver.displayNotifications=true;
         PushReceiver.unreadCount.clear();
         PushReceiver.chatIdKey.clear();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("--AllMyActivity", "Do Not Display Notifications");
+        Log.i("--AllMyActivity", "On Resume from MainActivity");
+
         PushReceiver.displayNotifications=false;
         PushReceiver.unreadCount.clear();
         PushReceiver.chatIdKey.clear();
-
-        Log.i("MyActivity", "Do Not Display Notifications");
     }
 
     private OnPrepareOptionsMenuLiveo onPrepare = new OnPrepareOptionsMenuLiveo() {
         @Override
         public void onPrepareOptionsMenu(Menu menu, int position, boolean visible) {
-            Log.i("MyActivity", "Options Selected");
+            Log.i("--AllMyActivity", "Options Selected");
 
             InputMethodManager inputManager = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -158,5 +158,4 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 .setOnClickFooter(onClickFooter)
                 .build();
     }
-
 }
