@@ -11,22 +11,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 //import com.localytics.android.Localytics;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.GCM.PushReceiver;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.OrderRavore.ListOrdersFragment;
@@ -34,19 +24,11 @@ import gllc.ravore.app.OrderRavore.ListOrdersFragment;
 import gllc.ravore.app.Messaging.MessagingActivity;
 import gllc.ravore.app.Messaging.MessagingAdapter;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
-import gllc.ravore.app.MyApplication;
-import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.R;
 
 public class MainActivity extends NavigationLiveo implements OnItemClickListener{
 
-    //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     private HelpLiveo mHelpLiveo;
-
-    Button sendFeedback;
-    EditText feedbackMessage;
-
-
 
     @Override
     public void onInt(Bundle savedInstanceState) {
@@ -87,17 +69,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
         }
 
-        if (mFragment != null) {
-            try {
-                MessagingActivity.messageArrayList.clear();
-                MessagingActivity.adapter.clear();
-                MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
-            } catch (Exception e) {
-            }
-
-            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            ft.replace(R.id.container, mFragment).commit();
-        }
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.replace(R.id.container, mFragment).commit();
 
         setElevationToolBar(position != 2 ? 15 : 0);
     }
@@ -105,8 +78,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("MyActivity", "On Destroy");
-        //System.exit(0);
+        Log.i("MyActivity", "On Destroy from MainActivity");
     }
 
 
@@ -119,7 +91,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("MyActivity", "On Pause");
+        Log.i("MyActivity", "On Pause from MainActivity");
 
         PushReceiver.displayNotifications=true;
         PushReceiver.unreadCount.clear();

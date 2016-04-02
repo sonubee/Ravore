@@ -101,7 +101,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         boolean foundToken = false;
 
         for (int i = 0; i < MyApplication.allTokens.size(); i++){
-            Log.i("MyActivity", "Token: " + MyApplication.allTokens.get(i).getToken());
             if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
                 foundToken = true;
             }
@@ -267,7 +266,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         Log.i("MessagingActivity", "Reached Destroy");
         messageArrayList.clear();
         adapter.clear();
-        MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
+        MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.firebaseChildListenerMessages);
     }
 
     @Override

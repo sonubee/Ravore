@@ -43,7 +43,6 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
         this.context = context;
         braceletsAdapter = new ArrayList<>();
         braceletsAdapter.clear();
-        //Log.i("MyActivity", "(Before)Size of Bracelets Adapter: " + braceletsAdapter.size());
         Log.i("MyActivity", "ALL GR: " + MyApplication.allGivenAndReceivedBraceletsObjects.size());
         braceletsAdapter = (ArrayList<Bracelet>)MyApplication.allGivenAndReceivedBraceletsObjects.clone();
         Log.i("MyActivity", "(After)Size of Bracelets Adapter: " + braceletsAdapter.size());
@@ -97,18 +96,6 @@ public class ListAllMessagesAdapter extends BaseAdapter implements CompoundButto
                         if ((MyApplication.allAnon.get(j).getUserId().equals(braceletsAdapter.get(position).getReceiverId()))){
                             Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}}}}
 
-/*
-        for (int i=0; i<LoginActivity.allBracelets.size(); i++){
-            if ((LoginActivity.allBracelets.get(i).getGiverId().equals(MyApplication.android_id)) || (LoginActivity.allBracelets.get(i).getReceiverId().equals(MyApplication.android_id))){
-                if (LoginActivity.allBracelets.get(i).getGiverId().equals(MyApplication.android_id)){
-                    for (int j=0; j < LoginActivity.allAnon.size(); j++){
-                        if (LoginActivity.allAnon.get(j).getUserId().equals(LoginActivity.allBracelets.get(i).getReceiverId())){
-                            Picasso.with(context).load(LoginActivity.allAnon.get(j).getUrl()).into(holder.picture);}}}
-                else {
-                    for (int j=0; j < LoginActivity.allAnon.size(); j++){
-                        if (LoginActivity.allAnon.get(j).getUserId().equals(LoginActivity.allBracelets.get(i).getGiverId())){
-                            Picasso.with(context).load(LoginActivity.allAnon.get(j).getUrl()).into(holder.picture);}}}}}
-*/
 
         holder.date = (TextView)convertView.findViewById(R.id.textView7);
         String date = "";
