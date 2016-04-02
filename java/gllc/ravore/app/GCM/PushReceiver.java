@@ -27,9 +27,6 @@ import gllc.ravore.app.R;
 
 public class PushReceiver extends BroadcastReceiver
 {
-
-    private static final String TAG = "MyGcmListenerService";
-
     public static int notificationsId=0;
 
     public static Map<String, String> chatIdKey = new HashMap<String, String>();

@@ -30,7 +30,6 @@ import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.RotateBitmap;
 import gllc.ravore.app.Automation.SendPush;
-import gllc.ravore.app.GCM.MyGcmListenerService;
 import gllc.ravore.app.Automation.UploadImage;
 import gllc.ravore.app.Interfaces.StartCamera;
 import gllc.ravore.app.MyApplication;
@@ -85,8 +84,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         braceletForMessaging = GetBracelet.getBracelet(selectedId);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        MyGcmListenerService.displayNotifications=false;
 
         sendMessage = (EditText)findViewById(R.id.message_to_send);
 
