@@ -18,6 +18,7 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.ravore.app.GCM.PushReceiver;
+import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.OrderRavore.ListOrdersFragment;
 //import gllc.ravore.app.Messaging.IntentReceiver;
@@ -93,7 +94,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         super.onPause();
         Log.i("AllMyActivity", "On Pause from MainActivity");
 
-        PushReceiver.displayNotifications=true;
+        MyApplication.displayNotifications=true;
         PushReceiver.unreadCount.clear();
         PushReceiver.chatIdKey.clear();
     }
@@ -104,7 +105,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         Log.i("--AllMyActivity", "Do Not Display Notifications");
         Log.i("--AllMyActivity", "On Resume from MainActivity");
 
-        PushReceiver.displayNotifications=false;
+        MyApplication.displayNotifications=false;
         PushReceiver.unreadCount.clear();
         PushReceiver.chatIdKey.clear();
     }

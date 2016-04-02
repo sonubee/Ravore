@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gllc.ravore.app.Main.LoginActivity;
+import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.R;
 
 
@@ -34,9 +35,6 @@ public class PushReceiver extends BroadcastReceiver
     public static Map<String, String> chatIdKey = new HashMap<String, String>();
     public static Map<String, String> unreadCount = new HashMap<String, String>();
     public static Map<String, String> braceletUnreadCount = new HashMap<String, String>();
-
-    public static boolean displayNotifications = false;
-
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -112,7 +110,7 @@ public class PushReceiver extends BroadcastReceiver
 
     private void sendNotification(String message, Context context) {
 
-        if (displayNotifications){
+        if (MyApplication.displayNotifications){
             JSONObject messageJSON = null;
             String messageDecoded = "";
             String messageTitle = "";
