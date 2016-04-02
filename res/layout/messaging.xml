@@ -92,7 +92,6 @@
                 android:hint="Enter Message"
                 android:textColor="#FFF"
                 android:inputType="textCapSentences"
-
                 android:imeOptions="actionGo"
                 />
         </android.support.design.widget.TextInputLayout>

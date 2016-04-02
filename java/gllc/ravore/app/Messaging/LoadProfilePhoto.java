@@ -1,5 +1,6 @@
 package gllc.ravore.app.Messaging;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,36 +47,42 @@ public class LoadProfilePhoto {
         }
     }
 
+    public LoadProfilePhoto(ImageView imageView, Activity activity){
+        if (MyApplication.currentUserIsGiver){imageView = (ImageView)activity.findViewById(R.id.giver_image);}
+        else {imageView = (ImageView)activity.findViewById(R.id.receiver_image);}
+
+        imageView.setVisibility(View.VISIBLE);
+
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
+        bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
+
+        imageView.setImageBitmap(bitmap);
+    }
+
     public void loadLocalPath(ImageView imageView, Bracelet bracelet){
 
         if (MyApplication.file.getFile().exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
             imageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
         }
-
-            /*
-            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
-            try {
-                ExifInterface exif = new ExifInterface(MyApplication.file.getPath());
-                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                Log.d("EXIF", "Exif: " + orientation);
-                Matrix matrix = new Matrix();
-                if (orientation == 6) {
-                    matrix.postRotate(90);
-                }
-                else if (orientation == 3) {
-                    matrix.postRotate(180);
-                }
-                else if (orientation == 8) {
-                    matrix.postRotate(270);
-                }
-                myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                imageView.setImageBitmap(myBitmap);
-            }
-            catch (Exception e) {
-                Log.i("MyActivity", "Exception trying to load bitmap: " + e.getMessage());
-            }*/
-        
 
         else {imageView.setImageResource(R.drawable.anon);}
 
@@ -141,25 +148,6 @@ public class LoadProfilePhoto {
             }
         });
     }
-/*
-    public void startTheCamera(Context context){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
 
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                context.startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-            }
-        }
-    }*/
+
 }

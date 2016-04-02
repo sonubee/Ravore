@@ -1,18 +1,3 @@
-/*
- * Copyright 2015 Rudson Lima
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package gllc.ravore.app.Messaging;
 
 import android.app.AlertDialog;
@@ -23,20 +8,16 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,24 +27,14 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.StringEntity;
 import gllc.ravore.app.Automation.GetBracelet;
+import gllc.ravore.app.Automation.RotateBitmap;
 import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.GCM.MyGcmListenerService;
 import gllc.ravore.app.Automation.UploadImage;
@@ -100,119 +71,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         setup();
         amIgiver();
+        setupSenderReceiver();
         setupAdapter();
         setupImages();
-        setupSenderReceiver();
-
-        sendMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_GO) {
-                    Log.i("MessagingActivity", "in send");
-
-                    if (!sendMessage.getText().toString().equals("")) {
-                        Log.i("MessagingActivity", "selectedId is: " + MyApplication.selectedId);
-
-                        Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/" + MyApplication.selectedId);
-
-                        SimpleDateFormat date = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy");
-                        date.setTimeZone(TimeZone.getTimeZone("GMT"));
-                        String dateString = date.format(new Date());
-
-                        SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                        timestamp.setTimeZone(TimeZone.getTimeZone("GMT"));
-                        String currentDateandTime = timestamp.format(new Date());
-                        long miliSeconds = System.currentTimeMillis();
-                        currentDateandTime = currentDateandTime + miliSeconds;
-
-                        Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
-
-                        Log.i("MessagingActivity", "Before Set Value");
-                        uploadMessage.push().setValue(message);
-                        Log.i("MessagingActivity", "After Set Value");
-
-
-                        JSONObject theMessage = new JSONObject();
-                        try {
-                            theMessage.put("alert", sendMessage.getText().toString());
-
-                            if (MyApplication.selectedBracelet.getGiverId().equals(MyApplication.android_id)) {
-                                theMessage.put("target", MyApplication.selectedBracelet.getReceiverId());
-                            } else {
-                                theMessage.put("target", MyApplication.selectedBracelet.getGiverId());
-                            }
-
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        JSONArray messages = new JSONArray();
-                        messages.put(theMessage);
-
-                        JSONObject notifyReceiver = new JSONObject();
-                        try {
-                            notifyReceiver.put("request_id", MyApplication.android_id);
-                            notifyReceiver.put("campaign_key", "tests");
-                            notifyReceiver.put("target_type", "customer_id");
-                            notifyReceiver.put("messages", messages);
-
-
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        Log.i("MessagingActivity", "JSON String: " + notifyReceiver);
-
-                        AsyncHttpClient sendPush = new AsyncHttpClient();
-                        //sendPush.addHeader(
-                        //        "Authorization",
-                        //        "Basic " + Base64.encodeToString(
-                        //                ("0e2e9abc48788a8773f3f7e-85466b6e-8433-11e5-1467-00deb82fd81f" + ":" + "b6b19ea56ddba195c2ea26d-85466e3e-8433-11e5-1467-00deb82fd81f").getBytes(), Base64.NO_WRAP)
-                        //);
-                        //sendPush.setBasicAuth("0e2e9abc48788a8773f3f7e-85466b6e-8433-11e5-1467-00deb82fd81f","b6b19ea56ddba195c2ea26d-85466e3e-8433-11e5-1467-00deb82fd81f");
-                        sendPush.setBasicAuth("0e2e9abc48788a8773f3f7e-85466b6e-8433-11e5-1467-00deb82fd81f", "b6b19ea56ddba195c2ea26d-85466e3e-8433-11e5-1467-00deb82fd81f");
-
-                        StringEntity entity = null;
-
-                        try {
-                            entity = new StringEntity(notifyReceiver.toString());
-                        } catch (Exception e) {
-                            Log.i("MessagingActivity", "Exception from StringEntity");
-                        }
-
-
-                        sendPush.post(getApplicationContext(), "https://messaging.localytics.com/v2/push/ddd119ad20d7eecd8dd2545-dd4aa8ca-c6e8-11e5-63af-002dea3c3994", entity, "application/json",
-                                //new AsyncHttpResponseHandler() {
-                                new TextHttpResponseHandler() {
-
-                                    @Override
-                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                        Log.i("MessagingActivity", "Failure sending message");
-                                        Log.i("MessagingActivity", "Response: " + responseString);
-                                        Log.i("MessagingActivity", "Headers: " + headers);
-                                    }
-
-                                    @Override
-                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                        Log.i("MessagingActivity", "Success sending message");
-                                        Log.i("MessagingActivity", "Response: " + responseString);
-                                        Log.i("MessagingActivity", "Headers: " + headers);
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Please Enter Something to Send", Toast.LENGTH_SHORT).show();
-                    }
-
-                    sendMessage.setText("");
-                }
-                return false;
-            }
-        });
-
-        createJSON();
-
     }
 
     public void setup() {
@@ -240,8 +101,31 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
+    }
 
+    public void send (View v) {
+        if (!sendMessage.getText().toString().equals("")){
 
+            Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId);
+
+            String dateString = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy").format(new Date());
+
+            SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            timestamp.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String currentDateandTime = timestamp.format(new Date());
+            long miliSeconds = System.currentTimeMillis();
+            currentDateandTime = currentDateandTime + miliSeconds;
+
+            Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
+
+            uploadMessage.push().setValue(message);
+
+            new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
+        }
+
+        else {Toast.makeText(getApplicationContext(), "Please Enter Something to Send", Toast.LENGTH_SHORT).show();}
+
+        sendMessage.setText("");
     }
 
     public void setupSenderReceiver() {
@@ -269,69 +153,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context, MessagingActivity.this, startCamera);
     }
 
-    public void createJSON (){
-        JSONObject message = new JSONObject();
-        try {
-            message.put("target","bbe483679580dc16");
-            message.put("alert", "You Have a Message!");
-
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        JSONObject fullMessage = new JSONObject();
-        try {
-            fullMessage.put("request_id", "bbe483679580dc16");
-            fullMessage.put("campaign_key", "null");
-            fullMessage.put("target_type", "customer_id");
-            fullMessage.put("messages", message);
-
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        Log.i("MessagingActivity", "JSON: " + fullMessage);
-    }
-
-    public void send (View v) {
-
-        Log.i("MessagingActivity", "in send");
-
-        if (!sendMessage.getText().toString().equals("")){
-            Log.i("MessagingActivity", "selectedId is: " + MyApplication.selectedId);
-
-            Firebase uploadMessage = new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId);
-
-            Log.i("MessagingActivity", "Message Count (before adding message) is: " + MessagingAdapter.messageArrayList.size());
-
-            SimpleDateFormat date = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy");
-            date.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String dateString = date.format(new Date());
-
-            SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss");
-            timestamp.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String currentDateandTime = timestamp.format(new Date());
-            long miliSeconds = System.currentTimeMillis();
-            currentDateandTime = currentDateandTime + miliSeconds;
-
-            Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, dateString, MyApplication.selectedId, currentDateandTime);
-
-            Log.i("MessagingActivity", "Before Set Value");
-            uploadMessage.push().setValue(message);
-            Log.i("MessagingActivity", "After Set Value");
-
-            new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
-
-        }
-
-        else {
-            Toast.makeText(getApplicationContext(), "Please Enter Something to Send", Toast.LENGTH_SHORT).show();}
-
-        sendMessage.setText("");
-    }
-
     public void setupAdapter (){
 
         adapter = new MessagingAdapter(getApplicationContext(), R.id.listViewMessaging, messageArrayList);
@@ -356,125 +177,17 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         receiverName.setTextColor(Color.CYAN);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void amIgiver(){
         if (braceletForMessaging.getGiverId().equals(MyApplication.android_id)){MyApplication.currentUserIsGiver = true;}
         else {MyApplication.currentUserIsGiver = false;}
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i("MessagingActivity", "In Activity Results");
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == MyApplication.REQUEST_CAMERA) {
-
-                ImageView view;
-                if (MyApplication.currentUserIsGiver){view = (ImageView)this.findViewById(R.id.giver_image);}
-                else {view = (ImageView)this.findViewById(R.id.receiver_image);}
-
-                view.setVisibility(View.VISIBLE);
-
-                int targetW = view.getWidth();
-                int targetH = view.getHeight();
-
-                // Get the dimensions of the bitmap
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                bmOptions.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(fileName, bmOptions);
-                int photoW = bmOptions.outWidth;
-                int photoH = bmOptions.outHeight;
-
-                // Determine how much to scale down the image
-                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-                // Decode the image file into a Bitmap sized to fill the View
-                bmOptions.inJustDecodeBounds = false;
-                bmOptions.inSampleSize = scaleFactor;
-                bmOptions.inPurgeable = true;
-
-                Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
-                bitmap = RotateBitmap(bitmap, 270);
-                //storeImage(bitmap);
-
-                view.setImageBitmap(bitmap);
-                new UploadImage(requestCode).execute();
-            }
-
-            else if (requestCode == MyApplication.SELECT_FILE) {
-
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                Cursor cursor = getContentResolver().query(
-                        selectedImage, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String filePath = cursor.getString(columnIndex);
-                cursor.close();
-
-                Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
-
-                try {
-                    ExifInterface exif = new ExifInterface(filePath);
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                    Log.d("EXIF", "Exif: " + orientation);
-                    Matrix matrix = new Matrix();
-                    if (orientation == 6) {
-                        matrix.postRotate(90);
-                    }
-                    else if (orientation == 3) {
-                        matrix.postRotate(180);
-                    }
-                    else if (orientation == 8) {
-                        matrix.postRotate(270);
-                    }
-                    myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                }
-
-                catch (Exception e) {
-
-                }
-
-                if (MyApplication.currentUserIsGiver){MessagingActivity.giverImage.setImageBitmap(myBitmap);}
-                else {MessagingActivity.receiverImage.setImageBitmap(myBitmap);}
-
-
-                MyApplication.file.storeImage(myBitmap);
-                new UploadImage(requestCode).execute();}}
-    }
-
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);}
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("MessagingActivity", "Reached Destroy");
-        messageArrayList.clear();
-        adapter.clear();
-        MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
-    }
 
     @Override
     public void StartCamera(String itemSelected) {
 
         if (itemSelected.equals("Take Photo")) {
-
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -482,8 +195,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
                 startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-
             }
+
         } else if (itemSelected.equals("Choose from Library")) {
             Intent intent = new Intent(
                     Intent.ACTION_PICK,
@@ -503,29 +216,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             View view = factory.inflate(R.layout.full_photo, null);
             ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
 
-            if (true) {
-
-                Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
-
-                try {
-                    ExifInterface exif = new ExifInterface(MyApplication.file.getPath());
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                    Log.d("EXIF", "Exif: " + orientation);
-                    Matrix matrix = new Matrix();
-                    if (orientation == 6) {
-                        matrix.postRotate(90);
-                    } else if (orientation == 3) {
-                        matrix.postRotate(180);
-                    } else if (orientation == 8) {
-                        matrix.postRotate(270);
-                    }
-                    myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                    giverImage.setImageBitmap(myBitmap);
-                } catch (Exception e) {
-
-                }
-                fullImageView.setImageBitmap(myBitmap);
-            }
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
 
             alertadd.setView(view);
             alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
@@ -554,5 +246,63 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 removeProfilePhoto.setValue(removeAnon);
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("MessagingActivity", "In Activity Results");
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == MyApplication.REQUEST_CAMERA) {
+
+                ImageView imageView;
+                if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
+                else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
+
+                new LoadProfilePhoto(imageView, this);
+                new UploadImage(requestCode).execute();
+
+            }
+
+            else if (requestCode == MyApplication.SELECT_FILE) {
+
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(
+                        selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+                
+                Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
+
+                if (MyApplication.currentUserIsGiver){giverImage.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));}
+                else {receiverImage.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));}
+
+                MyApplication.file.storeImage(myBitmap);
+                new UploadImage(requestCode).execute();}}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("MessagingActivity", "Reached Destroy");
+        messageArrayList.clear();
+        adapter.clear();
+        MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.listener1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
