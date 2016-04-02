@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import gllc.ravore.app.Automation.RotateBitmap;
 import gllc.ravore.app.Interfaces.StartCamera;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Bracelet;
@@ -47,7 +48,12 @@ public class LoadProfilePhoto {
 
     public void loadLocalPath(ImageView imageView, Bracelet bracelet){
 
-        if (MyApplication.file.getFile().exists()){
+        if (MyApplication.file.getFile().exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            imageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
+        }
+
+            /*
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
             try {
                 ExifInterface exif = new ExifInterface(MyApplication.file.getPath());
@@ -68,8 +74,8 @@ public class LoadProfilePhoto {
             }
             catch (Exception e) {
                 Log.i("MyActivity", "Exception trying to load bitmap: " + e.getMessage());
-            }
-        }
+            }*/
+        
 
         else {imageView.setImageResource(R.drawable.anon);}
 

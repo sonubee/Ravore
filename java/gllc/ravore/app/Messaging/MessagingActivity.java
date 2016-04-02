@@ -441,8 +441,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                         matrix.postRotate(270);
                     }
                     myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-                    //receiverImage.setImageBitmap(myBitmap);
                 }
+
                 catch (Exception e) {
 
                 }
