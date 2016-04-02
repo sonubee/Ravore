@@ -126,7 +126,7 @@ public class PushReceiver extends BroadcastReceiver
                 messageType = messageJSON.getString("type");
                 messageBracelet = messageJSON.getString("braceletId");
 
-                Log.i("MyActivity", "messageDecoded: " + messageDecoded);
+                Log.i("MyActivity", "messageDecoded1: " + messageDecoded);
 
             } catch (Exception e){Log.i("MyActivity", "Error from BackGround Push");}
 
