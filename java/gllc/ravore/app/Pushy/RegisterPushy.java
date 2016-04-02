@@ -1,13 +1,14 @@
-package gllc.ravore.app.GCM;
+package gllc.ravore.app.Pushy;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.net.URL;
+import com.firebase.client.Firebase;
 
 import gllc.ravore.app.MyApplication;
+import gllc.ravore.app.Objects.Token;
 import me.pushy.sdk.Pushy;
 
 /**
@@ -61,10 +62,18 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
     // Example implementation
     void sendRegistrationIdToBackendServer(String registrationId) throws Exception
     {
-        // The URL to the function in your backend API that stores registration IDs
-        URL sendRegIdRequest = new URL("https://{YOUR_API_HOSTNAME}/register/device?registration_id=" + registrationId);
+        Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
+        boolean foundToken = false;
 
-        // Send the registration ID by executing the GET request
-        sendRegIdRequest.openConnection();
+        for (int i = 0; i < MyApplication.allTokens.size(); i++){
+            if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
+                foundToken = true;
+            }
+        }
+
+        if (!foundToken){
+            Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
+            sendTokenToServer.push().setValue(setUpToken);
+        }
     }
 }

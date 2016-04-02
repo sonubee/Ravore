@@ -1,4 +1,4 @@
-package gllc.ravore.app.GCM;
+package gllc.ravore.app.Pushy;
 
 /**
  * Created by bhangoo on 3/17/2016.

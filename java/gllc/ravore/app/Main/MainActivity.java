@@ -11,19 +11,14 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-
-//import com.localytics.android.Localytics;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.ravore.app.GCM.PushReceiver;
+import gllc.ravore.app.Pushy.PushReceiver;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.OrderRavore.ListOrdersFragment;
-//import gllc.ravore.app.Messaging.IntentReceiver;
-import gllc.ravore.app.Messaging.MessagingActivity;
-import gllc.ravore.app.Messaging.MessagingAdapter;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.R;
 

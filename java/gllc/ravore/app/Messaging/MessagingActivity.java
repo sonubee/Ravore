@@ -93,20 +93,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
-
-        Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
-        boolean foundToken = false;
-
-        for (int i = 0; i < MyApplication.allTokens.size(); i++){
-            if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
-                foundToken = true;
-            }
-        }
-
-        if (!foundToken){
-            Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
-            sendTokenToServer.push().setValue(setUpToken);
-        }
     }
 
     public void send (View v) {

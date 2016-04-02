@@ -1,11 +1,8 @@
 package gllc.ravore.app.Main;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -19,8 +16,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import gllc.ravore.app.Automation.AddBracelet;
-import gllc.ravore.app.GCM.QuickstartPreferences;
-import gllc.ravore.app.GCM.RegistrationIntentService;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
@@ -44,12 +39,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         setContentView(R.layout.activity_login);
 
         loginSetup();
-
         setUpHowItWorksAndOrderRavoreButton();
-
-        setUpGCM();
-
-        //Localytics.tagEvent("Opened Ravore");
 
     }
 
@@ -101,7 +91,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
     }
 
 
-
+/*
     public void setUpGCM(){
         //mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         Log.i("GCM", "setUpGCM");
@@ -137,11 +127,11 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
             startService(intent);
         }
     }
-
+*/
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver();
+        //registerReceiver();
     }
 
     @Override
@@ -150,7 +140,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         isReceiverRegistered = false;
         super.onPause();
     }
-
+/*
     private void registerReceiver(){
         if(!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
@@ -158,6 +148,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
             isReceiverRegistered = true;
         }
     }
+    */
     /**
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from

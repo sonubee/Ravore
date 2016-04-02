@@ -81,16 +81,12 @@
         <!-- [END gcm_listener] -->
         <!-- [START instanceId_listener] -->
         <!-- [END instanceId_listener] -->
-        <service
-            android:name=".GCM.RegistrationIntentService"
-            android:exported="false" >
-        </service>
 
         <!-- Pushy Declarations -->
 
         <!-- Pushy Notification Receiver -->
         <!-- Incoming pushes will be redirected to the following BroadcastReceiver class -->
-        <receiver android:name=".GCM.PushReceiver" android:exported="false">
+        <receiver android:name=".Pushy.PushReceiver" android:exported="false">
             <intent-filter>
                 <!-- Do not modify this -->
                 <action android:name="pushy.me" />

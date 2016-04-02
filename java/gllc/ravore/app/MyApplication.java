@@ -7,6 +7,7 @@ import android.provider.Settings;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
+import com.localytics.android.Localytics;
 //import com.urbanairship.UAirship;
 //import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
@@ -14,12 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.ProfilePhoto;
 import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
-import gllc.ravore.app.GCM.RegisterPushy;
+import gllc.ravore.app.Pushy.RegisterPushy;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.DJs;
@@ -72,6 +72,8 @@ public class MyApplication extends Application {
 
         Firebase.setAndroidContext(this);
         Pushy.listen(this);
+        long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+        Pushy.setHeartbeatInterval(interval, this);
         new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
 
@@ -89,6 +91,10 @@ public class MyApplication extends Application {
         if (devStatus.equals("sandbox")){
             useFirebase = "https://testravore.firebaseio.com/";
         }
+
+        //Localytics.tagEvent("Opened Ravore");
+
+
     }
 
     public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {
