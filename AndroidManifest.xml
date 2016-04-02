@@ -63,7 +63,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAU7aSYMObVJeiodF2ctESaZYpe4yO50yk" />
 
-        <!-- [START gcm_receiver] -->
+        <!-- [START gcm_receiver]
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -74,13 +74,10 @@
                 <category android:name="gllc.ravore.app" />
             </intent-filter>
         </receiver>
-        <!-- [END gcm_receiver] -->
+         [END gcm_receiver] -->
 
 
-        <!-- [START gcm_listener] -->
-        <!-- [END gcm_listener] -->
-        <!-- [START instanceId_listener] -->
-        <!-- [END instanceId_listener] -->
+
 
         <!-- Pushy Declarations -->
 

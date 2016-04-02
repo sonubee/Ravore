@@ -61,7 +61,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
     public static Double totalPrice = 0.0;
     public static int subTotalPrice = 0;
     public static Double shippingPrice = 0.0;
-    int beadCount, kandiCount;
+    public static int beadCount, kandiCount = 0;
 
     final Map<String, String> sendOrder = new HashMap<>();
 
@@ -88,10 +88,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
     }
 
     public void setupVariables(){
-//initialization variables
-        beadCount = 0;
-        kandiCount= 0;
-        shippingPrice=0.0;
+
 //setup dialog
         alertadd = new AlertDialog.Builder(this);
 //asynchttpclient
@@ -228,27 +225,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
     public void subtractBead (View v) {
 
-        if (beadCount == 1 && kandiCount == 0){
-            beadCount--;
-            shippingPrice = 0.0;
-            subTotalPrice = 0;}
 
-        else if (beadCount == 0 && kandiCount == 0){
-            shippingPrice = 0.0;
-            subTotalPrice = 0;}
-
-        else if (beadCount > 0) {
-            beadCount--;
-            subTotalPrice -= 3;
-            shippingPrice -= 0.15;
-        }
-
-            totalPrice = subTotalPrice + shippingPrice;
-
-            ShoppingCartFragment.total.setText("$"+String.format("%.2f", totalPrice));
-            ShoppingCartFragment.subtotal.setText("$"+subTotalPrice);
-            ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", shippingPrice));
-            ShoppingCartFragment.beadCart.setText("Cart: " + beadCount);
 
     }
 
