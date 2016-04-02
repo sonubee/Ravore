@@ -18,6 +18,7 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 
+import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Bracelet;
@@ -35,7 +36,6 @@ public class MessagingAdapter extends ArrayAdapter<Message> {
     public static ChildEventListener listener1;
     String selectedId = MyApplication.selectedId;
     Bracelet selectedBraceletFromLogin = new Bracelet();
-
 
     public MessagingAdapter(Context context, int textViewResourceId, ArrayList<Message> messages) {
         super(context, textViewResourceId, messages);
@@ -93,12 +93,14 @@ public class MessagingAdapter extends ArrayAdapter<Message> {
 
         View rowView = inflater.inflate(R.layout.message_text_layout, parent, false);
 
+        selectedBraceletFromLogin = GetBracelet.getBracelet(selectedId);
+/*
         for (int i=0; i<MyApplication.allBracelets.size(); i++){
             if (selectedId.equals(MyApplication.allBracelets.get(i).getBraceletId())){
                 selectedBraceletFromLogin = MyApplication.allBracelets.get(i);
             }
         }
-
+*/
         TextView textView = (TextView) rowView.findViewById(R.id.message_text);
         String message = messageArrayList.get(position).getMessage();
 

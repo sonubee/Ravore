@@ -37,6 +37,7 @@ import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Message;
+import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.R;
 
 public class MessagingActivity extends AppCompatActivity implements StartCamera {
@@ -95,6 +96,21 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
+
+        Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
+        boolean foundToken = false;
+
+        for (int i = 0; i < MyApplication.allTokens.size(); i++){
+            Log.i("MyActivity", "Token: " + MyApplication.allTokens.get(i).getToken());
+            if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
+                foundToken = true;
+            }
+        }
+
+        if (!foundToken){
+            Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
+            sendTokenToServer.push().setValue(setUpToken);
+        }
     }
 
     public void send (View v) {

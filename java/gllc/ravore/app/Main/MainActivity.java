@@ -19,11 +19,14 @@ import com.firebase.client.Firebase;
 //import com.localytics.android.Localytics;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
+import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.GCM.PushReceiver;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.OrderRavore.ListOrdersFragment;
@@ -47,32 +50,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public void onInt(Bundle savedInstanceState) {
-        SDKinitializations();
-        materialDesignSetup();
-    }
-
-    public void SDKinitializations() {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
-        boolean foundToken = false;
-
-        for (int i = 0; i < MyApplication.allTokens.size(); i++){
-            Log.i("MyActivity", "Token: " + MyApplication.allTokens.get(i).getToken());
-            if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
-                foundToken = true;
-            }
-        }
-
-        if (!foundToken){
-            Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
-            sendTokenToServer.push().setValue(setUpToken);
-        }
-
+        materialDesignSetup();
     }
-
-
 
     @Override
     public void onItemClick(int position) {
@@ -118,36 +100,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         }
 
         setElevationToolBar(position != 2 ? 15 : 0);
-    }
-
-    public void sendFeedback(View v) {
-        feedbackMessage = (EditText) findViewById(R.id.feedback_message);
-        sendFeedback = (Button) findViewById(R.id.send_feedback_button);
-
-        if (!feedbackMessage.getText().toString().equals("")) {
-            sendFeedback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                    timestamp.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    String currentDateandTime = timestamp.format(new Date());
-
-                    long miliSeconds = System.currentTimeMillis();
-                    currentDateandTime = currentDateandTime + miliSeconds;
-
-                    Firebase uploadFeedback = new Firebase(MyApplication.useFirebase+"Feedback/" + currentDateandTime);
-                    uploadFeedback.child("timestamp").setValue(currentDateandTime);
-                    uploadFeedback.child("userId").setValue(MyApplication.android_id);
-                    uploadFeedback.child("feedback").setValue(feedbackMessage.getText().toString());
-
-                    feedbackMessage.setText("");
-
-                    Toast.makeText(getApplicationContext(), "Feedback Sent!", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
     }
 
     @Override
