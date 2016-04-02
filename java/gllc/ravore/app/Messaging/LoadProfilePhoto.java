@@ -8,17 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.IOException;
 
 import gllc.ravore.app.Interfaces.StartCamera;
 import gllc.ravore.app.MyApplication;
@@ -47,60 +42,55 @@ public class LoadProfilePhoto {
         else {
             loadLocalPath(receiverImage, bracelet);
             loadOtherPersonAndSetListener(giverImage, bracelet, "giver", context);
-
         }
     }
 
     public void loadLocalPath(ImageView imageView, Bracelet bracelet){
-        Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.f.getPath());
-        try {
-            ExifInterface exif = new ExifInterface(MyApplication.f.getPath());
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-            Log.d("EXIF", "Exif: " + orientation);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-            }
-            else if (orientation == 3) {
-                matrix.postRotate(180);
-            }
-            else if (orientation == 8) {
-                matrix.postRotate(270);
-            }
-            myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
-            imageView.setImageBitmap(myBitmap);
-        }
-        catch (Exception e) {
 
+        if (MyApplication.file.getFile().exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            try {
+                ExifInterface exif = new ExifInterface(MyApplication.file.getPath());
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                Log.d("EXIF", "Exif: " + orientation);
+                Matrix matrix = new Matrix();
+                if (orientation == 6) {
+                    matrix.postRotate(90);
+                }
+                else if (orientation == 3) {
+                    matrix.postRotate(180);
+                }
+                else if (orientation == 8) {
+                    matrix.postRotate(270);
+                }
+                myBitmap = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), matrix, true); // rotating bitmap
+                imageView.setImageBitmap(myBitmap);
+            }
+            catch (Exception e) {
+                Log.i("MyActivity", "Exception trying to load bitmap: " + e.getMessage());
+            }
         }
-        imageView.setImageBitmap(myBitmap);
+
+        else {imageView.setImageResource(R.drawable.anon);}
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.i("LoadProfilePhoto", "Clicked On Own Picture");
-
                 final CharSequence[] items = { "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
                 alertadd2.setTitle(" Photo Options!");
-
                 alertadd2.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
                         startCamera.StartCamera(items[item].toString());
                     }
                 });
-
                 alertadd2.show();
-
             }
         });
     }
 
     public void loadOtherPersonAndSetListener(ImageView imageView, final Bracelet bracelet, String giverReceiver, final Context context){
-
         String userId;
-
         if (giverReceiver.equals("receiver")){userId = bracelet.getReceiverId();}
         else {userId = bracelet.getGiverId();}
 

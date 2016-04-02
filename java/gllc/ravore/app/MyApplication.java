@@ -10,11 +10,11 @@ import com.firebase.client.Firebase;
 //import com.urbanairship.UAirship;
 //import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import gllc.ravore.app.Automation.ProfilePhoto;
 import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
@@ -54,13 +54,14 @@ public class MyApplication extends Application {
     public static ArrayList<Token> allTokens = new ArrayList<>();
 
     public static String useFirebase = "";
+    public static ProfilePhoto file;
     public static Cloudinary cloudinary;
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static final int REQUEST_NONCE = 3;
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
-    public static File f = new File("sdcard/ravore/profile_pic.jpg");
+
 
     @Override
     public void onCreate()
@@ -70,6 +71,7 @@ public class MyApplication extends Application {
         Firebase.setAndroidContext(this);
         Pushy.listen(this);
         new RegisterPushy(getApplicationContext()).execute();
+        file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
 
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 

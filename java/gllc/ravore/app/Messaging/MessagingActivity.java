@@ -371,13 +371,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         else {MyApplication.currentUserIsGiver = false;}
     }
 
-    private File createImageFile() throws IOException {
-        File folder = new File("sdcard/ravore");
-        File destination = new File (folder, "profile_pic.jpg");
-        fileName =  destination.getAbsolutePath();
-        return destination;}
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -410,7 +403,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 bmOptions.inSampleSize = scaleFactor;
                 bmOptions.inPurgeable = true;
 
-                Bitmap bitmap = BitmapFactory.decodeFile(fileName, bmOptions);
+                Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
                 bitmap = RotateBitmap(bitmap, 270);
                 //storeImage(bitmap);
 
@@ -457,8 +450,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 if (MyApplication.currentUserIsGiver){MessagingActivity.giverImage.setImageBitmap(myBitmap);}
                 else {MessagingActivity.receiverImage.setImageBitmap(myBitmap);}
 
-                storeImage(myBitmap);
 
+                MyApplication.file.storeImage(myBitmap);
                 new UploadImage(requestCode).execute();}}
     }
 
@@ -467,23 +460,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);}
-
-    public static void storeImage(Bitmap image) {
-        File myDir = new File("sdcard/ravore");
-        myDir.mkdirs();
-        File file = new File(myDir, "profile_pic.jpg");
-        Log.i("MessagingActivity", "File: " + file);
-        if (file.exists())
-            file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            image.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -502,20 +478,11 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    // Error occurred while creating the File
 
-                }
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(photoFile));
-                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-                }
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+
             }
         } else if (itemSelected.equals("Choose from Library")) {
             Intent intent = new Intent(
@@ -524,33 +491,24 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             intent.setType("image/*");
 
             if (intent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    // Error occurred while creating the File
 
-                }
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(photoFile));
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
-                }
             }
+
         } else if (itemSelected.equals("View Photo")) {
             LayoutInflater factory = LayoutInflater.from(getApplicationContext());
             View view = factory.inflate(R.layout.full_photo, null);
             ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
 
-            if (MyApplication.f.exists()) {
+            if (true) {
 
-                Bitmap myBitmap = BitmapFactory.decodeFile("sdcard/ravore/profile_pic.jpg");
+                Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
 
                 try {
-                    ExifInterface exif = new ExifInterface("sdcard/ravore/profile_pic.jpg");
+                    ExifInterface exif = new ExifInterface(MyApplication.file.getPath());
                     int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
                     Log.d("EXIF", "Exif: " + orientation);
                     Matrix matrix = new Matrix();
@@ -569,7 +527,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 fullImageView.setImageBitmap(myBitmap);
             }
 
-
             alertadd.setView(view);
             alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dlg, int sumthin) {
@@ -580,30 +537,21 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             alertadd.show();
 
         } else if (itemSelected.equals("Delete Photo")) {
-            File file = new File("sdcard/ravore/profile_pic.jpg");
 
-            if (file.exists()) {
-                boolean deleted = file.delete();
-                if (deleted) {
-                    Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                    if (MyApplication.currentUserIsGiver) {
-                        MessagingActivity.giverImage.setImageResource(R.drawable.anon);
-                        Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+            MyApplication.file.getFile().delete();
 
-                        Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                        removeProfilePhoto.setValue(removeAnon);
-                    } else {
-                        MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
-                        Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+            if (MyApplication.currentUserIsGiver) {
+                MessagingActivity.giverImage.setImageResource(R.drawable.anon);
+                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
 
-                        Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                        removeProfilePhoto.setValue(removeAnon);
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                }
+                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                removeProfilePhoto.setValue(removeAnon);
             } else {
-                Toast.makeText(getApplicationContext(), "No Profile Photo Exists", Toast.LENGTH_SHORT).show();
+                MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
+                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+
+                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                removeProfilePhoto.setValue(removeAnon);
             }
         }
     }
