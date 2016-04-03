@@ -35,7 +35,7 @@ import gllc.ravore.app.R;
  */
 public class PurchaseScreenFragment extends Fragment {
 
-    public static TextView totalAmount, enterShipping;
+    public static TextView totalAmount, enterShipping, kandiDisplay, beadDisplay;
     public static EditText fullName, suiteApt;
     public static Button sendOrder;
 
@@ -55,6 +55,8 @@ public class PurchaseScreenFragment extends Fragment {
         fullName = (EditText)view.findViewById(R.id.first_name);
         suiteApt = (EditText)view.findViewById(R.id.suiteApt);
         sendOrder = (Button)view.findViewById(R.id.buyKandi);
+        beadDisplay = (TextView)view.findViewById(R.id.beadDisplay);
+        kandiDisplay = (TextView)view.findViewById(R.id.kandiDisplay);
 
         return view;
     }
@@ -156,5 +158,8 @@ public class PurchaseScreenFragment extends Fragment {
                 }
             }
         });
+
+        beadDisplay.setText("Beads (Set of 3): " + OrderRavoreActivity.beadCount);
+        kandiDisplay.setText("Kandi (Set of 3): " + OrderRavoreActivity.kandiCount);
     }
 }

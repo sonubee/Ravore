@@ -82,8 +82,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_screen);
 
-        setupFragments();
         setupVariables();
+        setupFragments();
         wakeupServer();
     }
 
@@ -165,11 +165,16 @@ public class OrderRavoreActivity extends AppCompatActivity {
     public void enterShippingInfo (View v){
 
         if (totalPrice > 1){
+
             PurchaseScreenFragment shippingFragment = new PurchaseScreenFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.fragment_container, shippingFragment);
             transaction.addToBackStack(null);
-            transaction.commit();}
+            transaction.commit();
+
+
+
+        }
 
         else {Toast.makeText(getApplicationContext(), "Add Something to the Cart", Toast.LENGTH_SHORT).show();}
     }

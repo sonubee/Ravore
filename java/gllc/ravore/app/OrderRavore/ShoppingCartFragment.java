@@ -40,14 +40,13 @@ public class ShoppingCartFragment extends Fragment {
         addKandi = (Button)view.findViewById(R.id.addBraceletButton);
         subtractKandi = (Button)view.findViewById(R.id.subtractKandiButton);
 
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
 
         OrderRavoreActivity.whichFragment = "ShoppingCartFragment";
 
@@ -93,7 +92,7 @@ public class ShoppingCartFragment extends Fragment {
                 ShoppingCartFragment.subtotal.setText("$"+OrderRavoreActivity.subTotalPrice);
                 ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
                 ShoppingCartFragment.beadCart.setText("Cart: " + OrderRavoreActivity.beadCount);
-                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -124,7 +123,6 @@ public class ShoppingCartFragment extends Fragment {
                 ShoppingCartFragment.subtotal.setText("$"+ OrderRavoreActivity.subTotalPrice);
                 ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
                 ShoppingCartFragment.kandiCart.setText("Cart: " + OrderRavoreActivity.kandiCount);
-                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
 
             }
         });
@@ -132,7 +130,9 @@ public class ShoppingCartFragment extends Fragment {
         addKandi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){OrderRavoreActivity.shippingPrice = 0.30;}
+                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0) {
+                    OrderRavoreActivity.shippingPrice = 0.30;
+                }
 
                 OrderRavoreActivity.subTotalPrice += 5;
                 OrderRavoreActivity.shippingPrice += 0.35;
@@ -140,10 +140,9 @@ public class ShoppingCartFragment extends Fragment {
                 OrderRavoreActivity.kandiCount++;
 
                 ShoppingCartFragment.total.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
-                ShoppingCartFragment.subtotal.setText("$"+OrderRavoreActivity.subTotalPrice);
-                ShoppingCartFragment.shipping.setText("$"+String.format("%.2f", OrderRavoreActivity.shippingPrice));
+                ShoppingCartFragment.subtotal.setText("$" + OrderRavoreActivity.subTotalPrice);
+                ShoppingCartFragment.shipping.setText("$" + String.format("%.2f", OrderRavoreActivity.shippingPrice));
                 ShoppingCartFragment.kandiCart.setText("Cart: " + OrderRavoreActivity.kandiCount);
-                //ShoppingCartFragment.clearButton.setVisibility(View.VISIBLE);
             }
         });
     }
