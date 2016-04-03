@@ -13,10 +13,12 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -67,6 +69,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         setupSenderReceiver();
         setupAdapter();
         setupImages();
+        setupKeyboardSendButton();
     }
 
     public void setup() {
@@ -93,6 +96,21 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
+
+
+    }
+
+    public void setupKeyboardSendButton(){
+        sendMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    send(v);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void send (View v) {
