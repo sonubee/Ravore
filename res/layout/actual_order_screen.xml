@@ -34,7 +34,7 @@
         android:id="@+id/textView"
         android:textColor="#6bc185"
         android:layout_above="@+id/beadsCart"
-        android:layout_alignStart="@+id/clearButton" />
+        android:layout_alignStart="@+id/beadsCart" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,13 +99,13 @@
 
     <TextView
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="90dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Subtotal: "
         android:id="@+id/textView8"
-        android:layout_below="@+id/clearButton"
+        android:layout_below="@+id/imageView2"
         android:layout_alignParentStart="true"
         android:textColor="#74a1c9"
 
@@ -186,19 +186,6 @@
         android:layout_marginBottom="12dp"
         android:padding="12dp"
         />
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Clear"
-        android:id="@+id/clearButton"
-        android:textColor="#faf0a7"
-        android:onClick="clear"
-        android:layout_below="@+id/kandiCart"
-        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"

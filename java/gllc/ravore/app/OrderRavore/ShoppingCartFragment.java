@@ -17,7 +17,7 @@ import gllc.ravore.app.R;
  */
 public class ShoppingCartFragment extends Fragment {
 
-    public static TextView total, subtotal, shipping, kandiCart, beadCart, clearButton;
+    public static TextView total, subtotal, shipping, kandiCart, beadCart;
     Button subtractBead, addBead, addKandi, subtractKandi;
 
     @Override
@@ -35,8 +35,6 @@ public class ShoppingCartFragment extends Fragment {
         shipping = (TextView)view.findViewById(R.id.shippingPrice);
         beadCart = (TextView)view.findViewById(R.id.beadsCart);
         kandiCart = (TextView)view.findViewById(R.id.kandiCart);
-        clearButton = (TextView)view.findViewById(R.id.clearButton);
-        clearButton.setVisibility(View.INVISIBLE);
         subtractBead = (Button)view.findViewById(R.id.subtractBeadButton);
         addBead = (Button)view.findViewById(R.id.addBeadButton);
         addKandi = (Button)view.findViewById(R.id.addBraceletButton);

@@ -33,7 +33,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "sandbox";
+    public final static String devStatus = "production";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<String, String>();
@@ -90,6 +90,7 @@ public class MyApplication extends Application {
 
         if (devStatus.equals("sandbox")){
             useFirebase = "https://testravore.firebaseio.com/";
+            //useFirebase = "https://liveravore.firebaseio.com/";
         }
 
         //Localytics.tagEvent("Opened Ravore");

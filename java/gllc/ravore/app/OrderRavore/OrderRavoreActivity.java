@@ -149,7 +149,6 @@ public class OrderRavoreActivity extends AppCompatActivity {
                     ShoppingCartFragment.shipping.setText("$0");
                     ShoppingCartFragment.beadCart.setText("Cart: 0");
                     ShoppingCartFragment.kandiCart.setText("Cart: 0");
-                    ShoppingCartFragment.clearButton.setVisibility(View.INVISIBLE);
                     finish();
                 }
 
