@@ -277,7 +277,13 @@ public class DownloadObjects {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Token changedToken = dataSnapshot.getValue(Token.class);
 
+                for (int i =0; i < MyApplication.allTokens.size(); i++){
+                    if (MyApplication.allTokens.get(i).getUserId().equals(changedToken.getUserId())){
+                        MyApplication.allTokens.set(i, changedToken);
+                    }
+                }
             }
 
             @Override
