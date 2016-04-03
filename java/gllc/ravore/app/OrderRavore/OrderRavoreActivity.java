@@ -57,13 +57,14 @@ public class OrderRavoreActivity extends AppCompatActivity {
     AlertDialog.Builder alertadd;
 
     EditText fullName;
-    TextView shippingAddress, suiteApt;
+    //TextView shippingAddress, suiteApt;
     public static Double totalPrice = 0.0;
     public static int subTotalPrice = 0;
     public static Double shippingPrice = 0.0;
     public static int beadCount, kandiCount = 0;
 
-    final Map<String, String> sendOrder = new HashMap<>();
+    //final Map<String, String> sendOrder = new HashMap<>();
+    public static Map<String, String> sendOrderMap = new HashMap<>();
 
     Firebase sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders");
 
@@ -183,9 +184,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 String address = (String) place.getAddress();
-                shippingAddress = (TextView)findViewById(R.id.shipping);
-                shippingAddress.setText(address);
-                shippingAddress.setTextColor(Color.WHITE);
+                PurchaseScreenFragment.enterShipping.setText(address);
+                PurchaseScreenFragment.enterShipping.setTextColor(Color.WHITE);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.
@@ -209,86 +209,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
         }
     }
 
-    public void sendOrder (View v) {
-
-        shippingAddress = (TextView)findViewById(R.id.shipping);
-        fullName = (EditText)findViewById(R.id.first_name);
-        suiteApt = (EditText)findViewById(R.id.suiteApt);
-
-
-        Log.i("MyActivity", "Shipping: " + shippingAddress.getText().toString());
-
-        if (fullName.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), "Please Enter The Shipping Name", Toast.LENGTH_SHORT).show();
-        }
-
-        else if (shippingAddress.getText().toString().equals("Shipping Address")){
-            Toast.makeText(getApplicationContext(), "Please Enter Shipping Address", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
-            String timeStamp = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-
-            sendOrder.put("fullName", fullName.getText().toString());
-            sendOrder.put("address", shippingAddress.getText().toString());
-            sendOrder.put("suiteApt", suiteApt.getText().toString());
-            sendOrder.put("OS", "Android");
-            sendOrder.put("amount", String.valueOf(totalPrice));
-            sendOrder.put("beadCount", String.valueOf(beadCount));
-            sendOrder.put("kandiCount", String.valueOf(kandiCount));
-            sendOrder.put("date", timeStamp);
-
-            final EditText input = new EditText(getApplicationContext());
-            input.setHint("(Enter Email Here)");
-            input.setTextColor(Color.BLUE);
-            input.setHintTextColor(Color.BLACK);
-            input.setIncludeFontPadding(true);
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("(Optional) Receipt?")
-                    .setMessage("Do you want us to email you a receipt and confirmation order?")
-                    .setView(input)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            if (input.getText().toString().equals("")) {
-                                Toast.makeText(getApplicationContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
-                            }
-
-                            else{
-                                sendOrder.put("email", input.getText().toString());
-
-
-                                PaymentRequest paymentRequest = new PaymentRequest()
-                                        .clientToken(tokenToUse);
-                                startActivityForResult(paymentRequest.getIntent(getApplicationContext()), MyApplication.REQUEST_NONCE);
-                            }
-                        }
-
-                    })
-                    .setNegativeButton("No Receipt", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            sendOrder.put("email", "gsbllc2011@gmail.com");
-
-                            PaymentRequest paymentRequest = new PaymentRequest()
-//
-                                    .clientToken(tokenToUse);
-                            startActivityForResult(paymentRequest.getIntent(getApplicationContext()), MyApplication.REQUEST_NONCE);
-                        }
-
-                    })
-                    .show();
-        }
-
-    }
-
     void postNonceToServer(String nonce) {
-        Log.i("MyActivity", "Posting Nonce to Server");
+        Log.i("--AllORActivity", "Posting Nonce to Server");
 
         final RequestParams params = new RequestParams();
         params.put("payment_method_nonce", nonce);
@@ -298,14 +220,14 @@ public class OrderRavoreActivity extends AppCompatActivity {
         dialog.show();
 
 
-        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrder.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
+        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
                 new TextHttpResponseHandler() {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("MyActivity", "In Failure");
+                        Log.i("--AllORActivity", "In Failure");
 
-                        Log.i("MyActivity", "Failure response: " + responseString);
+                        Log.i("--AllORActivity", "Failure response: " + responseString);
                         dialog.dismiss();
 
                         Toast.makeText(getApplicationContext(), "Did not go through. Try again.", Toast.LENGTH_LONG).show();
@@ -315,10 +237,10 @@ public class OrderRavoreActivity extends AppCompatActivity {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         String timeStamp = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
                         String orderNumber = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-                        Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", shippingAddress.getText().toString(), timeStamp, sendOrder.get("email"), fullName.getText().toString(), suiteApt.getText().toString(), "Processing", MyApplication.android_id);
+                        Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", "", timeStamp, sendOrderMap.get("email"), fullName.getText().toString(), "", "Processing", MyApplication.android_id);
 
                         sendOrderToFirebase.push().setValue(newOrder);
-                        Log.i("MyActivity", "Success Posting nonce");
+                        Log.i("--AllORActivity", "Success Posting nonce");
                         dialog.dismiss();
 
                         if (MyApplication.cameFromLogin){
@@ -327,7 +249,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
                             MyApplication.cameFromLogin = false;
                         }
 
-                        Log.i("MyActivity", "Result: " + responseString);
+                        Log.i("--AllORActivity", "Result: " + responseString);
 
                         finish();
 
