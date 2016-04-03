@@ -58,7 +58,6 @@ public class MyApplication extends Application {
     public static String useFirebase = "";
     public static ProfilePhoto file;
     public static Cloudinary cloudinary;
-    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     public static final int REQUEST_NONCE = 3;
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
     public static final int REQUEST_CAMERA = 1;
@@ -108,6 +107,5 @@ public class MyApplication extends Application {
     public static void setSelectedBracelet(String selectedId){
         new SetBracelet(selectedId);
     }
-
 
 }

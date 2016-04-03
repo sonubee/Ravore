@@ -2,6 +2,7 @@ package gllc.ravore.app.OrderRavore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -77,6 +78,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
     public static String whichFragment = "ShoppingCartFragment";
 
+    FragmentTransaction transaction;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,8 +127,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, orderFragment).commit();
         //get second fragment ready
-        orderFragment = (ShoppingCartFragment)getSupportFragmentManager().
-                findFragmentById(R.id.address_fragment);
+        //orderFragment = (ShoppingCartFragment)getSupportFragmentManager().
+        //        findFragmentById(R.id.address_fragment);
     }
 
     @Override
@@ -153,8 +156,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
                 }
 
                 else if (whichFragment.equals("PurchaseScreenFragment")){
-                    //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     whichFragment = "ShoppingCartFragment";
+                    transaction.show(orderFragment);
                     getSupportFragmentManager().popBackStack();}
 
                 return true;
@@ -167,12 +170,13 @@ public class OrderRavoreActivity extends AppCompatActivity {
         if (totalPrice > 1){
 
             PurchaseScreenFragment shippingFragment = new PurchaseScreenFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction = getSupportFragmentManager().beginTransaction();
+            //transaction.replace(R.id.fragment_container, shippingFragment);
             transaction.add(R.id.fragment_container, shippingFragment);
+            transaction.hide(orderFragment);
+
             transaction.addToBackStack(null);
             transaction.commit();
-
-
 
         }
 
