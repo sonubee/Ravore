@@ -15,6 +15,7 @@ import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
+import gllc.ravore.app.Automation.ClearNotifications;
 import gllc.ravore.app.Pushy.PushReceiver;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
@@ -99,6 +100,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         super.onResume();
         Log.i("--AllMyActivity", "Do Not Display Notifications");
         Log.i("--AllMyActivity", "On Resume from MainActivity");
+
+        new ClearNotifications(getBaseContext());
 
         MyApplication.displayNotifications=false;
         PushReceiver.unreadCount.clear();
