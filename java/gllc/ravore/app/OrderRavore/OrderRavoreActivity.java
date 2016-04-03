@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Orders;
@@ -56,14 +57,12 @@ public class OrderRavoreActivity extends AppCompatActivity {
     AsyncHttpClient client;
     AlertDialog.Builder alertadd;
 
-    EditText fullName;
-    //TextView shippingAddress, suiteApt;
     public static Double totalPrice = 0.0;
     public static int subTotalPrice = 0;
     public static Double shippingPrice = 0.0;
     public static int beadCount, kandiCount = 0;
+    public static String emailAddy= "";
 
-    //final Map<String, String> sendOrder = new HashMap<>();
     public static Map<String, String> sendOrderMap = new HashMap<>();
 
     Firebase sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders");
@@ -235,9 +234,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        String timeStamp = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
                         String orderNumber = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-                        Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", "", timeStamp, sendOrderMap.get("email"), fullName.getText().toString(), "", "Processing", MyApplication.android_id);
+                        Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", sendOrderMap.get("address"), GetDateTimeInstance.getRegDate(), sendOrderMap.get("email"), sendOrderMap.get("fullName"), sendOrderMap.get("suiteApt"), "Processing", MyApplication.android_id);
 
                         sendOrderToFirebase.push().setValue(newOrder);
                         Log.i("--AllORActivity", "Success Posting nonce");

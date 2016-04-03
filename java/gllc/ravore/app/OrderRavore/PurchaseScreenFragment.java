@@ -133,6 +133,7 @@ public class PurchaseScreenFragment extends Fragment {
                                     else{
                                         OrderRavoreActivity.sendOrderMap.put("email", input.getText().toString());
 
+                                        OrderRavoreActivity.emailAddy = input.getText().toString();
 
                                         PaymentRequest paymentRequest = new PaymentRequest()
                                                 .clientToken(OrderRavoreActivity.tokenToUse);
