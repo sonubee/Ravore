@@ -128,11 +128,17 @@ public class PurchaseScreenFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
+
+
                                     if (input.getText().toString().equals("")) {
                                         Toast.makeText(getContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
                                     }
 
-                                    else{
+                                    else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input.getText().toString()).matches()){
+                                        Toast.makeText(getContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    else {
                                         OrderRavoreActivity.sendOrderMap.put("email", input.getText().toString());
 
                                         OrderRavoreActivity.emailAddy = input.getText().toString();
@@ -161,5 +167,9 @@ public class PurchaseScreenFragment extends Fragment {
 
         beadDisplay.setText("Beads (Set of 3): " + OrderRavoreActivity.beadCount);
         kandiDisplay.setText("Kandi (Set of 3): " + OrderRavoreActivity.kandiCount);
+    }
+
+    public boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
