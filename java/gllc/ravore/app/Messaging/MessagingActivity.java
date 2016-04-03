@@ -96,8 +96,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
-
-
     }
 
     public void setupKeyboardSendButton(){

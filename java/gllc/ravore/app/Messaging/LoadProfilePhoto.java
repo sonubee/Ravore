@@ -41,11 +41,11 @@ public class LoadProfilePhoto {
         this.startCamera = startCamera;
 
         if (amIGiver){
-            loadLocalPath(giverImage, bracelet);
+            loadLocalPath(giverImage);
             loadOtherPersonAndSetListener(receiverImage, bracelet, "receiver", context);
         }
         else {
-            loadLocalPath(receiverImage, bracelet);
+            loadLocalPath(receiverImage);
             loadOtherPersonAndSetListener(giverImage, bracelet, "giver", context);
         }
     }
@@ -98,7 +98,7 @@ public class LoadProfilePhoto {
         MyApplication.file.storeImage(myBitmap);
     }
 
-    public void loadLocalPath(ImageView imageView, Bracelet bracelet){
+    public void loadLocalPath(ImageView imageView){
 
         if (MyApplication.file.getFile().exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
@@ -152,11 +152,16 @@ public class LoadProfilePhoto {
                     userId = bracelet.getGiverId();
                 }
 
-
+                boolean found = false;
                 for (int i = 0; i < MyApplication.allAnon.size(); i++) {
                     if (MyApplication.allAnon.get(i).getUserId().equals(userId)) {
+                        found = true;
                         Picasso.with(context).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
                     }
+                }
+
+                if (!found){
+                    fullImageView.setImageResource(R.drawable.anon);
                 }
 
                 alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
