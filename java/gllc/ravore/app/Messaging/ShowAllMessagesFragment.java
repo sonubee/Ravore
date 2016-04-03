@@ -140,7 +140,7 @@ public class ShowAllMessagesFragment extends Fragment {
 
             case R.id.menu_add:
 
-                final CharSequence[] items = {"I Received A Bracelet", "I Want To Give A Bracelet"};
+                final CharSequence[] items = {"Give A Bracelet", "I Received A Bracelet"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Add A Bracelet");
 
@@ -149,7 +149,7 @@ public class ShowAllMessagesFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int item) {
                         if (items[item].equals("I Received A Bracelet")) {
                             addBraceletAsReceiver();
-                        } else if (items[item].equals("I Want To Give A Bracelet")) {
+                        } else if (items[item].equals("Give A Bracelet")) {
                             addBraceletAsGiver();}}
                 });
                 builder.show();
