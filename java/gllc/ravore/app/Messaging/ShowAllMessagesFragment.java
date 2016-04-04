@@ -19,10 +19,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
 import gllc.ravore.app.Automation.AddBracelet;
+import gllc.ravore.app.Main.LoginActivity;
+import gllc.ravore.app.Main.MainActivity;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Message;
@@ -74,7 +79,7 @@ public class ShowAllMessagesFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+            public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
 
                 MyApplication.selectedId = MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId();
                 MyApplication.setSelectedBracelet(MyApplication.selectedId);
@@ -82,22 +87,40 @@ public class ShowAllMessagesFragment extends Fragment {
                 if (swipeDetector.swipeDetected()) {
                     if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
                         //Toast.makeText(getActivity(), "Swipe Left", Toast.LENGTH_SHORT).show();
+
+                        startActivity(new Intent(getContext(), MessagingActivity.class));
 /*
-                        if (LoginActivity.allGivenAndReceivedBraceletsObjects.get(position).getGiverId().equals(MyApplication.android_id)){
+                        if (MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId().equals(MyApplication.android_id)){
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setTitle("Delete Kandi");
-                            builder.setMessage("Are you sure you want to delete? This cannot be recovered unless you use a new Ravore!!");
+                            builder.setMessage("Are you sure you want to delete " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId() + "? This cannot be recovered unless you use a new Ravore!!");
                             builder.setPositiveButton("Yes, Delete!", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Log.i("MyActivity", "Delete: " + LoginActivity.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
-                                }});
+                                    Log.i("MyActivity", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
+                                }
+                            });
+                            builder.show();
                         }
-*/
 
+*/
 
                     } else {
                         //Toast.makeText(getActivity(), "Swipe Right", Toast.LENGTH_SHORT).show();
+                        if (MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId().equals(MyApplication.android_id)){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Delete Kandi");
+                            builder.setMessage("Are you sure you want to delete " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId() + "? This cannot be recovered unless you use a new Ravore!!");
+                            builder.setPositiveButton("Yes, Delete!", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.i("MyActivity", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
+                                    String key = MyApplication.braceletKey.get(MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId());
+                                    new Firebase(MyApplication.useFirebase+"Bracelets/"+key).removeValue();
+                                }
+                            });
+                            builder.show();
+                        }
                     }
                 } else {
                     if (MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId().equals(MyApplication.android_id)) {

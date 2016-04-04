@@ -2,6 +2,7 @@ package gllc.ravore.app.Automation;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -29,7 +30,7 @@ public class DownloadObjects {
 
     GoToMainActivity goToMainActivity;
 
-    public DownloadObjects (Context context, final GoToMainActivity goToMainActivity){
+    public DownloadObjects (final Context context, final GoToMainActivity goToMainActivity){
 
         this.goToMainActivity = goToMainActivity;
 
@@ -127,7 +128,33 @@ public class DownloadObjects {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
+                Log.i("MyActivity", "Snapshot Key: " + dataSnapshot.getKey());
+                Log.i("MyActivity", "Snapshot Value: " + dataSnapshot.getValue());
+                Bracelet bracelet = dataSnapshot.getValue(Bracelet.class);
+
+                for (int i = 0; i < MyApplication.allBracelets.size(); i++) {
+                    if (bracelet.getBraceletId().equals(MyApplication.allBracelets.get(i).getBraceletId())) {
+                        boolean foundInAdapter = false;
+
+                        for (int j = 0; j < ListAllMessagesAdapter.braceletsAdapter.size(); j++){
+                            if (bracelet.getBraceletId().equals(ListAllMessagesAdapter.braceletsAdapter.get(j).getBraceletId())) {
+                                ListAllMessagesAdapter.braceletsAdapter.remove(j);
+                                ShowAllMessagesFragment.adapterAllMessages.notifyDataSetChanged();
+                                foundInAdapter = true;
+                            }
+                        }
+
+                        for (int k = 0; k < MyApplication.allGivenAndReceivedBraceletsObjects.size(); k++){
+                            if (bracelet.getBraceletId().equals(MyApplication.allGivenAndReceivedBraceletsObjects.get(k).getBraceletId())) {
+                                MyApplication.allGivenAndReceivedBraceletsObjects.remove(k);
+                            }
+                        }
+
+                        MyApplication.allBracelets.remove(i);
+                    }
+                }
+
+                    }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {

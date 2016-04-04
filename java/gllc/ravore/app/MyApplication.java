@@ -36,7 +36,7 @@ public class MyApplication extends Application {
     public final static String devStatus = "production";
 
     public static String android_id;
-    public static Map<String, String> braceletKey = new HashMap<String, String>();
+    public static Map<String, String> braceletKey = new HashMap<>();
     public static String selectedId="";
     public static Bracelet selectedBracelet;
     public static boolean currentUserIsGiver;
