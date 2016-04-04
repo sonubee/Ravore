@@ -31,7 +31,6 @@ public class PushReceiver extends BroadcastReceiver
 
     public static Map<String, String> chatIdKey = new HashMap<String, String>();
     public static Map<String, String> unreadCount = new HashMap<String, String>();
-    public static Map<String, String> braceletUnreadCount = new HashMap<String, String>();
 
     @Override
     public void onReceive(Context context, Intent intent)

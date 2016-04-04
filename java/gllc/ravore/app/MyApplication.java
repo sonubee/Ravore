@@ -33,7 +33,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "sandbox";
+    public final static String devStatus = "production";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<String, String>();
@@ -49,8 +49,6 @@ public class MyApplication extends Application {
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();
     public static ArrayList<Anon> allAnon = new ArrayList<>();
-    public static ArrayList<DJs> allDjsArray = new ArrayList<>();
-    public static ArrayList<String> favDjs = new ArrayList<>();
     public static ArrayList<Orders> allOrders = new ArrayList<>();
     public static ArrayList<UserInfo> allUsers = new ArrayList<>();
     public static ArrayList<Token> allTokens = new ArrayList<>();
@@ -71,7 +69,7 @@ public class MyApplication extends Application {
 
         Firebase.setAndroidContext(this);
         Pushy.listen(this);
-        long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+        long interval = ( 1000 * 60 * 2 ); // Every 2 minutes
         Pushy.setHeartbeatInterval(interval, this);
         new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
@@ -93,7 +91,6 @@ public class MyApplication extends Application {
         }
 
         //Localytics.tagEvent("Opened Ravore");
-
 
     }
 
