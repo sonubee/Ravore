@@ -9,6 +9,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import gllc.ravore.app.Interfaces.GoToMainActivity;
@@ -20,6 +21,7 @@ import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.Objects.Token;
+import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Objects.UserInfo;
 import gllc.ravore.app.R;
 

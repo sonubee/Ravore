@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.ProfilePhoto;
 import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
@@ -33,7 +34,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "production";
+    public final static String devStatus = "sandbox";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<>();
@@ -69,7 +70,7 @@ public class MyApplication extends Application {
 
         Firebase.setAndroidContext(this);
         Pushy.listen(this);
-        long interval = ( 1000 * 60 * 2 ); // Every 2 minutes
+        long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
         Pushy.setHeartbeatInterval(interval, this);
         new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
@@ -90,8 +91,11 @@ public class MyApplication extends Application {
             //useFirebase = "https://liveravore.firebaseio.com/";
         }
 
-        //Localytics.tagEvent("Opened Ravore");
+        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("deviceId").setValue(android_id);
+        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("os").setValue("android");
+        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("lastLogin").setValue(GetDateTimeInstance.getRegDate());
 
+        //Localytics.tagEvent("Opened Ravore");
     }
 
     public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {

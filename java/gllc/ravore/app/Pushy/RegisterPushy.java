@@ -75,5 +75,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
             Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
             sendTokenToServer.push().setValue(setUpToken);
         }
+
+        new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("token").setValue(MyApplication.registrationId);
     }
 }

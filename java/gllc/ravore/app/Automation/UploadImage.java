@@ -31,7 +31,6 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
         if (MyApplication.android_id!=null){
             try {
-
                 if (requestCode== MyApplication.SELECT_FILE){
                     Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
@@ -54,10 +53,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
                     newURL2 = uploadResult2.get("url").toString();
                     urlVersion2 = uploadResult2.get("version").toString();
                 }
-
-
             }
-
 
             catch (IOException ie) {
                 Log.i("MyActivity", "Reached Exception");
@@ -82,7 +78,9 @@ public class UploadImage extends AsyncTask<String, String, String> {
             if (MyApplication.android_id!=null){
                 Log.i("MyActivity", "Inside Past Null");
                 Firebase uploadNewURL = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
-                uploadNewURL.setValue(updateAnon);}
+                uploadNewURL.setValue(updateAnon);
+                new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
+            }
         }
 
         if (requestCode==MyApplication.SELECT_FILE){
@@ -91,7 +89,9 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
             if (MyApplication.android_id!=null){
                 Firebase uploadNewURL = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
-                uploadNewURL.setValue(updateAnon);}
+                uploadNewURL.setValue(updateAnon);
+                new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
+            }
         }
     }
 }
