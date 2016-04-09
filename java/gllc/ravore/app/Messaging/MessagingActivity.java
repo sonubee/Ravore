@@ -254,7 +254,10 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
             else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 
-            if (requestCode == MyApplication.REQUEST_CAMERA) {new LoadProfilePhoto(imageView, this);}
+            if (requestCode == MyApplication.REQUEST_CAMERA) {
+                new LoadProfilePhoto(imageView, this);
+
+            }
 
             else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
 

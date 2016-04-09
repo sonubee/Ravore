@@ -79,6 +79,8 @@ public class LoadProfilePhoto {
         Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
         bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
 
+        MyApplication.file.saveToInternalStorage(bitmap, activity.getBaseContext());
+
         imageView.setImageBitmap(bitmap);
     }
 
