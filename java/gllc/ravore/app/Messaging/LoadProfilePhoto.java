@@ -52,7 +52,7 @@ public class LoadProfilePhoto {
     }
 
     //CAMERA
-    public LoadProfilePhoto(ImageView imageView, Activity activity){
+    public LoadProfilePhoto(ImageView imageView, Activity activity, Bitmap bitmap){
         if (MyApplication.currentUserIsGiver){imageView = (ImageView)activity.findViewById(R.id.giver_image);}
         else {imageView = (ImageView)activity.findViewById(R.id.receiver_image);}
 
@@ -76,8 +76,10 @@ public class LoadProfilePhoto {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
-        bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
+
+        //Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
+
+        //bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
 
         MyApplication.file.saveToInternalStorage(bitmap, activity.getBaseContext());
 
@@ -86,6 +88,9 @@ public class LoadProfilePhoto {
 
     //SELECT FILE
     public LoadProfilePhoto(Uri uri, ImageView imageView, Activity activity){
+
+        Log.i("--AllLoadProfilePhoto", "Came to Select File LoadProfile");
+
         Uri selectedImage = uri;
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -101,14 +106,14 @@ public class LoadProfilePhoto {
 
         imageView.setImageBitmap(myBitmap);
         //MyApplication.file.storeImage(myBitmap);
-        Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
+        Log.i("--AllLoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
     //LOAD INTO IMAGEVIEW
     public void loadLocalPath(ImageView imageView, Context context){
 
         MyApplication.file.loadImageFromStorage(imageView, context);
-        Log.i("LoadProfilePhoto", "Loading From local path");
+        Log.i("--AllLoadProfilePhoto", "Loading From local path");
 /*
         if (MyApplication.file.getFile().exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
