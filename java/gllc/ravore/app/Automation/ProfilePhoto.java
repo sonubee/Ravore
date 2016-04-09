@@ -38,7 +38,7 @@ public class ProfilePhoto {
         }
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage, Context context){
+    public String saveToInternalStorage(Bitmap bitmapImage, Context context){
         ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -62,11 +62,15 @@ public class ProfilePhoto {
         return directory.getAbsolutePath();
     }
 
-    private void loadImageFromStorage(String path, ImageView imageView)
+    public void loadImageFromStorage(ImageView imageView, Context context)
     {
 
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
         try {
-            File f=new File(path, "profile.jpg");
+            File f=new File(directory, "profile.jpg");
             Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
             //ImageView img=(ImageView)findViewById(R.id.imgPicker);
             imageView.setImageBitmap(b);

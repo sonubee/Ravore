@@ -211,8 +211,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             View view = factory.inflate(R.layout.full_photo, null);
             ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
 
-            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
-            fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
+            MyApplication.file.loadImageFromStorage(fullImageView, getBaseContext());
+            //Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            //fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
 
             alertadd.setView(view);
             alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {

@@ -34,6 +34,7 @@ public class LoadProfilePhoto {
     AlertDialog.Builder alertadd2;
     StartCamera startCamera;
 
+    //SETUP IMAGES
     public LoadProfilePhoto(ImageView giverImage, ImageView receiverImage, boolean amIGiver, Bracelet bracelet, Context context, Context alertDialogContext, StartCamera startCamera){
 
         alertadd = new AlertDialog.Builder(alertDialogContext);
@@ -41,15 +42,16 @@ public class LoadProfilePhoto {
         this.startCamera = startCamera;
 
         if (amIGiver){
-            loadLocalPath(giverImage);
+            loadLocalPath(giverImage, context);
             loadOtherPersonAndSetListener(receiverImage, bracelet, "receiver", context);
         }
         else {
-            loadLocalPath(receiverImage);
+            loadLocalPath(receiverImage, context);
             loadOtherPersonAndSetListener(giverImage, bracelet, "giver", context);
         }
     }
 
+    //CAMERA
     public LoadProfilePhoto(ImageView imageView, Activity activity){
         if (MyApplication.currentUserIsGiver){imageView = (ImageView)activity.findViewById(R.id.giver_image);}
         else {imageView = (ImageView)activity.findViewById(R.id.receiver_image);}
@@ -80,6 +82,7 @@ public class LoadProfilePhoto {
         imageView.setImageBitmap(bitmap);
     }
 
+    //SELECT FILE
     public LoadProfilePhoto(Uri uri, ImageView imageView, Activity activity){
         Uri selectedImage = uri;
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -95,18 +98,23 @@ public class LoadProfilePhoto {
         Bitmap myBitmap = BitmapFactory.decodeFile(galleryImageFilePath);
 
         imageView.setImageBitmap(myBitmap);
-        MyApplication.file.storeImage(myBitmap);
+        //MyApplication.file.storeImage(myBitmap);
+        Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
-    public void loadLocalPath(ImageView imageView){
+    //LOAD INTO IMAGEVIEW
+    public void loadLocalPath(ImageView imageView, Context context){
 
+        MyApplication.file.loadImageFromStorage(imageView, context);
+        Log.i("LoadProfilePhoto", "Loading From local path");
+/*
         if (MyApplication.file.getFile().exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
             imageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
         }
 
         else {imageView.setImageResource(R.drawable.anon);}
-
+*/
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
