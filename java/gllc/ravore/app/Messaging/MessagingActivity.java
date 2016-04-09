@@ -1,20 +1,15 @@
 package gllc.ravore.app.Messaging;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,14 +22,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.loopj.android.http.AsyncHttpClient;
-
-import java.io.File;
 import java.util.ArrayList;
 import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
@@ -49,7 +41,7 @@ import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.R;
 
-public class MessagingActivity extends AppCompatActivity implements StartCamera, ActivityCompat.OnRequestPermissionsResultCallback {
+public class MessagingActivity extends AppCompatActivity implements StartCamera {
 
     public static ArrayList<Message> messageArrayList = new ArrayList<>();
     public static MessagingAdapter adapter;
@@ -59,7 +51,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera,
     AlertDialog.Builder alertadd;
     AsyncHttpClient client;
     StartCamera startCamera;
-    private File output = null;
 
     String selectedId = MyApplication.selectedId;
     public static String messageSender = "", messageReceiver = "", messageReceiverToken = "", messageReceiverOs = "";
@@ -187,109 +178,32 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MyApplication.REQUUEST_CAMERA_PERMISSION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePictureIntent,  MyApplication.REQUUEST_CAMERA_PERMISSION);
-
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            case MyApplication.REQUEST_EXTERNAL_STORAGE_READ: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI).setType("image/*");
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
-                            MyApplication.SELECT_FILE);
-                }
-
-                else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    @Override
     public void StartCamera(String itemSelected) {
 
         if (itemSelected.equals("Take Photo")) {
-
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             // Ensure that there's a camera activity to handle the intent
-
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.CAMERA);
-
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
-                if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(takePictureIntent,  MyApplication.REQUUEST_CAMERA_PERMISSION);
-                }
+                Log.i("MessagingActivity", "File Exists: " + MyApplication.file.getFile().exists());
 
-                else {
-                    Log.i("--AllMessagingActivity", "Getting Permission");
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.CAMERA},
-                            MyApplication.REQUUEST_CAMERA_PERMISSION);
-                }
-            }
-
-            else {
-                Toast.makeText(this, "No Camera Detected!", Toast.LENGTH_SHORT).show();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
             }
 
         } else if (itemSelected.equals("Choose from Library")) {
-
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE);
-
-            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI).setType("image/*");
-
-            //Intent intent = new Intent(
-            //        Intent.ACTION_PICK,
-            //        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            //intent.setType("image/*");
+            Intent intent = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
 
             if (intent.resolveActivity(getPackageManager()) != null) {
 
-                if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
-                }
-
-                else {
-
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MyApplication.REQUEST_EXTERNAL_STORAGE_READ);
-                }
-
-                //intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                //            Uri.fromFile(MyApplication.file.getFile()));
             }
 
         } else if (itemSelected.equals("View Photo")) {
@@ -334,51 +248,35 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("--AllMessagingActivity", "Request Code: " + requestCode);
-
         if (resultCode == RESULT_OK) {
             ImageView imageView;
 
             if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
             else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 
-            if (requestCode == MyApplication.REQUUEST_CAMERA_PERMISSION) {
-                Bundle b = data.getExtras();
-                Bitmap pic = (Bitmap) b.get("data");
-
-                //Log.i("--AllMessagingActivity", "Saving to Internal Storage For Camera: " + MyApplication.file.saveToInternalStorage(pic, this));
-
-                imageView.setImageBitmap(pic);
-
-
-                new LoadProfilePhoto(imageView, this, pic);
+            if (requestCode == MyApplication.REQUEST_CAMERA) {
+                new LoadProfilePhoto(imageView, this);
 
             }
 
-            else if (requestCode == MyApplication.SELECT_FILE || requestCode == MyApplication.REQUEST_EXTERNAL_STORAGE_READ) {new LoadProfilePhoto(data.getData(), imageView, this);}
+            else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
 
-            new UploadImage(requestCode, this).execute();
+            new UploadImage(requestCode).execute();
         }
         else {Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT);}
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //new UploadImage(6, this).execute();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("--AllMessagingActivity", "Reached Destroy from Messaging");
+        Log.i("AllMessagingActivity", "Reached Destroy from Messaging");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("--AllMessagingActivity", "Reached onPause from Messaging");
+        Log.i("AllMessagingActivity", "Reached onPause from Messaging");
 
         messageArrayList.clear();
         adapter.clear();

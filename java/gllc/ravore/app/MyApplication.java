@@ -63,8 +63,6 @@ public class MyApplication extends Application {
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
-    public static final int REQUUEST_CAMERA_PERMISSION = 4;
-    public static final int REQUEST_EXTERNAL_STORAGE_READ = 6;
 
 
     @Override
@@ -73,10 +71,10 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
-        //Pushy.listen(this);
+        Pushy.listen(this);
         long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
-        //Pushy.setHeartbeatInterval(interval, this);
-        //new RegisterPushy(getApplicationContext()).execute();
+        Pushy.setHeartbeatInterval(interval, this);
+        new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
 
 
