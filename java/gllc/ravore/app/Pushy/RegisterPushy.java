@@ -7,6 +7,10 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Token;
 import me.pushy.sdk.Pushy;
@@ -76,6 +80,16 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
             sendTokenToServer.push().setValue(setUpToken);
         }
 
-        new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("token").setValue(MyApplication.registrationId);
+        Map<String, String> putToken = new HashMap<String, String>();
+        putToken.put("token", MyApplication.registrationId);
+        putToken.put("deviceId", MyApplication.android_id);
+        putToken.put("os", "android");
+        putToken.put("lastLogin", GetDateTimeInstance.getRegDate());
+
+        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("token").setValue(MyApplication.registrationId);
+        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("deviceId").setValue(MyApplication.android_id);
+        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("os").setValue("android");
+        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("lastLogin").setValue(GetDateTimeInstance.getRegDate());
+        new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).setValue(putToken);
     }
 }

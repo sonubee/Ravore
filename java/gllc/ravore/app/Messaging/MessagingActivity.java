@@ -185,6 +185,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
+                Log.i("MessagingActivity", "File Exists: " + MyApplication.file.getFile().exists());
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
                 startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
@@ -247,6 +249,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         if (resultCode == RESULT_OK) {
             ImageView imageView;
+
             if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
             else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 

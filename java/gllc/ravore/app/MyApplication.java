@@ -2,6 +2,8 @@ package gllc.ravore.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.Settings;
 
 import com.cloudinary.Cloudinary;
@@ -75,6 +77,14 @@ public class MyApplication extends Application {
         new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
 
+
+
+
+        if (!file.getFile().exists()){
+            Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.anon);
+            file.storeImage(largeIcon);
+        }
+
         android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         cloudinary = new Cloudinary(ObjectUtils.asMap(
@@ -90,10 +100,6 @@ public class MyApplication extends Application {
             useFirebase = "https://testravore.firebaseio.com/";
             //useFirebase = "https://liveravore.firebaseio.com/";
         }
-
-        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("deviceId").setValue(android_id);
-        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("os").setValue("android");
-        new Firebase(MyApplication.useFirebase+"Users").child(android_id).child("lastLogin").setValue(GetDateTimeInstance.getRegDate());
 
         //Localytics.tagEvent("Opened Ravore");
     }

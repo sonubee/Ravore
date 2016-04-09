@@ -31,6 +31,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
         if (MyApplication.android_id!=null){
             try {
+
                 if (requestCode== MyApplication.SELECT_FILE){
                     Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
@@ -56,8 +57,8 @@ public class UploadImage extends AsyncTask<String, String, String> {
             }
 
             catch (IOException ie) {
-                Log.i("MyActivity", "Reached Exception");
-                Log.i("MyActivity", "Exception is: " + ie.getMessage());}}
+                Log.i("UploadImage", "Reached Exception");
+                Log.i("UploadImage", "Exception is: " + ie.getMessage());}}
 
         return null;
     }
