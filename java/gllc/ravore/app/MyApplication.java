@@ -15,6 +15,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
 import com.localytics.android.Localytics;
+import com.splunk.mint.Mint;
 //import com.urbanairship.UAirship;
 //import com.urbanairship.push.notifications.DefaultNotificationFactory;
 
@@ -80,6 +81,8 @@ public class MyApplication extends Application {
         long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
         Pushy.setHeartbeatInterval(interval, this);
         new RegisterPushy(getApplicationContext()).execute();
+        Mint.initAndStartSession(this, "75feb6f8");
+        Mint.enableLogging(true);
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
 
         if (!file.getFile().exists()){
