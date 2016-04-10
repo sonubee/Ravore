@@ -76,6 +76,8 @@ public class LoadProfilePhoto {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
+        Log.i("--AllLoadProfilePhoto", "Before Loading and Saving Internally");
+
         Bitmap bitmap = BitmapFactory.decodeFile(MyApplication.file.getPath(), bmOptions);
         bitmap = RotateBitmap.RotateBitmap(bitmap, 270);
 
@@ -100,7 +102,7 @@ public class LoadProfilePhoto {
         Bitmap myBitmap = BitmapFactory.decodeFile(galleryImageFilePath);
 
         imageView.setImageBitmap(myBitmap);
-        //MyApplication.file.storeImage(myBitmap);
+        MyApplication.file.storeImage(myBitmap);
         Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
