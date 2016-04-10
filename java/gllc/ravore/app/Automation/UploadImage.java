@@ -57,8 +57,8 @@ public class UploadImage extends AsyncTask<String, String, String> {
             }
 
             catch (IOException ie) {
-                Log.i("--AllUploadImage", "Reached Exception");
-                Log.i("--AllUploadImage", "Exception is: " + ie.getMessage());}}
+                Log.i("UploadImage", "Reached Exception");
+                Log.i("UploadImage", "Exception is: " + ie.getMessage());}}
 
         return null;
     }
@@ -68,15 +68,16 @@ public class UploadImage extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
 
         Anon updateAnon;
-        Log.i("--AllUploadImage", "url (upload) is: " + newURL);
-        Log.i("--AllUploadImage", "url2 (upload) is: " + newURL2);
+        Log.i("MyActivity", "On Post Execute");
+        Log.i("MyActivity", "url (upload) is: " + newURL);
+        Log.i("MyActivity", "url2 (upload) is: " + newURL2);
 
         if (requestCode==MyApplication.REQUEST_CAMERA){
-            Log.i("--AllUploadImage", "Inside Request Camera");
+            Log.i("MyActivity", "Inside Request Camera");
             updateAnon = new Anon(MyApplication.android_id, newURL, urlVersion, newURL2, urlVersion2);
 
             if (MyApplication.android_id!=null){
-                Log.i("--AllUploadImage", "Inside Past Null");
+                Log.i("MyActivity", "Inside Past Null");
                 Firebase uploadNewURL = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
                 uploadNewURL.setValue(updateAnon);
                 new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);

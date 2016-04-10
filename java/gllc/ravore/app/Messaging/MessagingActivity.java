@@ -1,19 +1,15 @@
 package gllc.ravore.app.Messaging;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -182,51 +178,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MyApplication.REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                    Log.i("--AllMessagingActivity", "Permission Version");
-
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            case MyApplication.SELECT_FILE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
-                            MyApplication.SELECT_FILE);
-                }
-            }
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    @Override
     public void StartCamera(String itemSelected) {
 
         if (itemSelected.equals("Take Photo")) {
@@ -234,24 +185,11 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             // Ensure that there's a camera activity to handle the intent
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
-                int cameraPermission = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.CAMERA);
-                int writeExternalStorage = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                if (cameraPermission == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
-                    Log.i("--AllMessagingActivity", "Got Camera Permission");
-                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    //        Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
-                }
-
-                else {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MyApplication.REQUEST_CAMERA);
-                }
                 Log.i("MessagingActivity", "File Exists: " + MyApplication.file.getFile().exists());
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
             }
 
         } else if (itemSelected.equals("Choose from Library")) {
@@ -262,23 +200,10 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
             if (intent.resolveActivity(getPackageManager()) != null) {
 
-                int readExternalStorage = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE);
-                int writeExternalStorage = ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-                if (readExternalStorage == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
-                }
-
-                else {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MyApplication.SELECT_FILE);
-                }
             }
 
         } else if (itemSelected.equals("View Photo")) {
@@ -323,9 +248,6 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("--AllMessagingActivity", "Request Code: " + requestCode);
-        Log.i("--AllMessagingActivity", "Result Code: " + resultCode + " Result Ok : " + RESULT_OK);
-
         if (resultCode == RESULT_OK) {
             ImageView imageView;
 
@@ -333,25 +255,15 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
 
             if (requestCode == MyApplication.REQUEST_CAMERA) {
-                Log.i("--AllMessagingActivity", "Before LoadProfile");
+                new LoadProfilePhoto(imageView, this);
 
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                imageView.setImageBitmap(imageBitmap);
-
-                MyApplication.file.saveToInternalStorage(imageBitmap, this);
-                MyApplication.file.storeImage(imageBitmap);
-
-
-                //new LoadProfilePhoto(imageView, this);
             }
 
             else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
 
-            Log.i("--AllMessagingActivity", "Before Uploading Image");
             new UploadImage(requestCode).execute();
         }
-        else {Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();}
+        else {Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT);}
     }
 
     @Override
