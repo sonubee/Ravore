@@ -6,6 +6,11 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.TextView;
 
+import com.localytics.android.Localytics;
+import com.splunk.mint.Mint;
+
+import gllc.ravore.app.MyApplication;
+
 /**
  * Created by bhangoo on 3/31/2016.
  */
@@ -16,6 +21,7 @@ public class HowItWorks {
         HIW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (MyApplication.devStatus.equals("production")){Mint.logEvent("HIW - Login Screen");}
                 final CharSequence[] items = {"I Received A Bracelet", "I Want To Give A Bracelet", "No Account Needed?"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(context2);
                 builder.setTitle("How It Works");

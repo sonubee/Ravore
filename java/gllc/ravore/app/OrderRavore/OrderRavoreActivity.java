@@ -32,9 +32,11 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.localytics.android.Localytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.splunk.mint.Mint;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -117,6 +119,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
             herokuToUse=productionHeroku;
             tokenToUse = sandboxTokenBT;}
 
+        if (MyApplication.devStatus.equals("production")){
+            Mint.logEvent("Order Ravore Activity");}
 
     }
 

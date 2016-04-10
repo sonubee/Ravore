@@ -42,7 +42,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "sandbox";
+    public final static String devStatus = "production";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<>();
@@ -106,7 +106,7 @@ public class MyApplication extends Application {
             //useFirebase = "https://liveravore.firebaseio.com/";
         }
 
-        //Localytics.tagEvent("Opened Ravore");
+        if (devStatus.equals("production")){Mint.logEvent("Opened Ravore");;}
     }
 
     public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {

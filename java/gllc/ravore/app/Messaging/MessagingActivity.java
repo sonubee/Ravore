@@ -30,7 +30,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.firebase.client.Firebase;
+import com.localytics.android.Localytics;
 import com.loopj.android.http.AsyncHttpClient;
+import com.splunk.mint.Mint;
+
 import java.util.ArrayList;
 import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
@@ -100,6 +103,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         context=getApplicationContext();
 
         client = new AsyncHttpClient();
+
+        if (MyApplication.devStatus.equals("production")){
+            Mint.logEvent("MessagingActivity");}
     }
 
     public void setupKeyboardSendButton(){

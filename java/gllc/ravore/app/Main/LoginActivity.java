@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.firebase.client.Firebase;
+import com.localytics.android.Localytics;
+import com.splunk.mint.Mint;
+
 import gllc.ravore.app.Automation.AddBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
@@ -48,14 +51,15 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
     }
 
     public void receiver (View v){
-        //Localytics.tagEvent("Receive Successful");
+        if (MyApplication.devStatus.equals("production")){
+            Mint.logEvent("Received Bracelet");}
         inputID = (EditText)findViewById(R.id.input_id);
         String braceletId = inputID.getText().toString();
         new AddBracelet("receiver", braceletId, getBaseContext(), "Login", goToMainActivity);
     }
 
     public void giver (View v){
-        //Localytics.tagEvent("Registered Bracelet");
+        if (MyApplication.devStatus.equals("production")){Mint.logEvent("Registered Bracelet");}
         inputID = (EditText)findViewById(R.id.input_id);
         String braceletId = inputID.getText().toString();
         new AddBracelet("giver", braceletId, getBaseContext(), "Login", goToMainActivity);
