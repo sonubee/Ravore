@@ -56,7 +56,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
         if ( exc != null )
         {
             // Show error as toast message
-            Toast.makeText(applicationContext, exc.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(applicationContext, exc.toString(), Toast.LENGTH_LONG).show();
             return;
         }
 

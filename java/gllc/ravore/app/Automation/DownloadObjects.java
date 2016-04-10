@@ -36,10 +36,11 @@ public class DownloadObjects {
 
         this.goToMainActivity = goToMainActivity;
 
-        Firebase downloadBracelets = new Firebase(MyApplication.useFirebase+"Bracelets");
-        Query getBracelets = downloadBracelets.orderByChild("braceletId");
+        //Firebase downloadBracelets = new Firebase("https://testravore.firebaseio.com/Bracelets");
+        //Query getBracelets = downloadBracelets.orderByChild("braceletId");
 
-        getBracelets.addChildEventListener(new ChildEventListener() {
+        //getBracelets.addChildEventListener(new ChildEventListener() {
+        new Firebase(MyApplication.useFirebase+"Bracelets").orderByChild("braceletId").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
 
@@ -84,7 +85,7 @@ public class DownloadObjects {
                                         Log.i("ChildChanged", "After Adapter");
                                     }
                                 }
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 Log.i("ChildChanged", "ListAllMessages Adapter Not Found - Probably Trying to Access Adapter from Login Screen");
                             }
 
@@ -138,7 +139,7 @@ public class DownloadObjects {
                     if (bracelet.getBraceletId().equals(MyApplication.allBracelets.get(i).getBraceletId())) {
                         boolean foundInAdapter = false;
 
-                        for (int j = 0; j < ListAllMessagesAdapter.braceletsAdapter.size(); j++){
+                        for (int j = 0; j < ListAllMessagesAdapter.braceletsAdapter.size(); j++) {
                             if (bracelet.getBraceletId().equals(ListAllMessagesAdapter.braceletsAdapter.get(j).getBraceletId())) {
                                 ListAllMessagesAdapter.braceletsAdapter.remove(j);
                                 ShowAllMessagesFragment.adapterAllMessages.notifyDataSetChanged();
@@ -146,7 +147,7 @@ public class DownloadObjects {
                             }
                         }
 
-                        for (int k = 0; k < MyApplication.allGivenAndReceivedBraceletsObjects.size(); k++){
+                        for (int k = 0; k < MyApplication.allGivenAndReceivedBraceletsObjects.size(); k++) {
                             if (bracelet.getBraceletId().equals(MyApplication.allGivenAndReceivedBraceletsObjects.get(k).getBraceletId())) {
                                 MyApplication.allGivenAndReceivedBraceletsObjects.remove(k);
                             }
@@ -156,7 +157,7 @@ public class DownloadObjects {
                     }
                 }
 
-                    }
+            }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
@@ -168,10 +169,10 @@ public class DownloadObjects {
             // ....
         });
 
-        Firebase downloadAnonProfilePics = new Firebase(MyApplication.useFirebase+"Users/ProfilePics");
+        //Firebase downloadAnonProfilePics = new Firebase(MyApplication.useFirebase+"Users/ProfilePics");
         //Query getProfilePics = downloadAnonProfilePics.orderByChild("url");
 
-        downloadAnonProfilePics.addChildEventListener(new ChildEventListener() {
+        new Firebase(MyApplication.useFirebase+"Users/ProfilePics").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChild) {
                 Anon anonUser = snapshot.getValue(Anon.class);
@@ -233,8 +234,8 @@ public class DownloadObjects {
             // ....
         });
 
-        Firebase getAllUsers = new Firebase(MyApplication.useFirebase+"Users/AllUsers");
-        getAllUsers.addChildEventListener(new ChildEventListener() {
+        //Firebase getAllUsers = new Firebase(MyApplication.useFirebase+"Users/AllUsers");
+        new Firebase(MyApplication.useFirebase+"Users/AllUsers").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 UserInfo aUser = dataSnapshot.getValue(UserInfo.class);
@@ -263,8 +264,8 @@ public class DownloadObjects {
             }
         });
 
-        Firebase downloadOrders = new Firebase(MyApplication.useFirebase+"Orders");
-        downloadOrders.addChildEventListener(new ChildEventListener() {
+        //Firebase downloadOrders = new Firebase(MyApplication.useFirebase+"Orders");
+        new Firebase(MyApplication.useFirebase+"Orders").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Orders orders = dataSnapshot.getValue(Orders.class);
@@ -295,8 +296,8 @@ public class DownloadObjects {
             }
         });
 
-        Firebase getTokens = new Firebase(MyApplication.useFirebase+"Users/PushToken");
-        getTokens.addChildEventListener(new ChildEventListener() {
+        //Firebase getTokens = new Firebase(MyApplication.useFirebase+"Users/PushToken");
+        new Firebase(MyApplication.useFirebase+"Users/PushToken").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -308,8 +309,8 @@ public class DownloadObjects {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Token changedToken = dataSnapshot.getValue(Token.class);
 
-                for (int i =0; i < MyApplication.allTokens.size(); i++){
-                    if (MyApplication.allTokens.get(i).getUserId().equals(changedToken.getUserId())){
+                for (int i = 0; i < MyApplication.allTokens.size(); i++) {
+                    if (MyApplication.allTokens.get(i).getUserId().equals(changedToken.getUserId())) {
                         MyApplication.allTokens.set(i, changedToken);
                     }
                 }
