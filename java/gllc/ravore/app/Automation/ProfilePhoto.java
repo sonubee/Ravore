@@ -18,6 +18,7 @@ public class ProfilePhoto {
     File file;
 
     public ProfilePhoto(String path){
+
         file = new File(path);
     }
 

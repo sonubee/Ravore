@@ -1,5 +1,7 @@
 package gllc.ravore.app.Automation;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -7,6 +9,7 @@ import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.firebase.client.Firebase;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,9 +24,14 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
     String newURL, newURL2, urlVersion, urlVersion2;
     int requestCode;
+    File directory;
 
-    public UploadImage (int requestCode){
+    public UploadImage (int requestCode, Context context){
         this.requestCode = requestCode;
+
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -31,26 +39,25 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
         if (MyApplication.android_id!=null){
             try {
-
                 if (requestCode== MyApplication.SELECT_FILE){
-                    Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
+                    Map uploadResult = MyApplication.cloudinary.uploader().upload(new File(directory, "profile.jpg"), ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
                     newURL = uploadResult.get("url").toString();
                     urlVersion = uploadResult.get("version").toString();
 
-                    Map uploadResult2 = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id+"full"));
+                    Map uploadResult2 = MyApplication.cloudinary.uploader().upload(new File(directory, "profile.jpg"), ObjectUtils.asMap("public_id", MyApplication.android_id+"full"));
 
                     newURL2 = uploadResult2.get("url").toString();
                     urlVersion2 = uploadResult2.get("version").toString();
                 }
 
                 else if (requestCode==MyApplication.REQUEST_CAMERA){
-                    Map uploadResult = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id,
+                    Map uploadResult = MyApplication.cloudinary.uploader().upload(new File(directory, "profile.jpg"), ObjectUtils.asMap("public_id", MyApplication.android_id,
                             "transformation", new Transformation().crop("limit").width(70).height(70).crop("fill")));
                     newURL = uploadResult.get("url").toString();
                     urlVersion = uploadResult.get("version").toString();
 
-                    Map uploadResult2 = MyApplication.cloudinary.uploader().upload("sdcard/ravore/profile_pic.jpg", ObjectUtils.asMap("public_id", MyApplication.android_id+"full"));
+                    Map uploadResult2 = MyApplication.cloudinary.uploader().upload(new File(directory, "profile.jpg"), ObjectUtils.asMap("public_id", MyApplication.android_id+"full"));
                     newURL2 = uploadResult2.get("url").toString();
                     urlVersion2 = uploadResult2.get("version").toString();
                 }

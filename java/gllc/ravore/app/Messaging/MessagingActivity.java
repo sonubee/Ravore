@@ -196,9 +196,16 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                     Log.i("--AllMessagingActivity", "Permission Version");
 
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    //        Uri.fromFile(MyApplication.file.getFile()));
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                    }
+
+                    else {
+                        Toast.makeText(this, "Error Opening Camera", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
 
                     // permission denied, boo! Disable the
@@ -268,6 +275,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
                 if (readExternalStorage == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
+
+                    Log.i("--AllMessagingActivity", "Permission Granted for Reading Gallery");
+
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
                     startActivityForResult(Intent.createChooser(intent, "Select File"),
@@ -324,7 +334,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.i("--AllMessagingActivity", "Request Code: " + requestCode);
-        Log.i("--AllMessagingActivity", "Result Code: " + resultCode + " Result Ok : " + RESULT_OK);
+            Log.i("--AllMessagingActivity", "Result Code: " + resultCode + " Result Ok : " + RESULT_OK);
 
         if (resultCode == RESULT_OK) {
             ImageView imageView;
@@ -349,7 +359,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
 
             Log.i("--AllMessagingActivity", "Before Uploading Image");
-            new UploadImage(requestCode).execute();
+            new UploadImage(requestCode, this).execute();
         }
         else {Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();}
     }

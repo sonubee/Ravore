@@ -1,10 +1,15 @@
 package gllc.ravore.app;
 
+import android.*;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -76,9 +81,6 @@ public class MyApplication extends Application {
         Pushy.setHeartbeatInterval(interval, this);
         new RegisterPushy(getApplicationContext()).execute();
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
-
-
-
 
         if (!file.getFile().exists()){
             Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.anon);
