@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,7 +103,7 @@ public class LoadProfilePhoto {
         Bitmap myBitmap = BitmapFactory.decodeFile(galleryImageFilePath);
 
         imageView.setImageBitmap(myBitmap);
-        MyApplication.file.storeImage(myBitmap);
+        //MyApplication.file.storeImage(myBitmap);
         Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
@@ -122,7 +123,15 @@ public class LoadProfilePhoto {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = { "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
+                final CharSequence[] items;
+                if (Build.VERSION.SDK_INT == 23){
+                    items = new CharSequence[]{ "View Photo","Take Photo", "Delete Photo", "Cancel" };
+                }
+
+                else {
+                    items = new CharSequence[]{ "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
+                }
+
                 alertadd2.setTitle(" Photo Options!");
                 alertadd2.setItems(items, new DialogInterface.OnClickListener() {
                     @Override

@@ -222,8 +222,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(MyApplication.file.getFile()));
+                    //intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    //        Uri.fromFile(MyApplication.file.getFile()));
                     startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
                 }
@@ -263,8 +263,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         } else if (itemSelected.equals("Choose from Library")) {
             Intent intent = new Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent.ACTION_PICK);
             intent.setType("image/*");
 
             if (intent.resolveActivity(getPackageManager()) != null) {
@@ -278,8 +277,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
                     Log.i("--AllMessagingActivity", "Permission Granted for Reading Gallery");
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(MyApplication.file.getFile()));
+                    //intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    //        Uri.fromFile(MyApplication.file.getFile()));
                     startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
                 }
@@ -350,8 +349,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 imageView.setImageBitmap(imageBitmap);
 
                 MyApplication.file.saveToInternalStorage(imageBitmap, this);
-                MyApplication.file.storeImage(imageBitmap);
-
+                //MyApplication.file.storeImage(imageBitmap);
 
                 //new LoadProfilePhoto(imageView, this);
             }
