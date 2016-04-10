@@ -103,23 +103,23 @@ public class LoadProfilePhoto {
         Bitmap myBitmap = BitmapFactory.decodeFile(galleryImageFilePath);
 
         imageView.setImageBitmap(myBitmap);
-        //MyApplication.file.storeImage(myBitmap);
+        MyApplication.file.storeImage(myBitmap);
         Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
     //LOAD INTO IMAGEVIEW
     public void loadLocalPath(ImageView imageView, Context context){
 
-        MyApplication.file.loadImageFromStorage(imageView, context);
-        Log.i("LoadProfilePhoto", "Loading From local path");
-/*
+        //MyApplication.file.loadImageFromStorage(imageView, context);
+        //Log.i("LoadProfilePhoto", "Loading From local path");
+
         if (MyApplication.file.getFile().exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
             imageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
         }
 
         else {imageView.setImageResource(R.drawable.anon);}
-*/
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

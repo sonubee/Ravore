@@ -254,8 +254,8 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
                 if (cameraPermission == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
                     Log.i("--AllMessagingActivity", "Got Camera Permission");
-                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    //        Uri.fromFile(MyApplication.file.getFile()));
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
                     startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
                 }
 
@@ -269,7 +269,7 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         } else if (itemSelected.equals("Choose from Library")) {
             Intent intent = new Intent(
-                    Intent.ACTION_PICK);
+                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
 
             if (intent.resolveActivity(getPackageManager()) != null) {
@@ -283,8 +283,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
                     Log.i("--AllMessagingActivity", "Permission Granted for Reading Gallery");
 
-                    //intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                    //        Uri.fromFile(MyApplication.file.getFile()));
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
                     startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
                 }
@@ -301,9 +302,9 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             View view = factory.inflate(R.layout.full_photo, null);
             ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
 
-            MyApplication.file.loadImageFromStorage(fullImageView, getBaseContext());
-            //Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
-            //fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
+            //MyApplication.file.loadImageFromStorage(fullImageView, getBaseContext());
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
 
             alertadd.setView(view);
             alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
@@ -350,14 +351,14 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
             if (requestCode == MyApplication.REQUEST_CAMERA) {
                 Log.i("--AllMessagingActivity", "Before LoadProfile");
 
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                imageView.setImageBitmap(imageBitmap);
+                //Bundle extras = data.getExtras();
+                //Bitmap imageBitmap = (Bitmap) extras.get("data");
+                //imageView.setImageBitmap(imageBitmap);
 
-                MyApplication.file.saveToInternalStorage(imageBitmap, this);
+                //MyApplication.file.saveToInternalStorage(imageBitmap, this);
                 //MyApplication.file.storeImage(imageBitmap);
 
-                //new LoadProfilePhoto(imageView, this);
+                new LoadProfilePhoto(imageView, this);
             }
 
             else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
