@@ -28,13 +28,13 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
     protected Exception doInBackground(Void... params)
     {
-        Log.i("MyActivity", "Came to Async");
+        Log.i("--AllRegisterPushy", "Came to Async");
         try
         {
             // Acquire a unique registration ID for this device
             MyApplication.registrationId = Pushy.register(applicationContext);
 
-            Log.i("MyActivity", "Reg ID: " + MyApplication.registrationId);
+            Log.i("--AllRegisterPushy", "Reg ID: " + MyApplication.registrationId);
 
             // Send the registration ID to your backend server and store it for later
             sendRegistrationIdToBackendServer(MyApplication.registrationId);
@@ -66,6 +66,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
     // Example implementation
     void sendRegistrationIdToBackendServer(String registrationId) throws Exception
     {
+
         Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
         boolean foundToken = false;
 
@@ -75,16 +76,17 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
             }
         }
 
-        if (!foundToken){
-            Firebase sendTokenToServer = new Firebase(MyApplication.useFirebase+"Users/PushToken");
-            sendTokenToServer.push().setValue(setUpToken);
-        }
+        if (!foundToken){new Firebase(MyApplication.useFirebase+"Users/PushToken").push().setValue(setUpToken);}
+
+
 
         Map<String, String> putToken = new HashMap<String, String>();
         putToken.put("token", MyApplication.registrationId);
         putToken.put("deviceId", MyApplication.android_id);
         putToken.put("os", "android");
         putToken.put("lastLogin", GetDateTimeInstance.getRegDate());
+
+        Log.i("MyActivity", "Pushing Token: " + putToken);
 
         //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("token").setValue(MyApplication.registrationId);
         //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("deviceId").setValue(MyApplication.android_id);

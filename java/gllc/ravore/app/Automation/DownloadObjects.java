@@ -296,7 +296,6 @@ public class DownloadObjects {
             }
         });
 
-        //Firebase getTokens = new Firebase(MyApplication.useFirebase+"Users/PushToken");
         new Firebase(MyApplication.useFirebase+"Users/PushToken").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
