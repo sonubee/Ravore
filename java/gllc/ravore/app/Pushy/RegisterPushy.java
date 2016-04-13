@@ -37,6 +37,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
             Log.i("--AllRegisterPushy", "Reg ID: " + MyApplication.registrationId);
 
             // Send the registration ID to your backend server and store it for later
+            Log.i("--AllRegisterPushy", "Before Sending to Server!");
             sendRegistrationIdToBackendServer(MyApplication.registrationId);
         }
         catch( Exception exc )
@@ -52,14 +53,16 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
     @Override
     protected void onPostExecute(Exception exc)
     {
+
         // Failed?
         if ( exc != null )
         {
+            Log.i("--AllRegisterPushy", "Error: " + exc.getMessage());
             // Show error as toast message
             //Toast.makeText(applicationContext, exc.toString(), Toast.LENGTH_LONG).show();
             return;
         }
-
+        Log.i("--AllRegisterPushy", "Success");
         // Succeeded, do something to alert the user
     }
 
@@ -67,18 +70,25 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
     void sendRegistrationIdToBackendServer(String registrationId) throws Exception
     {
 
+        Log.i("--AllRegisterPushy", "Came to Method");
+
         Token setUpToken = new Token(MyApplication.registrationId, MyApplication.android_id, "android");
         boolean foundToken = false;
 
+        Log.i("--AllRegisterPushy", "Before loop");
+
         for (int i = 0; i < MyApplication.allTokens.size(); i++){
-            if (MyApplication.allTokens.get(i).getToken().equals(MyApplication.registrationId)){
+            if (MyApplication.allTokens.get(i).getToken().equals(registrationId)){
+                Log.i("--AllRegisterPushy", "Token: " + MyApplication.allTokens.get(i).getToken());
                 foundToken = true;
             }
         }
 
+        Log.i("--AllRegisterPushy", "After loop");
+
         if (!foundToken){new Firebase(MyApplication.useFirebase+"Users/PushToken").push().setValue(setUpToken);}
 
-
+        Log.i("--AllRegisterPushy", "Before Map");
 
         Map<String, String> putToken = new HashMap<String, String>();
         putToken.put("token", MyApplication.registrationId);
@@ -86,12 +96,8 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
         putToken.put("os", "android");
         putToken.put("lastLogin", GetDateTimeInstance.getRegDate());
 
-        Log.i("MyActivity", "Pushing Token: " + putToken);
+        Log.i("--AllRegisterPushy", "Pushing Token: " + putToken);
 
-        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("token").setValue(MyApplication.registrationId);
-        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("deviceId").setValue(MyApplication.android_id);
-        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("os").setValue("android");
-        //new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("lastLogin").setValue(GetDateTimeInstance.getRegDate());
-        new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).setValue(putToken);
+        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).setValue(putToken);
     }
 }

@@ -18,7 +18,9 @@ import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.UserInfo;
+import gllc.ravore.app.Pushy.RegisterPushy;
 import gllc.ravore.app.R;
+import me.pushy.sdk.Pushy;
 
 
 public class LoginActivity extends FragmentActivity implements GoToMainActivity {
@@ -48,6 +50,8 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
 
         if (MyApplication.allBracelets.size() < 2){MyApplication.beginDownload(goToMainActivity, getBaseContext());}
         else {startActivity(new Intent(getBaseContext(), MainActivity.class));}
+
+
     }
 
     public void receiver (View v){

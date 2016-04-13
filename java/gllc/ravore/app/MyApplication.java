@@ -77,10 +77,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Firebase.setAndroidContext(this);
-        Pushy.listen(this);
-        long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
-        Pushy.setHeartbeatInterval(interval, this);
-        new RegisterPushy(getApplicationContext()).execute();
         Mint.initAndStartSession(this, "75feb6f8");
         Mint.enableLogging(true);
         file = new ProfilePhoto("sdcard/ravore/profile_pic.jpg");
@@ -107,6 +103,8 @@ public class MyApplication extends Application {
         }
 
         if (devStatus.equals("production")){Mint.logEvent("Opened Ravore");;}
+
+
     }
 
     public static void beginDownload(GoToMainActivity goToMainActivity, Context context) {

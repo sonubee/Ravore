@@ -21,7 +21,9 @@ import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.OrderRavore.ListOrdersFragment;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
+import gllc.ravore.app.Pushy.RegisterPushy;
 import gllc.ravore.app.R;
+import me.pushy.sdk.Pushy;
 
 public class MainActivity extends NavigationLiveo implements OnItemClickListener{
 
@@ -33,6 +35,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         materialDesignSetup();
+
+        Pushy.listen(this);
+        long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+        Pushy.setHeartbeatInterval(interval, this);
+        new RegisterPushy(getApplicationContext()).execute();
     }
 
     @Override

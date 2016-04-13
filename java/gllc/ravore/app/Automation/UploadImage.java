@@ -91,7 +91,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
                 Log.i("--AllUploadImage", "Inside Past Null");
                 Firebase uploadNewURL = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
                 uploadNewURL.setValue(updateAnon);
-                new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
+                new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
             }
         }
 
@@ -102,7 +102,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
             if (MyApplication.android_id!=null){
                 Firebase uploadNewURL = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
                 uploadNewURL.setValue(updateAnon);
-                new Firebase(MyApplication.useFirebase+"Users").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
+                new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).child("ProfilePics").setValue(updateAnon);
             }
         }
     }
