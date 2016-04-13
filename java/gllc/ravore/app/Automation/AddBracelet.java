@@ -92,9 +92,12 @@ public class AddBracelet {
                                 newGiverMap.put("dateReceived", dateString);
                                 updateBracelet.updateChildren(newGiverMap);
 
+                                boolean foundToken = false;
+
                                 for (int j = 0; j < MyApplication.allTokens.size(); j++) {
-                                    if (bracelet.getGiverId().equals(MyApplication.allTokens.get(j).getUserId())) {
+                                    if (bracelet.getGiverId().equals(MyApplication.allTokens.get(j).getUserId()) && !foundToken) {
                                         new SendPush("Bracelet " + bracelet.getBraceletId() + " has been added!", MyApplication.allTokens.get(j).getToken(), "Bracelet Added!", "addition", bracelet.getBraceletId(), MyApplication.allTokens.get(j).getOs());
+                                        foundToken = true;
                                     }
                                 }
 
