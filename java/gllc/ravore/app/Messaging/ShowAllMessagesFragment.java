@@ -89,21 +89,6 @@ public class ShowAllMessagesFragment extends Fragment {
                         //Toast.makeText(getActivity(), "Swipe Left", Toast.LENGTH_SHORT).show();
 
                         startActivity(new Intent(getContext(), MessagingActivity.class));
-/*
-                        if (MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId().equals(MyApplication.android_id)){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setTitle("Delete Kandi");
-                            builder.setMessage("Are you sure you want to delete " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId() + "? This cannot be recovered unless you use a new Ravore!!");
-                            builder.setPositiveButton("Yes, Delete!", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.i("MyActivity", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
-                                }
-                            });
-                            builder.show();
-                        }
-
-*/
 
                     } else {
                         //Toast.makeText(getActivity(), "Swipe Right", Toast.LENGTH_SHORT).show();
@@ -117,6 +102,8 @@ public class ShowAllMessagesFragment extends Fragment {
                                     Log.i("MyActivity", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
                                     String key = MyApplication.braceletKey.get(MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId());
                                     new Firebase(MyApplication.useFirebase+"Bracelets/"+key).removeValue();
+                                    new Firebase(MyApplication.useFirebase+"Messages/"+MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId()).removeValue();
+                                    Toast.makeText(getContext(), "Deleted!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                             builder.show();
