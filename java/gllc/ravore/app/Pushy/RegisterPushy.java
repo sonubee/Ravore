@@ -90,7 +90,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
         Log.i("--AllRegisterPushy", "Before Map");
 
-        Map<String, String> putToken = new HashMap<String, String>();
+        Map<String, Object> putToken = new HashMap<String, Object>();
         putToken.put("token", MyApplication.registrationId);
         putToken.put("deviceId", MyApplication.android_id);
         putToken.put("os", "android");
@@ -98,6 +98,6 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
         Log.i("--AllRegisterPushy", "Pushing Token: " + putToken);
 
-        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).setValue(putToken);
+        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).updateChildren(putToken);
     }
 }

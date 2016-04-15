@@ -327,22 +327,15 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
                 public void onClick(DialogInterface dialog, int which) {
                     MyApplication.file.getFile().delete();
 
-                    if (MyApplication.currentUserIsGiver) {
-                        MessagingActivity.giverImage.setImageResource(R.drawable.anon);
-                    } else {
-                        MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
-                        Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase + "Users/ProfilePics/" + MyApplication.android_id);
-                    }
+                    if (MyApplication.currentUserIsGiver) {MessagingActivity.giverImage.setImageResource(R.drawable.anon);}
+                    else {MessagingActivity.receiverImage.setImageResource(R.drawable.anon);}
 
                     Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
                     new Firebase(MyApplication.useFirebase + "Users/ProfilePics/" + MyApplication.android_id).setValue(removeAnon);
                     new Firebase(MyApplication.useFirebase + "UserInfo").child(MyApplication.android_id).child("ProfilePics").setValue(removeAnon);
                 }
             });
-
             builder.show();
-
-
         }
     }
 

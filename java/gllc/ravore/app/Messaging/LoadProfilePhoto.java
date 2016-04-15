@@ -174,10 +174,18 @@ public class LoadProfilePhoto {
                 }
 
                 boolean found = false;
+
                 for (int i = 0; i < MyApplication.allAnon.size(); i++) {
                     if (MyApplication.allAnon.get(i).getUserId().equals(userId)) {
                         found = true;
-                        Picasso.with(context).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
+
+                        if (MyApplication.allAnon.get(i).getFullPhotoVersion().equals("NA")){
+                            fullImageView.setImageResource(R.drawable.anon);
+                        }
+
+                        else {
+                            Picasso.with(context).load(MyApplication.allAnon.get(i).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(fullImageView);
+                        }
                     }
                 }
 

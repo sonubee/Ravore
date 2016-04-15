@@ -79,7 +79,9 @@ public class ListAllMessagesAdapter extends BaseAdapter {
                 else {
                     for (int j=0; j < MyApplication.allAnon.size(); j++){
                         if ((MyApplication.allAnon.get(j).getUserId().equals(braceletsAdapter.get(position).getGiverId()))){
-                            Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}}}}
+                            if (MyApplication.allAnon.get(j).getUrlVersion().equals("NA")){holder.picture.setImageResource(R.drawable.anon);}
+                            else {Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}
+                        }}}}
 
             if (MyApplication.android_id.equals(braceletsAdapter.get(position).getGiverId())){
                 if (braceletsAdapter.get(position).getReceiverId().equals("NA")){
@@ -87,8 +89,10 @@ public class ListAllMessagesAdapter extends BaseAdapter {
                 else {
                     for (int j=0; j < MyApplication.allAnon.size(); j++){
                         if ((MyApplication.allAnon.get(j).getUserId().equals(braceletsAdapter.get(position).getReceiverId()))){
-                            Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}}}}
-
+                            if (MyApplication.allAnon.get(j).getUrlVersion().equals("NA")){holder.picture.setImageResource(R.drawable.anon);}
+                            else {Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}
+                            //Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);
+                        }}}}
 
         holder.date = (TextView)convertView.findViewById(R.id.textView7);
         String date = "";
