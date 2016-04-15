@@ -35,6 +35,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.splunk.mint.Mint;
 
 import java.util.ArrayList;
+
+import gllc.ravore.app.Automation.AddBracelet;
 import gllc.ravore.app.Automation.GetBracelet;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
 import gllc.ravore.app.Automation.RotateBitmap;
@@ -317,21 +319,30 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         } else if (itemSelected.equals("Delete Photo")) {
 
-            MyApplication.file.getFile().delete();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete Photo");
+            builder.setMessage("Are You Sure?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MyApplication.file.getFile().delete();
 
-            if (MyApplication.currentUserIsGiver) {
-                MessagingActivity.giverImage.setImageResource(R.drawable.anon);
-                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+                    if (MyApplication.currentUserIsGiver) {
+                        MessagingActivity.giverImage.setImageResource(R.drawable.anon);
+                    } else {
+                        MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
+                        Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase + "Users/ProfilePics/" + MyApplication.android_id);
+                    }
 
-                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                removeProfilePhoto.setValue(removeAnon);
-            } else {
-                MessagingActivity.receiverImage.setImageResource(R.drawable.anon);
-                Firebase removeProfilePhoto = new Firebase(MyApplication.useFirebase+"Users/ProfilePics/" + MyApplication.android_id);
+                    Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                    new Firebase(MyApplication.useFirebase + "Users/ProfilePics/" + MyApplication.android_id).setValue(removeAnon);
+                    new Firebase(MyApplication.useFirebase + "UserInfo").child(MyApplication.android_id).child("ProfilePics").setValue(removeAnon);
+                }
+            });
 
-                Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
-                removeProfilePhoto.setValue(removeAnon);
-            }
+            builder.show();
+
+
         }
     }
 
