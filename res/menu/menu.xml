@@ -19,7 +19,7 @@
 
    <item
        android:id="@+id/menu_buy"
-       android:icon="@mipmap/ic_star_black_24dp"
+       android:icon="@drawable/bracelet4"
        app:showAsAction="ifRoom|collapseActionView"
        android:title="@string/search"/>
    <item

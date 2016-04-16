@@ -185,6 +185,7 @@ public class MessagingActivity extends AppCompatActivity {
                 transaction.replace(R.id.fragment_container_about_kandi, aboutKandi);
                 transaction.commit();
 
+                MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.firebaseChildListenerMessages);
                 item.setVisible(false);
 
                 break;

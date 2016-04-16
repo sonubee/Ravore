@@ -11,27 +11,47 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Kandi # "
-        android:id="@+id/textView14"
+        android:id="@+id/kandiIdForStory"
         android:textColor="#5ea3bc"
-        android:layout_gravity="center_horizontal"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="About"
-        android:id="@+id/textView18"
-        android:textColor="#FFF"/>
+        android:layout_gravity="center_horizontal" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/editText"
-        android:hint="Enter anything public you'd like to mention about this bracelet here."
+        android:id="@+id/tellStoryEdittext"
+        android:hint="Tell Your Story Here..."
         android:textColorHint="#FFF"
-        android:layout_weight=".25"/>
+        android:textColor="#FFF"
+        android:layout_weight=".25"
+        android:backgroundTint="#FFF"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/whereHappened"
+        android:textColorHint="#FFF"
+        android:hint="Where Did This Happen?"
+        android:textColor="#FFF"
+        android:backgroundTint="#FFF"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/dateOfKandi"
+        android:textColor="#FFF"
+        android:hint="Date"
+        android:textColorHint="#FFF"
+        android:backgroundTint="#FFF" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/saveKandiInfo"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

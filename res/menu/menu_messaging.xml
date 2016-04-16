@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/tell_story"
-        android:icon="@mipmap/ic_inbox_black_24dp"
+        android:icon="@drawable/story"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="@string/story"/>
 
