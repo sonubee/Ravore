@@ -50,11 +50,11 @@ public class MessagingAdapter extends ArrayAdapter<Message> {
                 messageArrayList.add(message);
                 notifyDataSetChanged();
 
-                MessagingActivity.listView.post(new Runnable() {
+                MessagingFragment.listView.post(new Runnable() {
                     @Override
                     public void run() {
                         // Select the last row so it will scroll into view...
-                        MessagingActivity.listView.setSelection(MessagingActivity.listView.getCount() - 1);
+                        MessagingFragment.listView.setSelection(MessagingFragment.listView.getCount() - 1);
                     }
                 });
             }
