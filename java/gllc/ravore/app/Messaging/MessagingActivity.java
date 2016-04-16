@@ -175,6 +175,8 @@ public class MessagingActivity extends AppCompatActivity {
 
                     MenuItem menuAboutKandi = menu.findItem(R.id.tell_story);
                     menuAboutKandi.setVisible(true);
+
+
                 }
                 return true;
 
@@ -186,6 +188,7 @@ public class MessagingActivity extends AppCompatActivity {
                 transaction.commit();
 
                 MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.firebaseChildListenerMessages);
+                MessagingAdapter.messageArrayList.clear();
                 item.setVisible(false);
 
                 break;
