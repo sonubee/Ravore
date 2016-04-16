@@ -54,12 +54,15 @@ import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.Objects.Token;
+import gllc.ravore.app.OrderRavore.PurchaseScreenFragment;
 import gllc.ravore.app.R;
 
 public class MessagingActivity extends AppCompatActivity {
 
     MessagingFragment messagingFragment;
     public static Context context;
+    FragmentTransaction transaction;
+    public static String whichFragment = "ShoppingCartFragment";
 
 
     @Override
@@ -85,6 +88,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        transaction = getSupportFragmentManager().beginTransaction();
     }
 
     @Override
@@ -152,18 +156,27 @@ public class MessagingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Fragment mFragment;
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        AboutKandi aboutKandi;
 
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             case R.id.tell_story:
-                mFragment = new AboutKandi();
+                aboutKandi = new AboutKandi();
+                /*
                 ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 ft.replace(R.id.container, mFragment).commit();
+*/
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                //transaction.replace(R.id.fragment_container, shippingFragment);
+                transaction.replace(R.id.fragment_container_about_kandi, aboutKandi);
+                //transaction.hide(messagingFragment);
+
+                transaction.addToBackStack(null);
+                transaction.commit();
+
                 break;
                 //return true;
         }
