@@ -56,26 +56,39 @@ import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.R;
 
-public class MessagingActivity extends AppCompatActivity {
+public class MessagingActivity extends AppCompatActivity implements StartCamera {
 
-    MessagingFragment messagingFragment;
+    public static ArrayList<Message> messageArrayList = new ArrayList<>();
+    public static MessagingAdapter adapter;
+    public static ListView listView;
+    //public static Bracelet braceletForMessaging;
     public static Context context;
+    AlertDialog.Builder alertadd;
+    AsyncHttpClient client;
+    StartCamera startCamera;
+    MessagingFragment messagingFragment;
 
+    //String selectedId = MyApplication.selectedId;
+    public static String messageSender = "", messageReceiver = "", messageReceiverToken = "", messageReceiverOs = "";
+
+    public static ImageView giverImage, receiverImage;
+    public static TextView giverName, receiverName; //, braceletNum;
+    EditText sendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_kandi_container);
 
+        setup();
+        amIgiver();
+        setupSenderReceiver();
+        setupAdapter();
+        setupImages();
+        setupKeyboardSendButton();
+    }
 
-        messagingFragment = new MessagingFragment();
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container_about_kandi, messagingFragment).commit();
-
-        if (MyApplication.devStatus.equals("production")){
-            Mint.logEvent("MessagingActivity");}
-
+    public void setup() {
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -83,8 +96,259 @@ public class MessagingActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);}
 
-        context = getApplicationContext();
+        alertadd = new AlertDialog.Builder(this);
 
+        startCamera = this;
+
+        //braceletForMessaging = GetBracelet.getBracelet(selectedId);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        sendMessage = (EditText)findViewById(R.id.message_to_send);
+
+        //braceletNum = (TextView)findViewById(R.id.braceletNumber);
+        //braceletNum.setText("Kandi# " + braceletForMessaging.getBraceletId());
+
+        context=getApplicationContext();
+
+        client = new AsyncHttpClient();
+
+        if (MyApplication.devStatus.equals("production")){
+            Mint.logEvent("MessagingActivity");}
+
+        messagingFragment = new MessagingFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container_about_kandi, messagingFragment).commit();
+    }
+
+    public void setupKeyboardSendButton(){
+        sendMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    send(v);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void send (View v) {
+        if (!sendMessage.getText().toString().equals("")){
+
+            Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, GetDateTimeInstance.getRegDate(), MyApplication.selectedId, GetDateTimeInstance.getTimeStamp());
+            new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId).push().setValue(message);
+            new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
+        }
+        else {Toast.makeText(getApplicationContext(), "Please Enter Something to Send", Toast.LENGTH_SHORT).show();}
+
+        sendMessage.setText("");
+    }
+
+    public void setupSenderReceiver() {
+        if (MyApplication.currentUserIsGiver) {
+            messageSender = braceletForMessaging.getGiverId();
+            messageReceiver = braceletForMessaging.getReceiverId();}
+        else {
+            messageSender = braceletForMessaging.getReceiverId();
+            messageReceiver = braceletForMessaging.getGiverId();}
+
+        for (int i= 0 ; i < MyApplication.allTokens.size(); i++) {
+            if (messageReceiver.equals(MyApplication.allTokens.get(i).getUserId())) {
+                messageReceiverToken = MyApplication.allTokens.get(i).getToken();
+                messageReceiverOs = MyApplication.allTokens.get(i).getOs();
+            }
+        }
+    }
+
+    public void setupImages(){
+        giverImage = (ImageView)findViewById(R.id.giver_image);
+        receiverImage = (ImageView)findViewById(R.id.receiver_image);
+        giverImage.setImageResource(R.drawable.anon);
+        receiverImage.setImageResource(R.drawable.anon);
+
+        new LoadProfilePhoto(giverImage, receiverImage, MyApplication.currentUserIsGiver, braceletForMessaging, context, MessagingActivity.this, startCamera);
+    }
+
+    public void setupAdapter (){
+
+        adapter = new MessagingAdapter(getApplicationContext(), R.id.listViewMessaging, messageArrayList);
+        listView = (ListView) findViewById(R.id.listViewMessaging);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+            }
+        });
+
+        giverName = (TextView) findViewById(R.id.giver_name);
+        giverName.setTextColor(Color.GREEN);
+        if (MyApplication.currentUserIsGiver){giverName.setText("You");}
+
+        receiverName = (TextView) findViewById(R.id.receiver_name);
+        receiverName.setTextColor(Color.CYAN);
+        if (!MyApplication.currentUserIsGiver){receiverName.setText("You");}
+
+        giverName.setTextColor(Color.GREEN);
+        receiverName.setTextColor(Color.CYAN);
+    }
+
+    public void amIgiver(){
+        if (braceletForMessaging.getGiverId().equals(MyApplication.android_id)){MyApplication.currentUserIsGiver = true;}
+        else {MyApplication.currentUserIsGiver = false;}
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MyApplication.REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                    Log.i("--AllMessagingActivity", "Permission Version");
+
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    //        Uri.fromFile(MyApplication.file.getFile()));
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                    }
+
+                    else {
+                        Toast.makeText(this, "Error Opening Camera", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            case MyApplication.SELECT_FILE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+
+                    //intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    //        Uri.fromFile(MyApplication.file.getFile()));
+                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                            MyApplication.SELECT_FILE);
+                }
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void StartCamera(String itemSelected) {
+
+        if (itemSelected.equals("Take Photo")) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                int cameraPermission = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.CAMERA);
+                int writeExternalStorage = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (cameraPermission == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
+                    Log.i("--AllMessagingActivity", "Got Camera Permission");
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                }
+
+                else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MyApplication.REQUEST_CAMERA);
+                }
+                Log.i("MessagingActivity", "File Exists: " + MyApplication.file.getFile().exists());
+            }
+
+        } else if (itemSelected.equals("Choose from Library")) {
+            Intent intent = new Intent(
+                    Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+
+                int readExternalStorage = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                int writeExternalStorage = ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (readExternalStorage == PackageManager.PERMISSION_GRANTED && writeExternalStorage == PackageManager.PERMISSION_GRANTED){
+
+                    Log.i("--AllMessagingActivity", "Permission Granted for Reading Gallery");
+
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(MyApplication.file.getFile()));
+                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                            MyApplication.SELECT_FILE);
+                }
+
+                else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MyApplication.SELECT_FILE);
+                }
+            }
+
+        } else if (itemSelected.equals("View Photo")) {
+            LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+            View view = factory.inflate(R.layout.full_photo, null);
+            ImageView fullImageView = (ImageView) view.findViewById(R.id.fullPhotoImageview);
+
+            //MyApplication.file.loadImageFromStorage(fullImageView, getBaseContext());
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            fullImageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
+
+            alertadd.setView(view);
+            alertadd.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dlg, int sumthin) {
+
+                }
+            });
+
+            alertadd.show();
+
+        } else if (itemSelected.equals("Delete Photo")) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete Photo");
+            builder.setMessage("Are You Sure?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MyApplication.file.getFile().delete();
+
+                    if (MyApplication.currentUserIsGiver) {MessagingActivity.giverImage.setImageResource(R.drawable.anon);}
+                    else {MessagingActivity.receiverImage.setImageResource(R.drawable.anon);}
+
+                    Anon removeAnon = new Anon(MyApplication.android_id, "NA", "NA", "NA", "NA");
+                    new Firebase(MyApplication.useFirebase + "Users/ProfilePics/" + MyApplication.android_id).setValue(removeAnon);
+                    new Firebase(MyApplication.useFirebase + "UserInfo").child(MyApplication.android_id).child("ProfilePics").setValue(removeAnon);
+                }
+            });
+            builder.show();
+        }
     }
 
     @Override
@@ -141,8 +405,8 @@ public class MessagingActivity extends AppCompatActivity {
         super.onPause();
         Log.i("AllMessagingActivity", "Reached onPause from Messaging");
 
-        MessagingFragment.messageArrayList.clear();
-        MessagingFragment.adapter.clear();
+        messageArrayList.clear();
+        adapter.clear();
         //Killing Firebase listener otherwise the text messages double since a new listener gets created each time the activity opens
         MessagingAdapter.pullMessages.removeEventListener(MessagingAdapter.firebaseChildListenerMessages);
     }

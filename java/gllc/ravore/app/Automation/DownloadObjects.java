@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.Messaging.ListAllMessagesAdapter;
 import gllc.ravore.app.Messaging.MessagingActivity;
-import gllc.ravore.app.Messaging.MessagingFragment;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
@@ -113,8 +112,8 @@ public class DownloadObjects {
                         if (MyApplication.android_id.equals(bracelet.getGiverId())) {
                             for (int i = 0; i < MyApplication.allAnon.size(); i++) {
                                 if (MyApplication.allAnon.get(i).getUserId().equals(bracelet.getReceiverId())) {
-                                    Picasso.with(MessagingActivity.context).load(MyApplication.allAnon.get(i).getUrl()).placeholder(R.drawable.anon).into(MessagingFragment.receiverImage);
-                                    MessagingFragment.braceletForMessaging = bracelet;
+                                    Picasso.with(MessagingActivity.context).load(MyApplication.allAnon.get(i).getUrl()).placeholder(R.drawable.anon).into(MessagingActivity.receiverImage);
+                                    MessagingActivity.braceletForMessaging = bracelet;
                                 }
                             }
                         }
@@ -208,11 +207,11 @@ public class DownloadObjects {
                 if (changeImage) {
                     if (!anonUser.getUserId().equals(MyApplication.android_id) && ((MyApplication.selectedBracelet.getGiverId().equals(anonUser.getUserId())) || (MyApplication.selectedBracelet.getReceiverId().equals(anonUser.getUserId())))) {
                         if (MyApplication.currentUserIsGiver) {
-                            Picasso.with(MessagingActivity.context).load(url).placeholder(R.drawable.anon).into(MessagingFragment.receiverImage);
+                            Picasso.with(MessagingActivity.context).load(url).placeholder(R.drawable.anon).into(MessagingActivity.receiverImage);
                         }
 
                         if (!MyApplication.currentUserIsGiver) {
-                            Picasso.with(MessagingActivity.context).load(url).placeholder(R.drawable.anon).into(MessagingFragment.giverImage);
+                            Picasso.with(MessagingActivity.context).load(url).placeholder(R.drawable.anon).into(MessagingActivity.giverImage);
                         }
                     }
                 }
