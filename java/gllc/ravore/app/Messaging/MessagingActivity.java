@@ -63,7 +63,7 @@ public class MessagingActivity extends AppCompatActivity {
     public static Context context;
     FragmentTransaction transaction;
     public static String whichFragment = "ShoppingCartFragment";
-
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -137,6 +137,7 @@ public class MessagingActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_messaging, menu);
+        this.menu = menu;
         return true;
 
         //return super.onCreateOptionsMenu(menu);
@@ -159,23 +160,32 @@ public class MessagingActivity extends AppCompatActivity {
         AboutKandi aboutKandi;
 
         switch (item.getItemId()) {
+
             case android.R.id.home:
-                finish();
+
+                if (whichFragment.equals("MessagingFragment")){
+                    finish();
+                }
+
+                else {
+                    whichFragment = "MessagingFragment";
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container_about_kandi, messagingFragment);
+                    transaction.commit();
+
+                    MenuItem menuAboutKandi = menu.findItem(R.id.tell_story);
+                    menuAboutKandi.setVisible(true);
+                }
                 return true;
+
             case R.id.tell_story:
                 aboutKandi = new AboutKandi();
-                /*
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                ft.replace(R.id.container, mFragment).commit();
-*/
-
+                whichFragment = "AboutKandi";
                 transaction = getSupportFragmentManager().beginTransaction();
-                //transaction.replace(R.id.fragment_container, shippingFragment);
                 transaction.replace(R.id.fragment_container_about_kandi, aboutKandi);
-                //transaction.hide(messagingFragment);
-
-                transaction.addToBackStack(null);
                 transaction.commit();
+
+                item.setVisible(false);
 
                 break;
                 //return true;
