@@ -96,7 +96,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
         setupSenderReceiver();
         setupAdapter();
         setupImages();
-        //setupKeyboardSendButton();
+        setupKeyboardSendButton();
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +227,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
                     Log.i("--AllMessagingActivity", "Got Camera Permission");
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                    getActivity().startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
                 }
 
                 else {
@@ -257,7 +257,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                    getActivity().startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
                 }
 
@@ -326,7 +326,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
                     //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                     //        Uri.fromFile(MyApplication.file.getFile()));
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
+                        getActivity().startActivityForResult(takePictureIntent, MyApplication.REQUEST_CAMERA);
                     }
 
                     else {
@@ -351,7 +351,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
 
                     //intent.putExtra(MediaStore.EXTRA_OUTPUT,
                     //        Uri.fromFile(MyApplication.file.getFile()));
-                    startActivityForResult(Intent.createChooser(intent, "Select File"),
+                    getActivity().startActivityForResult(Intent.createChooser(intent, "Select File"),
                             MyApplication.SELECT_FILE);
                 }
             }

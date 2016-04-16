@@ -43,6 +43,7 @@ public class LoadProfilePhoto {
         this.startCamera = startCamera;
 
         if (amIGiver){
+            Log.i("--AllLoadProfilePhoto", "I AM GIVER");
             loadLocalPath(giverImage, context);
             loadOtherPersonAndSetListener(receiverImage, bracelet, "receiver", context);
         }

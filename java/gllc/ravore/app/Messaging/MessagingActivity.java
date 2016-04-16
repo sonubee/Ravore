@@ -91,14 +91,16 @@ public class MessagingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("--AllMessagingActivity", "Request Code: " + requestCode);
+        Log.i("--AllMessagingActivity", "Request Code: " + requestCode + " : " + MyApplication.REQUEST_CAMERA + " : " + MyApplication.SELECT_FILE);
             Log.i("--AllMessagingActivity", "Result Code: " + resultCode + " Result Ok : " + RESULT_OK);
 
         if (resultCode == RESULT_OK) {
             ImageView imageView;
 
-            if (MyApplication.currentUserIsGiver){imageView = (ImageView)this.findViewById(R.id.giver_image);}
-            else {imageView = (ImageView)this.findViewById(R.id.receiver_image);}
+            if (MyApplication.currentUserIsGiver){imageView = (ImageView)findViewById(R.id.giver_image);}
+            //if (MyApplication.currentUserIsGiver){imageView = MessagingFragment.giverImage;}
+            else {imageView = (ImageView)findViewById(R.id.receiver_image);}
+            //else {imageView = MessagingFragment.receiverImage;}
 
             if (requestCode == MyApplication.REQUEST_CAMERA) {
                 Log.i("--AllMessagingActivity", "Before LoadProfile");

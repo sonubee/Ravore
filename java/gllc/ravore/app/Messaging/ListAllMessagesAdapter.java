@@ -80,7 +80,8 @@ public class ListAllMessagesAdapter extends BaseAdapter {
                     for (int j=0; j < MyApplication.allAnon.size(); j++){
                         if ((MyApplication.allAnon.get(j).getUserId().equals(braceletsAdapter.get(position).getGiverId()))){
                             if (MyApplication.allAnon.get(j).getUrlVersion().equals("NA")){holder.picture.setImageResource(R.drawable.anon);}
-                            else {Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);}
+                            else {Picasso.with(context).load(MyApplication.allAnon.get(j).getUrl()).into(holder.picture);
+                                Log.i("--AllLAMAdapter", "Loading Giver image into ListAllMesssages");}
                         }}}}
 
             if (MyApplication.android_id.equals(braceletsAdapter.get(position).getGiverId())){
