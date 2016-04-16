@@ -56,7 +56,7 @@ public class ShowAllMessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_all_messages, container, false);
-        Log.i("MyActivity", "Create View");
+        Log.i("--AllSAMessagesFragment", "Create View");
         return view;
     }
 
@@ -65,11 +65,11 @@ public class ShowAllMessagesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         context=getContext();
-        Log.i("MyActivity", "SAM Activity Created");
+        Log.i("--AllSAMessagesFragment", "SAM Activity Created");
         adapterAllMessages = new ListAllMessagesAdapter(getActivity().getBaseContext());
 
         adapterAllMessages.notifyDataSetChanged();
-        Log.i("MyActivity", "Adapter Count: " + adapterAllMessages.getCount());
+        Log.i("--AllSAMessagesFragment", "Adapter Count: " + adapterAllMessages.getCount());
 
         //adapterAllMessages.notifyDataSetChanged();
         listView = (ListView)getActivity().findViewById(R.id.listViewAllMessages);
@@ -98,7 +98,7 @@ public class ShowAllMessagesFragment extends Fragment {
                             builder.setPositiveButton("Yes, Delete!", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Log.i("MyActivity", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
+                                    Log.i("--AllSAMessagesFragment", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
                                     String key = MyApplication.braceletKey.get(MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId());
                                     new Firebase(MyApplication.useFirebase+"Bracelets/"+key).removeValue();
                                     new Firebase(MyApplication.useFirebase+"Messages/"+MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId()).removeValue();

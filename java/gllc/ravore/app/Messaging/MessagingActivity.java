@@ -13,12 +13,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,6 +48,7 @@ import gllc.ravore.app.Automation.RotateBitmap;
 import gllc.ravore.app.Automation.SendPush;
 import gllc.ravore.app.Automation.UploadImage;
 import gllc.ravore.app.Interfaces.StartCamera;
+import gllc.ravore.app.Main.Feedback;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
@@ -55,23 +61,24 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     public static ArrayList<Message> messageArrayList = new ArrayList<>();
     public static MessagingAdapter adapter;
     public static ListView listView;
-    public static Bracelet braceletForMessaging;
+    //public static Bracelet braceletForMessaging;
     public static Context context;
     AlertDialog.Builder alertadd;
     AsyncHttpClient client;
     StartCamera startCamera;
+    MessagingFragment messagingFragment;
 
-    String selectedId = MyApplication.selectedId;
+    //String selectedId = MyApplication.selectedId;
     public static String messageSender = "", messageReceiver = "", messageReceiverToken = "", messageReceiverOs = "";
 
     public static ImageView giverImage, receiverImage;
-    public static TextView giverName, receiverName, braceletNum;
+    public static TextView giverName, receiverName; //, braceletNum;
     EditText sendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.messaging);
+        setContentView(R.layout.about_kandi_container);
 
         setup();
         amIgiver();
@@ -93,14 +100,14 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         startCamera = this;
 
-        braceletForMessaging = GetBracelet.getBracelet(selectedId);
+        //braceletForMessaging = GetBracelet.getBracelet(selectedId);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         sendMessage = (EditText)findViewById(R.id.message_to_send);
 
-        braceletNum = (TextView)findViewById(R.id.braceletNumber);
-        braceletNum.setText("Kandi# " + braceletForMessaging.getBraceletId());
+        //braceletNum = (TextView)findViewById(R.id.braceletNumber);
+        //braceletNum.setText("Kandi# " + braceletForMessaging.getBraceletId());
 
         context=getApplicationContext();
 
@@ -108,6 +115,11 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
         if (MyApplication.devStatus.equals("production")){
             Mint.logEvent("MessagingActivity");}
+
+        messagingFragment = new MessagingFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container_about_kandi, messagingFragment).commit();
     }
 
     public void setupKeyboardSendButton(){
@@ -377,7 +389,15 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
     protected void onDestroy() {
         super.onDestroy();
         Log.i("AllMessagingActivity", "Reached Destroy from Messaging");
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_messaging, menu);
+        return true;
+
+        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -393,10 +413,21 @@ public class MessagingActivity extends AppCompatActivity implements StartCamera 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Fragment mFragment;
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.tell_story:
+                mFragment = new AboutKandi();
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.replace(R.id.container, mFragment).commit();
+                break;
+                //return true;
         }
         return super.onOptionsItemSelected(item);
     }
