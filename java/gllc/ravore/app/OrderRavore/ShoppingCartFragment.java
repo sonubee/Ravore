@@ -80,7 +80,7 @@ public class ShoppingCartFragment extends Fragment {
         addBead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){OrderRavoreActivity.shippingPrice = 0.30;}
+                if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0){OrderRavoreActivity.shippingPrice = 2.45;}
 
                 OrderRavoreActivity.beadCount++;
                 OrderRavoreActivity.subTotalPrice += 3;
@@ -131,7 +131,7 @@ public class ShoppingCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (OrderRavoreActivity.beadCount == 0 && OrderRavoreActivity.kandiCount == 0) {
-                    OrderRavoreActivity.shippingPrice = 0.30;
+                    OrderRavoreActivity.shippingPrice = 2.45;
                 }
 
                 OrderRavoreActivity.subTotalPrice += 5;

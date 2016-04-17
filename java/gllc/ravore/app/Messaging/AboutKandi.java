@@ -63,7 +63,7 @@ public class AboutKandi extends Fragment {
                 if (MyApplication.currentUserIsGiver){giverOrReceiver = "giver";}
                 else {giverOrReceiver = "receiver";}
 
-                new Firebase("https://testravore.firebaseio.com/KandiInfo").child(MyApplication.selectedId).child(giverOrReceiver).setValue(saveKandiInfo);
+                new Firebase(MyApplication.useFirebase+"KandiInfo").child(MyApplication.selectedId).child(giverOrReceiver).setValue(saveKandiInfo);
             }
         });
     }
