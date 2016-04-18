@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/picForBead"
+        android:src="@drawable/placeholder"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_horizontal"
+        android:padding="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Bear"
+        android:id="@+id/beadNameTextView"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/picForBead"
+        android:padding="5dp"
+        android:textColor="#37c797"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="$.$$"
+        android:textColor="#1ac9c9"
+        android:padding="10dp"
+        android:id="@+id/priceOfBead"
+        android:layout_alignBottom="@+id/picForBead"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Cart: X"
+        android:padding="10dp"
+        android:textColor="#f3ff9a"
+        android:id="@+id/cartCartQty"
+        android:layout_alignBottom="@+id/picForBead"
+        android:layout_toEndOf="@+id/picForBead" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:background="#FFFFFF"
+        android:id="@+id/line"
+        android:layout_marginLeft="120dp"
+        android:layout_below="@+id/picForBead"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/subtractBeadListView"
+        android:text="-"
+        android:textSize="80dp"
+        android:textColor="#a41616"
+        android:layout_alignBottom="@+id/picForBead"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addBeadListView"
+        android:text="+"
+        android:textSize="40dp"
+        android:textColor="#1fea00"
+        android:layout_toEndOf="@+id/subtractBeadListView"
+        android:layout_marginStart="88dp"
+        android:layout_alignTop="@+id/subtractBeadListView"
+        android:layout_alignBottom="@+id/subtractBeadListView"
+        android:layout_marginTop="25dp"/>
+
+
+</RelativeLayout>

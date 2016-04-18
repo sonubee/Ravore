@@ -94,7 +94,7 @@
         android:padding="12dp"
         android:layout_below="@+id/suiteAptView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="40dp"
         />
 
 
@@ -103,33 +103,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Total: $0"
+        android:text="Subtotal: $0"
         android:id="@+id/totalAmountToShow"
         android:layout_below="@+id/buyKandi"
         android:layout_centerHorizontal="true"
         android:textColor="#86e7e7"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Kandi Count: "
-        android:id="@+id/kandiDisplay"
-        android:layout_below="@+id/totalAmountToShow"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
-        android:textColor="#FFF"
-        />
-
-    <TextView
+        android:layout_marginTop="33dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Bead Count: "
         android:id="@+id/beadDisplay"
-        android:layout_below="@+id/kandiDisplay"
+        android:textColor="#FFF"
+        android:layout_below="@+id/shippingTotalDisplay"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Shipping: $0"
+        android:id="@+id/shippingTotalDisplay"
+        android:layout_below="@+id/totalAmountToShow"
         android:layout_centerHorizontal="true"
-        android:textColor="#FFF"/>
+        android:textColor="#86e7e7"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Total: $0"
+        android:id="@+id/totalAmountDisplay"
+        android:textColor="#34f223"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

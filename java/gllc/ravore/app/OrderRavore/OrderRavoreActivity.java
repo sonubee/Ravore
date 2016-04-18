@@ -56,7 +56,7 @@ import gllc.ravore.app.R;
 public class OrderRavoreActivity extends AppCompatActivity {
 
     BraintreeFragment mBraintreeFragment;
-    ShoppingCartFragment orderFragment;
+    NewShoppingCart orderFragment;
     AsyncHttpClient client;
     AlertDialog.Builder alertadd;
 
@@ -126,7 +126,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
     public void setupFragments() {
         //setup first fragment
-        orderFragment = new ShoppingCartFragment();
+        //orderFragment = new ShoppingCartFragment();
+        orderFragment = new NewShoppingCart();
         //make it happen
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, orderFragment).commit();
@@ -145,6 +146,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
                 if (whichFragment.equals("ShoppingCartFragment")){
                     //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    /*
                     subTotalPrice =0;
                     totalPrice=0.0;
                     shippingPrice=0.35;
@@ -155,7 +157,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
                     ShoppingCartFragment.subtotal.setText("$0");
                     ShoppingCartFragment.shipping.setText("$0");
                     ShoppingCartFragment.beadCart.setText("Cart: 0");
-                    ShoppingCartFragment.kandiCart.setText("Cart: 0");
+                    ShoppingCartFragment.kandiCart.setText("Cart: 0");*/
                     finish();
                 }
 
@@ -171,7 +173,13 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
     public void enterShippingInfo (View v){
 
-        if (totalPrice > 1){
+        int totalCart = 0;
+
+        for (int i=0; i<ShoppingCartAdapter.beadAdapter.size(); i++){totalCart += ShoppingCartAdapter.cartQty.get(i);}
+
+        Log.i("--AllORActivity", "Size of Cart: " + totalCart);
+
+        if (totalCart >= 5){
 
             PurchaseScreenFragment shippingFragment = new PurchaseScreenFragment();
             transaction = getSupportFragmentManager().beginTransaction();
@@ -184,7 +192,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
         }
 
-        else {Toast.makeText(getApplicationContext(), "Add Something to the Cart", Toast.LENGTH_SHORT).show();}
+        else {Toast.makeText(getApplicationContext(), "Please Order Minimum 5 for Effective Shipping Pricing", Toast.LENGTH_SHORT).show();}
     }
 
     @Override
@@ -231,7 +239,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
         dialog.show();
 
 
-        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
+        //client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
+        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + PurchaseScreenFragment.totalPrice + "&devProd=" + MyApplication.devStatus,
                 new TextHttpResponseHandler() {
 
                     @Override

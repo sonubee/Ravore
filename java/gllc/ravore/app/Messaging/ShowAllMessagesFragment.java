@@ -38,7 +38,6 @@ import gllc.ravore.app.R;
  */
 public class ShowAllMessagesFragment extends Fragment {
 
-    ArrayList<ArrayList<Message>> allSendAndReceivedMessagesDoubleArray;
     public static ListView listView;
     public static ListAllMessagesAdapter adapterAllMessages;
     private boolean mSearchCheck;
@@ -48,7 +47,6 @@ public class ShowAllMessagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        allSendAndReceivedMessagesDoubleArray = new ArrayList<>();
         swipeDetector = new SwipeDetector();
     }
 
@@ -56,7 +54,6 @@ public class ShowAllMessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.list_all_messages, container, false);
-        Log.i("--AllSAMessagesFragment", "Create View");
         return view;
     }
 
@@ -64,7 +61,7 @@ public class ShowAllMessagesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        context=getContext();
+        context = getContext();
         Log.i("--AllSAMessagesFragment", "SAM Activity Created");
         adapterAllMessages = new ListAllMessagesAdapter(getActivity().getBaseContext());
 

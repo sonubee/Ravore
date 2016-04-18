@@ -35,9 +35,10 @@ import gllc.ravore.app.R;
  */
 public class PurchaseScreenFragment extends Fragment {
 
-    public static TextView totalAmount, enterShipping, kandiDisplay, beadDisplay;
+    public static TextView totalAmount, enterShipping, kandiDisplay, beadDisplay, shippingDisplay, subtotalDisplay;
     public static EditText fullName, suiteApt;
     public static Button sendOrder;
+    public static double totalPrice;
 
 
     @Override
@@ -50,13 +51,19 @@ public class PurchaseScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.buy_kandi, container, false);
 
-        totalAmount = (TextView)view.findViewById(R.id.totalAmountToShow);
+
+
+        //totalAmount = (TextView)view.findViewById(R.id.totalAmountToShow);
         enterShipping = (TextView)view.findViewById(R.id.shipping);
         fullName = (EditText)view.findViewById(R.id.first_name);
         suiteApt = (EditText)view.findViewById(R.id.suiteApt);
         sendOrder = (Button)view.findViewById(R.id.buyKandi);
         beadDisplay = (TextView)view.findViewById(R.id.beadDisplay);
-        kandiDisplay = (TextView)view.findViewById(R.id.kandiDisplay);
+        //kandiDisplay = (TextView)view.findViewById(R.id.kandiDisplay);
+
+        subtotalDisplay = (TextView)view.findViewById(R.id.totalAmountToShow);
+        shippingDisplay = (TextView)view.findViewById(R.id.shippingTotalDisplay);
+        totalAmount = (TextView)view.findViewById(R.id.totalAmountDisplay);
 
         return view;
     }
@@ -65,8 +72,25 @@ public class PurchaseScreenFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        int totalCart = 0;
+        double shippingCost = 2.45;
 
-        totalAmount.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
+        for (int i=0; i<ShoppingCartAdapter.beadAdapter.size(); i++){
+            totalCart += ShoppingCartAdapter.cartQty.get(i);
+            shippingCost += 0.05;
+        }
+
+        totalPrice = totalCart + shippingCost;
+
+        subtotalDisplay.setText("Subtotal: $" + totalCart + ".00");
+        //shippingDisplay.setText("$" + shippingCost);
+        shippingDisplay.setText("Shipping: $" + String.format("%.2f", shippingCost));
+        beadDisplay.setText("Total Beads: " + totalCart);
+        //totalAmount.setText("$" + totalPrice);
+        totalAmount.setText("Total: $" + String.format("%.2f", totalPrice));
+
+        //totalAmount.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
+
 
         OrderRavoreActivity.whichFragment = "PurchaseScreenFragment";
 
@@ -92,24 +116,23 @@ public class PurchaseScreenFragment extends Fragment {
 
                 Log.i("MyActivity", "Shipping: " + enterShipping.getText().toString());
 
-                if (fullName.getText().toString().equals("")){
+                if (fullName.getText().toString().equals("")) {
                     Toast.makeText(getContext(), "Please Enter The Shipping Name", Toast.LENGTH_SHORT).show();
-                }
-
-                else if (enterShipping.getText().toString().equals("Shipping Address")){
+                } else if (enterShipping.getText().toString().equals("Shipping Address")) {
                     Toast.makeText(getContext(), "Please Enter Shipping Address", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
+                } else {
                     String timeStamp = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 
                     OrderRavoreActivity.sendOrderMap.put("fullName", fullName.getText().toString());
                     OrderRavoreActivity.sendOrderMap.put("address", enterShipping.getText().toString());
                     OrderRavoreActivity.sendOrderMap.put("suiteApt", suiteApt.getText().toString());
                     OrderRavoreActivity.sendOrderMap.put("OS", "Android");
-                    OrderRavoreActivity.sendOrderMap.put("amount", String.valueOf(OrderRavoreActivity.totalPrice));
-                    OrderRavoreActivity.sendOrderMap.put("beadCount", String.valueOf(OrderRavoreActivity.beadCount));
-                    OrderRavoreActivity.sendOrderMap.put("kandiCount", String.valueOf(OrderRavoreActivity.kandiCount));
+                    //OrderRavoreActivity.sendOrderMap.put("amount", String.valueOf(OrderRavoreActivity.totalPrice));
+                    OrderRavoreActivity.sendOrderMap.put("amount", String.valueOf(totalPrice));
+                    //OrderRavoreActivity.sendOrderMap.put("beadCount", String.valueOf(OrderRavoreActivity.beadCount));
+                    OrderRavoreActivity.sendOrderMap.put("beadCount", String.valueOf(ShoppingCartAdapter.cartQty.size()));
+                    //OrderRavoreActivity.sendOrderMap.put("kandiCount", String.valueOf(OrderRavoreActivity.kandiCount));
+                    OrderRavoreActivity.sendOrderMap.put("kandiCount", String.valueOf(1));
                     OrderRavoreActivity.sendOrderMap.put("date", timeStamp);
 
                     final EditText input = new EditText(getContext());
@@ -128,17 +151,11 @@ public class PurchaseScreenFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-
-
                                     if (input.getText().toString().equals("")) {
                                         Toast.makeText(getContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input.getText().toString()).matches()){
+                                    } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input.getText().toString()).matches()) {
                                         Toast.makeText(getContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    else {
+                                    } else {
                                         OrderRavoreActivity.sendOrderMap.put("email", input.getText().toString());
 
                                         OrderRavoreActivity.emailAddy = input.getText().toString();
@@ -165,8 +182,8 @@ public class PurchaseScreenFragment extends Fragment {
             }
         });
 
-        beadDisplay.setText("Beads (Set of 3): " + OrderRavoreActivity.beadCount);
-        kandiDisplay.setText("Kandi (Set of 3): " + OrderRavoreActivity.kandiCount);
+        //beadDisplay.setText("Beads (Set of 3): " + OrderRavoreActivity.beadCount);
+        //kandiDisplay.setText("Kandi (Set of 3): " + OrderRavoreActivity.kandiCount);
     }
 
     public boolean isEmailValid(CharSequence email) {

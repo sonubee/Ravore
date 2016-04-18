@@ -63,9 +63,9 @@ public class ListAllMessagesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String braceletId = braceletsAdapter.get(position).getBraceletId();
-
         convertView = layoutInflater.inflate(R.layout.multiple_messages, null);
+
+        String braceletId = braceletsAdapter.get(position).getBraceletId();
 
         holder.senderName = (TextView) convertView.findViewById(R.id.nameSender);
         holder.senderName.setText("No Ravor Name Yet");
