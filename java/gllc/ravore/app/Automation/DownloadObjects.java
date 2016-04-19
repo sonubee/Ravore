@@ -266,7 +266,7 @@ public class DownloadObjects {
         });
 
         //Firebase downloadOrders = new Firebase(MyApplication.useFirebase+"Orders");
-        new Firebase(MyApplication.useFirebase+"Orders").addChildEventListener(new ChildEventListener() {
+        new Firebase(MyApplication.useFirebase+"Orders1").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Orders orders = dataSnapshot.getValue(Orders.class);

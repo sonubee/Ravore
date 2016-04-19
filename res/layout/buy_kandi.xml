@@ -92,10 +92,9 @@
         android:textColor="@android:color/white"
         android:onClick="sendOrder"
         android:padding="12dp"
-        android:layout_below="@+id/suiteAptView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        />
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/totalAmountDisplay"
+        android:layout_centerHorizontal="true" />
 
 
 
@@ -105,20 +104,21 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Subtotal: $0"
         android:id="@+id/totalAmountToShow"
-        android:layout_below="@+id/buyKandi"
-        android:layout_centerHorizontal="true"
-        android:textColor="#86e7e7"/>
+        android:textColor="#86e7e7"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/suiteAptView"
+        android:layout_centerHorizontal="true" />
 
     <TextView
-        android:layout_marginTop="33dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Bead Count: "
+        android:text="Total Beads: "
         android:id="@+id/beadDisplay"
         android:textColor="#FFF"
-        android:layout_below="@+id/shippingTotalDisplay"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/buyKandi"
+        android:layout_alignStart="@+id/totalAmountDisplay" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -126,9 +126,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Shipping: $0"
         android:id="@+id/shippingTotalDisplay"
+        android:textColor="#86e7e7"
         android:layout_below="@+id/totalAmountToShow"
-        android:layout_centerHorizontal="true"
-        android:textColor="#86e7e7"/>
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -137,8 +137,8 @@
         android:text="Total: $0"
         android:id="@+id/totalAmountDisplay"
         android:textColor="#34f223"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/shippingTotalDisplay"
+        android:layout_alignEnd="@+id/shippingTotalDisplay" />
 
 
 </RelativeLayout>

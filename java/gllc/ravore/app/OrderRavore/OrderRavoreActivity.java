@@ -68,7 +68,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
     public static Map<String, String> sendOrderMap = new HashMap<>();
 
-    Firebase sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders");
+    Firebase sendOrderToFirebase = new Firebase(MyApplication.useFirebase+"Orders1");
 
     public static String sandboxTokenBT = "sandbox_yrwnshf3_9j46c9m8t3mjfwwq";
     public static String productionTokenBT = "production_thxywyhz_69ppkf6h8fqh9cxb";
@@ -158,6 +158,9 @@ public class OrderRavoreActivity extends AppCompatActivity {
                     ShoppingCartFragment.shipping.setText("$0");
                     ShoppingCartFragment.beadCart.setText("Cart: 0");
                     ShoppingCartFragment.kandiCart.setText("Cart: 0");*/
+
+                    ShoppingCartAdapter.cartQty.clear();
+                    ShoppingCartAdapter.beadAdapter.clear();
                     finish();
                 }
 
@@ -238,9 +241,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
         dialog.setMessage("Processing");
         dialog.show();
 
-
         //client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + OrderRavoreActivity.totalPrice + "&devProd=" + MyApplication.devStatus,
-        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + PurchaseScreenFragment.totalPrice + "&devProd=" + MyApplication.devStatus,
+        client.post(herokuToUse + "/checkout?payment_method_nonce=" + nonce + "&email=" + sendOrderMap.get("email") + "&amount=" + String.format("%.2f", PurchaseScreenFragment.totalPrice) + "&devProd=" + MyApplication.devStatus,
                 new TextHttpResponseHandler() {
 
                     @Override
@@ -256,7 +258,8 @@ public class OrderRavoreActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         String orderNumber = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-                        Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", sendOrderMap.get("address"), GetDateTimeInstance.getRegDate(), sendOrderMap.get("email"), sendOrderMap.get("fullName"), sendOrderMap.get("suiteApt"), "Processing", MyApplication.android_id);
+                        //Orders newOrder = new Orders(kandiCount, beadCount, subTotalPrice, shippingPrice, totalPrice, orderNumber, "Android", sendOrderMap.get("address"), GetDateTimeInstance.getRegDate(), sendOrderMap.get("email"), sendOrderMap.get("fullName"), sendOrderMap.get("suiteApt"), "Processing", MyApplication.android_id);
+                        Orders newOrder = new Orders(0, PurchaseScreenFragment.totalCart, PurchaseScreenFragment.totalCart, Math.round(PurchaseScreenFragment.shippingCost * 100.0) / 100.0, Math.round(PurchaseScreenFragment.totalPrice * 100.0) / 100.0, orderNumber, "Android", sendOrderMap.get("address"), GetDateTimeInstance.getRegDate(), sendOrderMap.get("email"), sendOrderMap.get("fullName"), sendOrderMap.get("suiteApt"), "Processing", MyApplication.android_id, PurchaseScreenFragment.cartMap.get("Cat"), PurchaseScreenFragment.cartMap.get("Dog"), PurchaseScreenFragment.cartMap.get("Walrus"), PurchaseScreenFragment.cartMap.get("Teddy Bear"), PurchaseScreenFragment.cartMap.get("Octopus"));
 
                         sendOrderToFirebase.push().setValue(newOrder);
                         Log.i("--AllORActivity", "Success Posting nonce");

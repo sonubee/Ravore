@@ -102,8 +102,7 @@ public class MyApplication extends Application {
             //useFirebase = "https://liveravore.firebaseio.com/";
         }
 
-        if (devStatus.equals("production")){Mint.logEvent("Opened Ravore");;}
-
+        if (devStatus.equals("production")){Mint.logEvent("Opened Ravore");}
 
     }
 

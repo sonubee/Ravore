@@ -39,7 +39,12 @@ public class PurchaseScreenFragment extends Fragment {
     public static EditText fullName, suiteApt;
     public static Button sendOrder;
     public static double totalPrice;
+    public static int totalCart = 0;
+    public static double shippingCost = 2.45;
 
+    public static int cat, dog, walrus, octopus, teddyBear;
+
+    public static HashMap<String, Integer> cartMap = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,12 +77,13 @@ public class PurchaseScreenFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        int totalCart = 0;
-        double shippingCost = 2.45;
+        totalCart = 0;
+        shippingCost = 2.45;
 
         for (int i=0; i<ShoppingCartAdapter.beadAdapter.size(); i++){
             totalCart += ShoppingCartAdapter.cartQty.get(i);
-            shippingCost += 0.05;
+            shippingCost += 0.05 * ShoppingCartAdapter.cartQty.get(i);
+            cartMap.put(ShoppingCartAdapter.beadAdapter.get(i).getBeadName(), ShoppingCartAdapter.cartQty.get(i));
         }
 
         totalPrice = totalCart + shippingCost;
@@ -90,7 +96,6 @@ public class PurchaseScreenFragment extends Fragment {
         totalAmount.setText("Total: $" + String.format("%.2f", totalPrice));
 
         //totalAmount.setText("$" + String.format("%.2f", OrderRavoreActivity.totalPrice));
-
 
         OrderRavoreActivity.whichFragment = "PurchaseScreenFragment";
 

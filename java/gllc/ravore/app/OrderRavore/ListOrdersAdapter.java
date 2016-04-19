@@ -53,24 +53,24 @@ public class ListOrdersAdapter extends BaseAdapter {
 
         convertView = layoutInflater.inflate(R.layout.show_all_orders, null);
 
-        holder.beads = (ImageView) convertView.findViewById(R.id.leftOrderPic);
+        //holder.beads = (ImageView) convertView.findViewById(R.id.leftOrderPic);
         holder.kandi = (ImageView) convertView.findViewById(R.id.rightOrderPic);
-        holder.kandiCount = (TextView) convertView.findViewById(R.id.textView11);
+        //holder.kandiCount = (TextView) convertView.findViewById(R.id.textView11);
         holder.beadCount = (TextView) convertView.findViewById(R.id.textView10);
         holder.status = (TextView) convertView.findViewById(R.id.textView15);
         holder.orderNumber = (TextView) convertView.findViewById(R.id.textView13);
         holder.totalPrice = (TextView) convertView.findViewById(R.id.textView16);
 
-        holder.beads.setImageResource(R.drawable.beads_medium);
-        holder.kandi.setImageResource(R.drawable.bg_small);
-        holder.kandiCount.setText("Kandi (" + MyApplication.allOrders.get(position).getKandiCount() + ")");
-        holder.beadCount.setText("Bead (" + MyApplication.allOrders.get(position).getBeadCount() + ")");
+        //holder.beads.setImageResource(R.drawable.beads_medium);
+        holder.kandi.setImageResource(R.drawable.all);
+        //holder.kandiCount.setText("Kandi (" + MyApplication.allOrders.get(position).getKandiCount() + ")");
+        holder.beadCount.setText("Beads (" + MyApplication.allOrders.get(position).getBeadCount() + ")");
         holder.orderNumber.setText("Order #" + MyApplication.allOrders.get(position).getOrderNumber());
         holder.status.setText(MyApplication.allOrders.get(position).getStatus());
         holder.totalPrice.setText("Total:$"+String.format("%.2f", MyApplication.allOrders.get(position).getTotalPrice()));
 
-        if (MyApplication.allOrders.get(position).getBeadCount() == 0){holder.beads.setVisibility(View.INVISIBLE);}
-        if (MyApplication.allOrders.get(position).getKandiCount() == 0){holder.kandi.setVisibility(View.INVISIBLE);}
+        //if (MyApplication.allOrders.get(position).getBeadCount() == 0){holder.beads.setVisibility(View.INVISIBLE);}
+        //if (MyApplication.allOrders.get(position).getKandiCount() == 0){holder.kandi.setVisibility(View.INVISIBLE);}
 
         return convertView;
     }
@@ -78,8 +78,8 @@ public class ListOrdersAdapter extends BaseAdapter {
 
     static class OrderViewHolder {
         ImageView kandi;
-        ImageView beads;
-        TextView kandiCount;
+        //ImageView beads;
+        //TextView kandiCount;
         TextView beadCount;
         TextView orderNumber;
         TextView status;
