@@ -87,6 +87,7 @@ public class OrderRavoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_screen);
 
+        //whichFragment = "ShoppingCartFragment";
         setupVariables();
         setupFragments();
         wakeupServer();

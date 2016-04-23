@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +29,8 @@ public class AboutKandi extends Fragment {
 
     TextView textView;
     Button saveKandiInfo;
-    EditText tellStory, whereHappen, date;
+    EditText tellStory , date;
+    AutoCompleteTextView whereHappen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class AboutKandi extends Fragment {
         textView = (TextView)view.findViewById(R.id.kandiIdForStory);
         saveKandiInfo = (Button)view.findViewById(R.id.saveKandiInfo);
         tellStory = (EditText)view.findViewById(R.id.tellStoryEdittext);
-        whereHappen = (EditText)view.findViewById(R.id.whereHappened);
+        whereHappen = (AutoCompleteTextView)view.findViewById(R.id.whereHappened);
         date = (EditText)view.findViewById(R.id.dateOfKandi);
         return view;
     }
@@ -48,6 +52,11 @@ public class AboutKandi extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, MyApplication.allEvents);
+        whereHappen.setAdapter(adapter);
+
+
         textView.setText("Kandi #" + MyApplication.selectedId);
 
         saveKandiInfo.setOnClickListener(new View.OnClickListener() {
