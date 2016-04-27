@@ -47,6 +47,7 @@ public class AddBracelet {
                 String dateString = new SimpleDateFormat("MM" + "/" + "dd" + "/" + "yyyy").format(new Date());
                 String key = MyApplication.braceletKey.get(bracelet.getBraceletId());
                 Firebase updateBracelet = new Firebase(MyApplication.useFirebase + "Bracelets/" + key);
+                Firebase newUpdateBracelet = new Firebase(MyApplication.useFirebase + "IDs/" + bracelet.getBraceletId()).child("1").child("Info");
 
                 Log.i("MyActivity", "Before Found");
 
@@ -58,6 +59,7 @@ public class AddBracelet {
                             newGiverMap.put("giverId", MyApplication.android_id);
                             newGiverMap.put("dateRegistered", dateString);
                             updateBracelet.updateChildren(newGiverMap);
+                            newUpdateBracelet.updateChildren(newGiverMap);
 
                             Toast.makeText(context, "Added!", Toast.LENGTH_SHORT).show();
 
@@ -91,6 +93,7 @@ public class AddBracelet {
                                 newGiverMap.put("receiverId", MyApplication.android_id);
                                 newGiverMap.put("dateReceived", dateString);
                                 updateBracelet.updateChildren(newGiverMap);
+                                newUpdateBracelet.updateChildren(newGiverMap);
 
                                 boolean foundToken = false;
 

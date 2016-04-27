@@ -98,6 +98,7 @@ public class ShowAllMessagesFragment extends Fragment {
                                     Log.i("--AllSAMessagesFragment", "Delete: " + MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getGiverId());
                                     String key = MyApplication.braceletKey.get(MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId());
                                     new Firebase(MyApplication.useFirebase+"Bracelets/"+key).removeValue();
+                                    new Firebase(MyApplication.useFirebase+"IDs/"+MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId()).removeValue();
                                     new Firebase(MyApplication.useFirebase+"Messages/"+MyApplication.allGivenAndReceivedBraceletsObjects.get(position).getBraceletId()).removeValue();
                                     Toast.makeText(getContext(), "Deleted!", Toast.LENGTH_SHORT).show();
                                 }

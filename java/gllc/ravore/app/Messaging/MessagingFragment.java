@@ -44,6 +44,7 @@ import gllc.ravore.app.Interfaces.StartCamera;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
+import gllc.ravore.app.Objects.Bracelet2;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.R;
 
@@ -98,6 +99,8 @@ public class MessagingFragment extends Fragment implements StartCamera {
         setupImages();
         setupKeyboardSendButton();
 
+        //Bracelet2 newBraceletMessage = new Bracelet2(braceletForMessaging.getReceiverId(), braceletForMessaging.getGiverId(), braceletForMessaging.getBraceletId(), braceletForMessaging.getDateCreated(), braceletForMessaging.getDateReceived(), braceletForMessaging.getDateRegistered(), 1);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +108,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
 
                     Message message = new Message(sendMessage.getText().toString(), MyApplication.android_id, GetDateTimeInstance.getRegDate(), MyApplication.selectedId, GetDateTimeInstance.getTimeStamp());
                     new Firebase(MyApplication.useFirebase+"Messages/"+ MyApplication.selectedId).push().setValue(message);
+                    new Firebase(MyApplication.useFirebase).child("IDs").child(braceletForMessaging.getBraceletId()).child("1").child("Messages").push().setValue(message);
                     new SendPush(sendMessage.getText().toString(), messageReceiverToken, braceletForMessaging.getBraceletId(), "message", braceletForMessaging.getBraceletId(), messageReceiverOs);
                 }
                 else {

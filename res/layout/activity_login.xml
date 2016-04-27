@@ -11,10 +11,10 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        >
+        android:id="@+id/linearLayout">
 
 
 
@@ -25,8 +25,19 @@
             android:layout_width="250dp"
             android:layout_height="100dp"
             android:id="@+id/imageView"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ravore"/>
+            android:src="@drawable/icontransparent"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:textColor="#FFF"
+            android:text="Ravore is a community for EDM Enthusiasts.\n\nMeet someone awesome at a festival or show? Give them Ravore and start chatting!\n\nMore features inside!"
+            android:gravity="center"
+            />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -51,10 +62,10 @@
             android:id="@+id/register_bracelet"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="REGISTER KANDI"
+            android:text="GIFTER"
             android:textColor="@android:color/white"
             android:onClick="giver"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="7dp"
             android:layout_marginBottom="12dp"
             android:padding="12dp"
              />
@@ -63,7 +74,7 @@
             android:id="@+id/received_bracelet"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="I GOT KANDI !"
+            android:text="RECIPIENT"
             android:textColor="@android:color/white"
             android:layout_marginBottom="24dp"
             android:onClick="receiver"
@@ -83,20 +94,20 @@
         android:onClick="HIW"
         android:layout_alignParentEnd="true"
         android:clickable="true"
+        android:visibility="invisible"
         android:textColor="#FFF"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Get Ravoré"
+        android:text="Wanna Get Started? Click Here!"
         android:id="@+id/getRavore"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#FFF"
+        android:textColor="#ff0000"
         android:onClick="buyRavore"
         android:padding="20dp"
 
-        />
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -48,7 +48,6 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         getRavore = (TextView)findViewById(R.id.getRavore);
         goToMainActivity = this;
 
-        if (MyApplication.allBracelets.size() < 2){MyApplication.beginDownload(goToMainActivity, getBaseContext());}
         else {startActivity(new Intent(getBaseContext(), MainActivity.class));}
 
 

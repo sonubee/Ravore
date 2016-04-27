@@ -56,7 +56,6 @@ public class AboutKandi extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, MyApplication.allEvents);
         whereHappen.setAdapter(adapter);
 
-
         textView.setText("Kandi #" + MyApplication.selectedId);
 
         saveKandiInfo.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +72,7 @@ public class AboutKandi extends Fragment {
                 else {giverOrReceiver = "receiver";}
 
                 new Firebase(MyApplication.useFirebase+"KandiInfo").child(MyApplication.selectedId).child(giverOrReceiver).setValue(saveKandiInfo);
+                new Firebase(MyApplication.useFirebase).child("IDs").child(MyApplication.selectedId).child("1").child("KandiInfo").child(giverOrReceiver).setValue(saveKandiInfo);
             }
         });
     }

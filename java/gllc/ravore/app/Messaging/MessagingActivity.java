@@ -52,6 +52,8 @@ import gllc.ravore.app.Main.Feedback;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
+import gllc.ravore.app.Objects.Bracelet2;
+import gllc.ravore.app.Objects.BraceletTransferNumber;
 import gllc.ravore.app.Objects.Message;
 import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.OrderRavore.PurchaseScreenFragment;
@@ -70,7 +72,19 @@ public class MessagingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_kandi_container);
 
-
+      //DO NOT UNCOMMENT ACCIDENTALLY. THIS IS FOR REWRITING THE BRACELET DATABASE
+/*
+        for (int i =0; i < MyApplication.allBracelets.size(); i++){
+            Bracelet2 newBracelet = new Bracelet2(MyApplication.allBracelets.get(i).getReceiverId(),MyApplication.allBracelets.get(i).getGiverId(), MyApplication.allBracelets.get(i).getBraceletId(), MyApplication.allBracelets.get(i).getDateCreated(), MyApplication.allBracelets.get(i).getDateReceived(), MyApplication.allBracelets.get(i).getDateRegistered(), 1);
+            new Firebase(MyApplication.useFirebase+"IDs/"+MyApplication.allBracelets.get(i).getBraceletId()+"/1/Info").setValue(newBracelet);
+        }
+*/
+/*
+        for (int j= 0 ; j < MyApplication.allGivenAndReceivedBraceletsObjects.size(); j++){
+            //BraceletTransferNumber braceletTransferNumber = new BraceletTransferNumber(MyApplication.allGivenAndReceivedBraceletsObjects.get(j).getBraceletId(), 1);
+            new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("Bracelets").child(MyApplication.allGivenAndReceivedBraceletsObjects.get(j).getBraceletId()).child("1").setValue(MyApplication.allGivenAndReceivedBraceletsObjects.get(j).getBraceletId());
+        }
+*/
         messagingFragment = new MessagingFragment();
 
         getSupportFragmentManager().beginTransaction()
