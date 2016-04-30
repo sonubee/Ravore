@@ -42,7 +42,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "production";
+    public final static String devStatus = "sandbox";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<>();
@@ -70,7 +70,6 @@ public class MyApplication extends Application {
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
-
 
     @Override
     public void onCreate()

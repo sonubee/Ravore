@@ -16,6 +16,7 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.ravore.app.Automation.ClearNotifications;
+import gllc.ravore.app.FestivalInfo.ShowFestivals;
 import gllc.ravore.app.Pushy.PushReceiver;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
@@ -66,6 +67,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 3:
                 mFragment = new ListOrdersFragment();
+                break;
+
+            case 4:
+                mFragment = new ShowFestivals();
                 break;
 
             default:
@@ -150,7 +155,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
 //        mHelpLiveo.addSeparator(); // Item separator
         mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
-//        mHelpLiveo.add(getString(R.string.spam), R.mipmap.ic_report_black_24dp, 120);
+        mHelpLiveo.add(getString(R.string.spam), R.mipmap.ic_report_black_24dp, 120);
 
         //with(this, Navigation.THEME_DARK). add theme dark
         //with(this, Navigation.THEME_LIGHT). add theme light

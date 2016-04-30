@@ -122,7 +122,6 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
         if (MyApplication.devStatus.equals("production")){
             Mint.logEvent("Order Ravore Activity");}
-
     }
 
     public void setupFragments() {

@@ -37,6 +37,10 @@
             android:label="Get Ravoré" >
         </activity>
         <activity
+            android:name=".FestivalInfo.FestivalInfoActivity"
+            android:label="Festival Info" >
+        </activity>
+        <activity
             android:name=".Main.LoginActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" >
