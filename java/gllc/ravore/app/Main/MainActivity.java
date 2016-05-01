@@ -40,7 +40,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         Pushy.listen(this);
         long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
         Pushy.setHeartbeatInterval(interval, this);
-        new RegisterPushy(getApplicationContext()).execute();
+        new RegisterPushy(getApplicationContext(), this).execute();
     }
 
     @Override
@@ -161,6 +161,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
         mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
+        //mHelpLiveo.add("About", R.drawable.about);
 //        mHelpLiveo.addSeparator(); // Item separator
 
         //with(this, Navigation.THEME_DARK). add theme dark

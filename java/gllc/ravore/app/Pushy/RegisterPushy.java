@@ -1,6 +1,8 @@
 package gllc.ravore.app.Pushy;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,9 +23,11 @@ import me.pushy.sdk.Pushy;
 public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 {
     private Context applicationContext;
+    Activity activity;
 
-    public RegisterPushy(Context applicationContext){
+    public RegisterPushy(Context applicationContext, Activity activity){
         this.applicationContext = applicationContext;
+        this.activity = activity;
     }
 
     protected Exception doInBackground(Void... params)
@@ -90,11 +94,17 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
         Log.i("--AllRegisterPushy", "Before Map");
 
+        Context context = activity;
+
+        SharedPreferences sharedPref = context.getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+        String ravorName = sharedPref.getString("RavorName", "NA");
+
         Map<String, Object> putToken = new HashMap<String, Object>();
         putToken.put("token", MyApplication.registrationId);
         putToken.put("deviceId", MyApplication.android_id);
         putToken.put("os", "android");
         putToken.put("lastLogin", GetDateTimeInstance.getRegDate());
+        putToken.put("ravorName", ravorName);
 
         Log.i("--AllRegisterPushy", "Pushing Token: " + putToken);
 

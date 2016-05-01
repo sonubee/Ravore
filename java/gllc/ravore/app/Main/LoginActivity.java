@@ -1,7 +1,9 @@
 package gllc.ravore.app.Main;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -48,7 +50,7 @@ public class LoginActivity extends FragmentActivity implements GoToMainActivity 
         getRavore = (TextView)findViewById(R.id.getRavore);
         goToMainActivity = this;
 
-        if (MyApplication.allGivenAndReceivedBraceletsObjects.size() < 1){MyApplication.beginDownload(goToMainActivity, getBaseContext());}
+        if (MyApplication.allBracelets.size() < 1){MyApplication.beginDownload(goToMainActivity, getBaseContext());}
         else {startActivity(new Intent(getBaseContext(), MainActivity.class));}
 
 

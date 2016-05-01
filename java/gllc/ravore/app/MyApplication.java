@@ -3,6 +3,7 @@ package gllc.ravore.app;
 import android.*;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -73,6 +74,7 @@ public class MyApplication extends Application {
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE =5;
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
+
 
     @Override
     public void onCreate()

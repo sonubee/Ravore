@@ -28,6 +28,7 @@ import gllc.ravore.app.R;
  */
 public class DownloadObjects {
 
+    boolean beginDownload = false;
     GoToMainActivity goToMainActivity;
 
     public DownloadObjects (final Context context, final GoToMainActivity goToMainActivity){
@@ -53,10 +54,15 @@ public class DownloadObjects {
 
                 if (!MyApplication.isAlreadyUser) {
                     if (bracelet.getGiverId().equals(MyApplication.android_id) || bracelet.getReceiverId().equals(MyApplication.android_id)) {
-                        goToMainActivity.GoToMain();
+                        //goToMainActivity.GoToMain();
                         MyApplication.isAlreadyUser = true;
 
                     }
+                }
+
+                if (!beginDownload){
+                    goToMainActivity.GoToMain();
+                    beginDownload = true;
                 }
             }
 
