@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import gllc.ravore.app.R;
@@ -50,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.pics2, R.drawable.placeholder,
-            R.drawable.placeholder, R.drawable.pics2,
+            R.drawable.pics3, R.drawable.picsmap,
+            R.drawable.picstickets, R.drawable.picsweb,
     };
 }

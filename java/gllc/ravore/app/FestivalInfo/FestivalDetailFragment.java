@@ -25,8 +25,8 @@ import gllc.ravore.app.R;
  */
 public class FestivalDetailFragment extends Fragment {
 
-    TextView dateFestival, locationFestival, priceFestival, webFestival, campingFestival, nameFestival, googleImagesFestival;
-    ImageView imageFestival;
+    TextView dateFestival, locationFestival, priceFestival, campingFestival, nameFestival;
+    //ImageView imageFestival;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,11 +41,9 @@ public class FestivalDetailFragment extends Fragment {
         dateFestival = (TextView)view.findViewById(R.id.dateFestival);
         locationFestival = (TextView)view.findViewById(R.id.locationFestival);
         priceFestival = (TextView)view.findViewById(R.id.priceFestival);
-        webFestival = (TextView)view.findViewById(R.id.webFestival);
         campingFestival = (TextView)view.findViewById(R.id.campingFestival);
         nameFestival = (TextView)view.findViewById(R.id.nameFestival);
-        imageFestival = (ImageView)view.findViewById(R.id.imageFestival);
-        googleImagesFestival = (TextView)view.findViewById(R.id.googleImagesFestival);
+        //imageFestival = (ImageView)view.findViewById(R.id.imageFestival);
 
         return view;
     }
@@ -57,26 +55,10 @@ public class FestivalDetailFragment extends Fragment {
         dateFestival.setText(MyApplication.pickedFestival.getDate());
         locationFestival.setText(MyApplication.pickedFestival.getLocation());
         priceFestival.setText(MyApplication.pickedFestival.getPrice());
-        webFestival.setText("Click Here for Website");
         campingFestival.setText("Camping: " + MyApplication.pickedFestival.getCamping());
         nameFestival.setText(MyApplication.pickedFestival.getName());
 
-        Picasso.with(getContext()).load(MyApplication.pickedFestival.getImageUrl()).into(imageFestival);
-
-        webFestival.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MyApplication.pickedFestival.getWebsite())));
-            }
-        });
-
-        googleImagesFestival.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempString = MyApplication.pickedFestival.getName().replace(' ', '+');
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + tempString + "&tbm=isch")));
-            }
-        });
+        //Picasso.with(getContext()).load(MyApplication.pickedFestival.getImageUrl()).into(imageFestival);
 
         GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(getContext()));

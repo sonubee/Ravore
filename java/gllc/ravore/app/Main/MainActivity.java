@@ -52,25 +52,30 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         switch (position) {
 
             case 0:
-                mFragment = new ShowAllMessagesFragment();
+                mFragment = new Profile();
+
                 break;
 
             case 1:
+                mFragment = new ShowFestivals();
+                break;
+
+            case 2:
+                mFragment = new ShowAllMessagesFragment();
+                break;
+
+            case 3:
                 Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
                 startActivity(intent);
                 mFragment = new ShowAllMessagesFragment();
                 break;
 
-            case 2:
-                mFragment = new Feedback();
-                break;
-
-            case 3:
+            case 4:
                 mFragment = new ListOrdersFragment();
                 break;
 
-            case 4:
-                mFragment = new ShowFestivals();
+            case 5:
+                mFragment = new Feedback();
                 break;
 
             default:
@@ -144,24 +149,25 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //this.userName.setText("Check Out Other Features Below!");
         //this.userEmail.setText("Or Keep Chatting!");
 
-        this.userBackground.setImageResource(R.drawable.kandi);
+        this.userBackground.setImageResource(R.drawable.wheel);
 
         // Creating items navigation
         mHelpLiveo = new HelpLiveo();
+        mHelpLiveo.add("Profile", R.drawable.ic_launcher);
+        mHelpLiveo.add(getString(R.string.spam), R.drawable.ferris);
         mHelpLiveo.add(getString(R.string.inbox), R.mipmap.ic_drafts_black_24dp);
 //        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
         //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);
         mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
+        mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
 //        mHelpLiveo.addSeparator(); // Item separator
-        mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
-        mHelpLiveo.add(getString(R.string.spam), R.drawable.ferris);
 
         //with(this, Navigation.THEME_DARK). add theme dark
         //with(this, Navigation.THEME_LIGHT). add theme light
 
         with(this) // default theme is dark
-                .startingPosition(0) //Starting position in the list
+                .startingPosition(1) //Starting position in the list
                 .addAllHelpItem(mHelpLiveo.getHelp())
                         //.footerItem(R.string.settings, R.mipmap.ic_settings_black_24dp)
                 .setOnClickUser(onClickPhoto)
