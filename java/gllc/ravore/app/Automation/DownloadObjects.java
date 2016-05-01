@@ -2,14 +2,11 @@ package gllc.ravore.app.Automation;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import gllc.ravore.app.Interfaces.GoToMainActivity;
@@ -20,9 +17,9 @@ import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
+import gllc.ravore.app.Objects.Festival;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.Objects.Token;
-import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Objects.UserInfo;
 import gllc.ravore.app.R;
 
@@ -332,32 +329,31 @@ public class DownloadObjects {
             }
         });
 
-        new Firebase(MyApplication.useFirebase+"Events").addChildEventListener(new ChildEventListener() {
+        new Firebase(MyApplication.useFirebase).child("Events").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MyApplication.allEvents.add(dataSnapshot.getKey());
+                Festival festival = dataSnapshot.getValue(Festival.class);
+                MyApplication.allEventsString.add(dataSnapshot.getKey());
+                MyApplication.allEvents.add(festival);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
+
     }
 
 }

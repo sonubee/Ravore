@@ -28,6 +28,7 @@ import gllc.ravore.app.Automation.ProfilePhoto;
 import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
+import gllc.ravore.app.Objects.Festival;
 import gllc.ravore.app.Pushy.RegisterPushy;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
@@ -61,7 +62,9 @@ public class MyApplication extends Application {
     public static ArrayList<Orders> allOrders = new ArrayList<>();
     public static ArrayList<UserInfo> allUsers = new ArrayList<>();
     public static ArrayList<Token> allTokens = new ArrayList<>();
-    public static ArrayList<String> allEvents = new ArrayList<>();
+    public static ArrayList<String> allEventsString = new ArrayList<>();
+    public static ArrayList<Festival> allEvents = new ArrayList<>();
+    public static Festival pickedFestival;
 
     public static String useFirebase = "";
     public static ProfilePhoto file;

@@ -45,6 +45,7 @@ import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import gllc.ravore.app.Automation.GetDateTimeInstance;
+import gllc.ravore.app.FestivalInfo.FestivalInfoActivity;
 import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Orders;
@@ -161,7 +162,16 @@ public class OrderRavoreActivity extends AppCompatActivity {
 
                     ShoppingCartAdapter.cartQty.clear();
                     ShoppingCartAdapter.beadAdapter.clear();
+                    startActivity(new Intent(getBaseContext(), LoginActivity.class));
                     finish();
+
+                    if (MyApplication.cameFromLogin){
+                        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                        startActivity(intent);
+                        MyApplication.cameFromLogin = false;
+                    }
+
+
                 }
 
                 else if (whichFragment.equals("PurchaseScreenFragment")){

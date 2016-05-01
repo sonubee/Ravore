@@ -8,8 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.R;
 
 /**
@@ -20,21 +23,23 @@ public class FestivalInfoAdapter extends BaseAdapter{
     ArrayList<String> festvials = new ArrayList<>();
     private LayoutInflater layoutInflater;
     ViewHolder holder = new ViewHolder();
+    Context context;
 
     public FestivalInfoAdapter(Context context){
         festvials.add("EDC");
         festvials.add("Lightning in a Bottle");
         layoutInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
     public int getCount() {
-        return festvials.size();
+        return MyApplication.allEvents.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return festvials.get(position);
+        return MyApplication.allEvents.get(position);
     }
 
     @Override
@@ -52,10 +57,13 @@ public class FestivalInfoAdapter extends BaseAdapter{
         holder.festivalLocation = (TextView)convertView.findViewById(R.id.festivalLocation);
         holder.festivalImage = (ImageView)convertView.findViewById(R.id.festivalImage);
 
-        holder.festivalName.setText(festvials.get(position));
-        holder.festivalDate.setText("Date Here");
-        holder.festivalLocation.setText("Location Here");
-        holder.festivalImage.setImageResource(R.drawable.placeholder);
+        holder.festivalName.setText(MyApplication.allEvents.get(position).getName());
+        holder.festivalDate.setText(MyApplication.allEvents.get(position).getDate());
+        holder.festivalLocation.setText(MyApplication.allEvents.get(position).getLocation());
+
+        Picasso.with(context).load(MyApplication.allEvents.get(position).getImageUrl()).into(holder.festivalImage);
+
+
 
         return convertView;
     }

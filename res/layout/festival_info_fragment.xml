@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/imageView8"
+        android:id="@+id/imageFestival"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/placeholder"/>
@@ -18,40 +18,40 @@
         android:layout_marginTop="15dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Date"
-        android:id="@+id/textView21"
-        android:layout_below="@+id/imageView8"
+        android:id="@+id/dateFestival"
+        android:layout_below="@+id/nameFestival"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#48bcff"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Location"
-        android:id="@+id/textView22"
-        android:layout_below="@+id/textView21"
+        android:id="@+id/locationFestival"
+        android:layout_below="@+id/dateFestival"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#48bcff"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Ticket Price"
-        android:id="@+id/textView23"
-        android:layout_below="@+id/textView22"
+        android:id="@+id/priceFestival"
+        android:layout_below="@+id/locationFestival"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#48bcff"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Website Link (Webview)"
-        android:id="@+id/textView24"
-        android:layout_below="@+id/textView23"
+        android:id="@+id/webFestival"
+        android:layout_below="@+id/priceFestival"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#48bcff"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,40 +59,61 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Misc Info"
         android:id="@+id/textView25"
-        android:layout_below="@+id/textView24"
+        android:layout_below="@+id/webFestival"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
-        android:textColor="#FFF"/>
+        android:textColor="#9ba9ff"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Camping: Y/N"
-        android:id="@+id/textView26"
+        android:id="@+id/campingFestival"
         android:layout_below="@+id/textView25"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#fff048"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Totems: Y/N"
-        android:id="@+id/textView27"
-        android:layout_below="@+id/textView26"
-        android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Festival Name"
+        android:id="@+id/nameFestival"
+        android:layout_below="@+id/imageFestival"
+        android:layout_centerHorizontal="true"
+        android:textColor="#0cf104"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Gloves: Y/N"
-        android:id="@+id/textView28"
-        android:layout_below="@+id/textView27"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Click Here for Images"
+        android:id="@+id/googleImagesFestival"
+        android:layout_below="@+id/webFestival"
         android:layout_alignParentStart="true"
-        android:textColor="#FFF"/>
+        android:textColor="#48bcff"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_below="@+id/campingFestival">
+
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnWidth="35dp"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:background="#000"
+            android:gravity="center"
+            />
+
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

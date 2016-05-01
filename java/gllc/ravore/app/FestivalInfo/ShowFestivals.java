@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import gllc.ravore.app.Messaging.ListAllMessagesAdapter;
 import gllc.ravore.app.Messaging.MessagingActivity;
+import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
 import gllc.ravore.app.R;
 
@@ -47,6 +48,7 @@ public class ShowFestivals extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> a, View v, final int position, long id) {
                 startActivity(new Intent(getContext(), FestivalInfoActivity.class));
+                MyApplication.pickedFestival = MyApplication.allEvents.get(position);
             }
         });
     }

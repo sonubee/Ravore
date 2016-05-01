@@ -155,7 +155,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
 //        mHelpLiveo.addSeparator(); // Item separator
         mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
-        mHelpLiveo.add(getString(R.string.spam), R.mipmap.ic_report_black_24dp, 120);
+        mHelpLiveo.add(getString(R.string.spam), R.drawable.ferris);
 
         //with(this, Navigation.THEME_DARK). add theme dark
         //with(this, Navigation.THEME_LIGHT). add theme light
