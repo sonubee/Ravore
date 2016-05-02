@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -168,10 +169,10 @@ public class MessagingFragment extends Fragment implements StartCamera {
             messageSender = braceletForMessaging.getReceiverId();
             messageReceiver = braceletForMessaging.getGiverId();}
 
-        for (int i= 0 ; i < MyApplication.allTokens.size(); i++) {
-            if (messageReceiver.equals(MyApplication.allTokens.get(i).getUserId())) {
-                messageReceiverToken = MyApplication.allTokens.get(i).getToken();
-                messageReceiverOs = MyApplication.allTokens.get(i).getOs();
+        for (int i= 0 ; i < MyApplication.allUsersToken.size(); i++) {
+            if (messageReceiver.equals(MyApplication.allUsersToken.get(i).getDeviceId())) {
+                messageReceiverToken = MyApplication.allUsersToken.get(i).getToken();
+                messageReceiverOs = MyApplication.allUsersToken.get(i).getOs();
             }
         }
     }
@@ -197,13 +198,41 @@ public class MessagingFragment extends Fragment implements StartCamera {
             }
         });
 
+
+
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+        String ravorName = sharedPref.getString("RavorName", "(Ravor Name: NA)");
+
         giverName = (TextView) getActivity().findViewById(R.id.giver_name);
         giverName.setTextColor(Color.GREEN);
-        if (MyApplication.currentUserIsGiver){giverName.setText("You");}
-
         receiverName = (TextView) getActivity().findViewById(R.id.receiver_name);
         receiverName.setTextColor(Color.CYAN);
-        if (!MyApplication.currentUserIsGiver){receiverName.setText("You");}
+        //if (!MyApplication.currentUserIsGiver){receiverName.setText("You: " + ravorName);}
+
+
+        if (MyApplication.currentUserIsGiver){
+            giverName.setText("You: " + ravorName);
+
+            for (int i = 0; i < MyApplication.allUsersToken.size(); i++){
+                Log.i("--AllMessagingFragment", "Going through all tokens");
+                if (braceletForMessaging.getReceiverId().equals(MyApplication.allUsersToken.get(i).getDeviceId())){
+                    receiverName.setText("Receiver: " + MyApplication.allUsersToken.get(i).getRavorName());
+                }
+            }
+        }
+
+        else {
+            receiverName.setText("You: " + ravorName);
+
+            for (int i = 0; i < MyApplication.allUsersToken.size(); i++){
+                Log.i("--AllMessagingFragment", "Going through all tokens");
+                if (braceletForMessaging.getGiverId().equals(MyApplication.allUsersToken.get(i).getDeviceId())){
+                    giverName.setText("Giver: " + MyApplication.allUsersToken.get(i).getRavorName());
+                }
+            }
+        }
+
 
         giverName.setTextColor(Color.GREEN);
         receiverName.setTextColor(Color.CYAN);

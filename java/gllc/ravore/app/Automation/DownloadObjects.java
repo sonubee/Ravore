@@ -3,6 +3,8 @@ package gllc.ravore.app.Automation;
 import android.content.Context;
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -20,12 +22,14 @@ import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Festival;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.Objects.Token;
+import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Objects.UserInfo;
 import gllc.ravore.app.R;
 
 /**
  * Created by bhangoo on 3/30/2016.
  */
+
 public class DownloadObjects {
 
     boolean beginDownload = false;
@@ -60,10 +64,6 @@ public class DownloadObjects {
                     }
                 }
 
-                if (!beginDownload){
-                    goToMainActivity.GoToMain();
-                    beginDownload = true;
-                }
             }
 
             @Override
@@ -300,7 +300,7 @@ public class DownloadObjects {
             }
         });
 
-        new Firebase(MyApplication.useFirebase+"Users/PushToken").addChildEventListener(new ChildEventListener() {
+        new Firebase(MyApplication.useFirebase + "Users/PushToken").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -341,6 +341,36 @@ public class DownloadObjects {
                 Festival festival = dataSnapshot.getValue(Festival.class);
                 MyApplication.allEventsString.add(dataSnapshot.getKey());
                 MyApplication.allEvents.add(festival);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        new Firebase(MyApplication.useFirebase).child("UserInfo").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                MyApplication.allUsersToken.add(user);
+
+                if (!beginDownload) {
+
+                    goToMainActivity.GoToMain();
+                    beginDownload = true;
+                }
             }
 
             @Override

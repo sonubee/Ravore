@@ -90,7 +90,7 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
         Log.i("--AllRegisterPushy", "After loop");
 
-        if (!foundToken){new Firebase(MyApplication.useFirebase+"Users/PushToken").push().setValue(setUpToken);}
+        //if (!foundToken){new Firebase(MyApplication.useFirebase+"Users/PushToken").push().setValue(setUpToken);}
 
         Log.i("--AllRegisterPushy", "Before Map");
 

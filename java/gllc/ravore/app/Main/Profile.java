@@ -59,7 +59,7 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 final EditText input = new EditText(getContext());
-                input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
+                input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 input.setHint("Enter Ravor Name Here");
                 builder.setTitle("Ravor Name");
                 builder.setMessage("Enter the Ravore Name Below!");
