@@ -9,7 +9,9 @@
         android:layout_height="150dp"
         android:id="@+id/ravorImage"
         android:src="@drawable/placeholder"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:layout_marginTop="35dp"

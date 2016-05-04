@@ -11,12 +11,17 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.ravore.app.Automation.ClearNotifications;
+import gllc.ravore.app.Automation.UploadImage;
 import gllc.ravore.app.FestivalInfo.ShowFestivals;
+import gllc.ravore.app.Messaging.LoadProfilePhoto;
 import gllc.ravore.app.Pushy.PushReceiver;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
@@ -175,5 +180,36 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 .setOnPrepareOptionsMenu(onPrepare)
                 .setOnClickFooter(onClickFooter)
                 .build();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.i("--AllMessagingActivity", "Request Code: " + requestCode + " : " + MyApplication.REQUEST_CAMERA + " : " + MyApplication.SELECT_FILE);
+        Log.i("--AllMessagingActivity", "Result Code: " + resultCode + " Result Ok : " + RESULT_OK);
+
+        if (resultCode == RESULT_OK) {
+            ImageView imageView;
+
+            //if (MyApplication.currentUserIsGiver){imageView = (ImageView)findViewById(R.id.giver_image);}
+            //if (MyApplication.currentUserIsGiver){imageView = MessagingFragment.giverImage;}
+            //else {imageView = (ImageView)findViewById(R.id.receiver_image);}
+            //else {imageView = MessagingFragment.receiverImage;}
+
+            imageView = (ImageView)findViewById(R.id.ravorImage);
+
+            if (requestCode == MyApplication.REQUEST_CAMERA) {
+                Log.i("--AllMessagingActivity", "Before LoadProfile");
+                new LoadProfilePhoto(imageView, this);
+            }
+
+            else if (requestCode == MyApplication.SELECT_FILE) {new LoadProfilePhoto(data.getData(), imageView, this);}
+
+            Log.i("--AllMessagingActivity", "Before Uploading Image");
+            new UploadImage(requestCode, this).execute();
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Error", Toast.LENGTH_SHORT).show();}
     }
 }

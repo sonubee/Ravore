@@ -33,6 +33,7 @@ public class LoadProfilePhoto {
 
     AlertDialog.Builder alertadd;
     AlertDialog.Builder alertadd2;
+    AlertDialog.Builder alertadd3;
     StartCamera startCamera;
 
     //SETUP IMAGES
@@ -55,8 +56,8 @@ public class LoadProfilePhoto {
 
     //CAMERA
     public LoadProfilePhoto(ImageView imageView, Activity activity){
-        if (MyApplication.currentUserIsGiver){imageView = (ImageView)activity.findViewById(R.id.giver_image);}
-        else {imageView = (ImageView)activity.findViewById(R.id.receiver_image);}
+        //if (MyApplication.currentUserIsGiver){imageView = (ImageView)activity.findViewById(R.id.giver_image);}
+        //else {imageView = (ImageView)activity.findViewById(R.id.receiver_image);}
 
         imageView.setVisibility(View.VISIBLE);
 
@@ -108,6 +109,43 @@ public class LoadProfilePhoto {
         Log.i("LoadProfilePhoto", "Directory: " + MyApplication.file.saveToInternalStorage(myBitmap, activity.getBaseContext()));
     }
 
+    //CONSTRUCTOR TO LOAD PROFILE INTO ANY IMAGEVIEW
+    public LoadProfilePhoto(ImageView imageView, Context context, StartCamera startCamera){
+        alertadd3 = new AlertDialog.Builder(context);
+        final StartCamera startCamera1 = startCamera;
+
+        //MyApplication.file.loadImageFromStorage(imageView, context);
+        //Log.i("LoadProfilePhoto", "Loading From local path");
+
+        if (MyApplication.file.getFile().exists()) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(MyApplication.file.getPath());
+            imageView.setImageBitmap(RotateBitmap.RotateBitmap(myBitmap));
+        }
+
+        else {imageView.setImageResource(R.drawable.anon);}
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] items;
+                if (Build.VERSION.SDK_INT == 23) {
+                    items = new CharSequence[]{"View Photo", "Take Photo", "Delete Photo", "Cancel"};
+                } else {
+                    items = new CharSequence[]{"View Photo", "Take Photo", "Choose from Library", "Delete Photo", "Cancel"};
+                }
+
+                alertadd3.setTitle(" Photo Options!");
+                alertadd3.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        startCamera1.StartCamera(items[item].toString());
+                    }
+                });
+                alertadd3.show();
+            }
+        });
+    }
+
     //LOAD INTO IMAGEVIEW
     public void loadLocalPath(ImageView imageView, Context context){
 
@@ -125,12 +163,10 @@ public class LoadProfilePhoto {
             @Override
             public void onClick(View v) {
                 final CharSequence[] items;
-                if (Build.VERSION.SDK_INT == 23){
-                    items = new CharSequence[]{ "View Photo","Take Photo", "Delete Photo", "Cancel" };
-                }
-
-                else {
-                    items = new CharSequence[]{ "View Photo","Take Photo", "Choose from Library", "Delete Photo", "Cancel" };
+                if (Build.VERSION.SDK_INT == 23) {
+                    items = new CharSequence[]{"View Photo", "Take Photo", "Delete Photo", "Cancel"};
+                } else {
+                    items = new CharSequence[]{"View Photo", "Take Photo", "Choose from Library", "Delete Photo", "Cancel"};
                 }
 
                 alertadd2.setTitle(" Photo Options!");
