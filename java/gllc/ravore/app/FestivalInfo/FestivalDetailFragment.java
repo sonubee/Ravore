@@ -73,10 +73,16 @@ public class FestivalDetailFragment extends Fragment {
                         String tempString = MyApplication.pickedFestival.getName().replace(' ', '+');
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + tempString + "&tbm=isch")));
                         break;
+                    
+                    case 2:
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MyApplication.pickedFestival.getTicketsSite())));
+                        break;
 
                     case 3:
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MyApplication.pickedFestival.getWebsite())));
                         break;
+
+
                 }
             }
         });
