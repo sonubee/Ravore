@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import gllc.ravore.app.Interfaces.LoadMap;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.R;
@@ -27,6 +28,7 @@ public class FestivalDetailFragment extends Fragment {
 
     TextView dateFestival, locationFestival, priceFestival, campingFestival, nameFestival;
     //ImageView imageFestival;
+    LoadMap loadMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class FestivalDetailFragment extends Fragment {
         campingFestival = (TextView)view.findViewById(R.id.campingFestival);
         nameFestival = (TextView)view.findViewById(R.id.nameFestival);
         //imageFestival = (ImageView)view.findViewById(R.id.imageFestival);
+        loadMap = (LoadMap)getActivity();
 
         return view;
     }
@@ -65,7 +68,7 @@ public class FestivalDetailFragment extends Fragment {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
 
                 switch (position) {
 
@@ -73,7 +76,12 @@ public class FestivalDetailFragment extends Fragment {
                         String tempString = MyApplication.pickedFestival.getName().replace(' ', '+');
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + tempString + "&tbm=isch")));
                         break;
-                    
+
+                    case 1:
+                        //OPEN MAP FRAGMENT HERE
+                        loadMap.loadMap();
+                        break;
+
                     case 2:
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MyApplication.pickedFestival.getTicketsSite())));
                         break;
