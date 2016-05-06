@@ -166,8 +166,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
         mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
-        mHelpLiveo.add("Get Matched", R.drawable.common_google_signin_btn_icon_light_disabled);
-        mHelpLiveo.add("Pre-Parties", R.drawable.common_google_signin_btn_icon_light_disabled);
         //mHelpLiveo.add("About", R.drawable.about);
 //        mHelpLiveo.addSeparator(); // Item separator
 

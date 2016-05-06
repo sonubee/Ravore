@@ -23,7 +23,7 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.feedback, container, false);
+        View view = inflater.inflate(R.layout.frame_layout_festival_info, container, false);
 
         return view;
 

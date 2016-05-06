@@ -1,6 +1,9 @@
 package gllc.ravore.app.FestivalInfo;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -56,8 +59,18 @@ public class FestivalInfoActivity extends AppCompatActivity implements LoadMap {
     public void loadMap(){
         Log.i("--AllFIActivity", "Loaded Interface");
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, feedback).commit();
+        Fragment mFragment;
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+
+        mFragment = new MapFragment();
+
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.addToBackStack(null);
+        ft.add(R.id.fragment_container_festival_info, mFragment).commit();
+
+        //getSupportFragmentManager().beginTransaction()
+        //        .replace(R.id.fragment_container, feedback).commit();
 
     }
 }

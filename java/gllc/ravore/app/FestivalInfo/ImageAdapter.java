@@ -1,11 +1,13 @@
 package gllc.ravore.app.FestivalInfo;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import gllc.ravore.app.R;
 
@@ -14,12 +16,12 @@ import gllc.ravore.app.R;
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    //private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater=null;
 
     public ImageAdapter(Context c) {
         mContext = c;
-        //inflater = ( LayoutInflater )context.
-        //        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = ( LayoutInflater )c.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -36,6 +38,19 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        Holder holder=new Holder();
+        View rowView;
+
+        rowView = inflater.inflate(R.layout.gridview_layout, null);
+        holder.tv=(TextView) rowView.findViewById(R.id.textView1);
+        holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
+
+        holder.tv.setText(orderItems[position]);
+        holder.img.setImageResource(mThumbIds[position]);
+
+/*
+
         ImageView imageView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -52,12 +67,25 @@ public class ImageAdapter extends BaseAdapter {
 
         imageView.setImageResource(mThumbIds[position]);
         return imageView;
+        */
+        return rowView;
     }
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.pics3, R.drawable.map,
-            R.drawable.picstickets, R.drawable.picsweb,
-            R.drawable.picstickets
+            R.drawable.festival_scaled, R.drawable.map,
+            R.drawable.ticket, R.drawable.web,
+            R.drawable.scaled_festival_map, R.drawable.match,
+            R.drawable.preparty_scaled, R.drawable.uploads
     };
+
+    private String[] orderItems = {
+            "Pictures", "World Map" , "Get Tickets" , "See Website" , "Festival Map" , "Get Matched" , "Parties/Gatherings" , "Uploads"
+    };
+
+    public class Holder
+    {
+        TextView tv;
+        ImageView img;
+    }
 }
