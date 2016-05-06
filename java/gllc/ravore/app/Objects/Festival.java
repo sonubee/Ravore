@@ -14,10 +14,12 @@ public class Festival {
     String price;
     String website;
     String ticketsSite;
+    double lat;
+    double longi;
 
     public Festival(){}
 
-    public Festival(String address, String camping, String date, String imageUrl, String location, String name, String price, String website, String ticketsSite) {
+    public Festival(String address, String camping, String date, String imageUrl, String location, String name, String price, String website, String ticketsSite, double lat, double longi) {
         this.address = address;
         this.camping = camping;
         this.date = date;
@@ -27,6 +29,8 @@ public class Festival {
         this.price = price;
         this.website = website;
         this.ticketsSite = ticketsSite;
+        this.lat = lat;
+        this.longi = longi;
     }
 
     public String getAddress() {
@@ -53,13 +57,16 @@ public class Festival {
         return name;
     }
 
-    public String getPrice() {
-        return price;
-    }
+    public String getPrice() {return price;}
 
     public String getWebsite() {
         return website;
     }
 
     public String getTicketsSite() {return ticketsSite;}
+
+    public double getLat() {return lat;}
+
+    public double getLongi() {return longi;}
+
 }

@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.R;
 
 /**
@@ -37,15 +38,7 @@ public class MapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-/*
-        View view = inflater.inflate(R.layout.frame_layout_festival_info, container, false);
 
-        //SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-        //        .findFragmentById(R.id.fragment_container_festival_info);
-        //mapFragment.getMapAsync(this);
-
-        return view;
-*/
         // inflat and return the layout
         View v = inflater.inflate(R.layout.fragment_location_info, container,
                 false);
@@ -62,8 +55,10 @@ public class MapFragment extends Fragment {
 
         googleMap = mMapView.getMap();
         // latitude and longitude
-        double latitude = 17.385044;
-        double longitude = 78.486671;
+        //double latitude = 40.787042;
+        double latitude = MyApplication.pickedFestival.getLat();
+        //double longitude = -119.204384;
+        double longitude = MyApplication.pickedFestival.getLongi();
 
         // create marker
         MarkerOptions marker = new MarkerOptions().position(
@@ -76,7 +71,7 @@ public class MapFragment extends Fragment {
         // adding marker
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(17.385044, 78.486671)).zoom(12).build();
+                .target(new LatLng(latitude, longitude)).zoom(14).build();
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));
 
