@@ -68,6 +68,7 @@ public class MyApplication extends Application {
     public static ArrayList<Festival> allEvents = new ArrayList<>();
     public static ArrayList<User> allUsersToken = new ArrayList<>();
     public static Festival pickedFestival;
+    public static ArrayList<String> goingFestivals = new ArrayList<>();
 
     public static String useFirebase = "";
     public static ProfilePhoto file;

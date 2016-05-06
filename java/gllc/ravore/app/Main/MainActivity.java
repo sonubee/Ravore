@@ -50,48 +50,48 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public void onItemClick(int position) {
-        Fragment mFragment;
-        FragmentManager mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = mFragmentManager.beginTransaction();
+            Fragment mFragment;
+            FragmentManager mFragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = mFragmentManager.beginTransaction();
 
-        switch (position) {
+            switch (position) {
 
-            case 0:
-                mFragment = new Profile();
+                case 0:
+                    mFragment = new Profile();
 
-                break;
+                    break;
 
-            case 1:
-                mFragment = new ShowFestivals();
-                break;
+                case 1:
+                    mFragment = new ShowFestivals();
+                    break;
 
-            case 2:
-                mFragment = new ShowAllMessagesFragment();
-                break;
+                case 2:
+                    mFragment = new ShowAllMessagesFragment();
+                    break;
 
-            case 3:
-                Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
-                startActivity(intent);
-                mFragment = new ShowAllMessagesFragment();
-                break;
+                case 3:
+                    Intent intent = new Intent(getBaseContext(), OrderRavoreActivity.class);
+                    startActivity(intent);
+                    mFragment = new ShowAllMessagesFragment();
+                    break;
 
-            case 4:
-                mFragment = new ListOrdersFragment();
-                break;
+                case 4:
+                    mFragment = new ListOrdersFragment();
+                    break;
 
-            case 5:
-                mFragment = new Feedback();
-                break;
+                case 5:
+                    mFragment = new Feedback();
+                    break;
 
-            default:
-                mFragment = new ShowAllMessagesFragment();
-                break;
-        }
+                default:
+                    mFragment = new ShowAllMessagesFragment();
+                    break;
+            }
 
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        ft.replace(R.id.container, mFragment).commit();
+            ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            ft.replace(R.id.container, mFragment).commit();
 
-        setElevationToolBar(position != 2 ? 15 : 0);
+            setElevationToolBar(position != 2 ? 15 : 0);
     }
 
     @Override
@@ -166,6 +166,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
         mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
         mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
+        mHelpLiveo.add("Get Matched", R.drawable.common_google_signin_btn_icon_light_disabled);
+        mHelpLiveo.add("Pre-Parties", R.drawable.common_google_signin_btn_icon_light_disabled);
         //mHelpLiveo.add("About", R.drawable.about);
 //        mHelpLiveo.addSeparator(); // Item separator
 

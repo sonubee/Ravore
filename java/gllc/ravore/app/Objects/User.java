@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by bhangoo on 4/4/2016.
  */
 
-@JsonIgnoreProperties({ "Bracelets" , "ProfilePics" })
+@JsonIgnoreProperties({ "Bracelets" , "ProfilePics", "GoingEvents" })
 public class User {
 
     String lastLogin;

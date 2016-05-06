@@ -8,7 +8,7 @@
     <ImageView
         android:padding="10dp"
         android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_height="80dp"
         android:id="@+id/festivalImage"
         android:src="@drawable/placeholder"
         android:layout_alignParentTop="true"
@@ -18,7 +18,7 @@
         android:layout_marginTop="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Festival Name"
         android:id="@+id/festivalName"
         android:layout_alignParentTop="true"
@@ -57,4 +57,16 @@
         android:layout_marginLeft="120dp"
         android:layout_below="@+id/festivalDate"
         />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleGoingFestival"
+        android:layout_alignBottom="@+id/festivalDate"
+        android:layout_alignParentEnd="true"
+        android:textOff="Not Going"
+        android:textOn  ="Going"
+        android:focusable="false"/>
+
 </RelativeLayout>

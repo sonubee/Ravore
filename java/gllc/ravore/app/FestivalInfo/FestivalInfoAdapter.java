@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
@@ -48,7 +50,7 @@ public class FestivalInfoAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         convertView = layoutInflater.inflate(R.layout.event_list_row_layout, null);
 
@@ -56,12 +58,33 @@ public class FestivalInfoAdapter extends BaseAdapter{
         holder.festivalDate = (TextView)convertView.findViewById(R.id.festivalDate);
         holder.festivalLocation = (TextView)convertView.findViewById(R.id.festivalLocation);
         holder.festivalImage = (ImageView)convertView.findViewById(R.id.festivalImage);
+        holder.goingToggle = (ToggleButton)convertView.findViewById(R.id.toggleGoingFestival);
 
         holder.festivalName.setText(MyApplication.allEvents.get(position).getName());
         holder.festivalDate.setText(MyApplication.allEvents.get(position).getDate());
         holder.festivalLocation.setText(MyApplication.allEvents.get(position).getLocation());
 
-        Picasso.with(context).load(MyApplication.allEvents.get(position).getImageUrl()).into(holder.festivalImage);
+        if (MyApplication.goingFestivals.contains(MyApplication.allEvents.get(position).getName())){
+            holder.goingToggle.setChecked(true);
+        }
+
+        //holder.goingToggle.setVisibility(View.INVISIBLE);
+
+        Picasso.with(context).load(MyApplication.allEvents.get(position).getImageUrl()).resize(120,80).into(holder.festivalImage);
+
+        holder.goingToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MyApplication.goingFestivals.contains(MyApplication.allEvents.get(position).getName())){
+                    new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("GoingEvents").child(MyApplication.allEvents.get(position).getName()).removeValue();
+                    MyApplication.goingFestivals.remove(MyApplication.allEvents.get(position).getName());
+                }
+
+                else {
+                    new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("GoingEvents").child(MyApplication.allEvents.get(position).getName()).setValue(true);
+                }
+            }
+        });
 
 
 
@@ -73,5 +96,6 @@ public class FestivalInfoAdapter extends BaseAdapter{
         TextView festivalDate;
         TextView festivalLocation;
         ImageView festivalImage;
+        ToggleButton goingToggle;
     }
 }

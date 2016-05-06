@@ -53,21 +53,18 @@
         android:layout_centerHorizontal="true"
         android:textColor="#0cf104"/>
 
-    <LinearLayout
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
-        android:layout_below="@+id/campingFestival">
+        android:layout_height="wrap_content"
+        android:columnWidth="25dp"
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:background="#000"
+        android:gravity="center"
+        android:backgroundTint="#FFF"
+        android:layout_below="@+id/campingFestival"
+        />
 
-        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnWidth="35dp"
-            android:numColumns="2"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:background="#000"
-            android:gravity="center"
-            />
-    </LinearLayout>
 </RelativeLayout>

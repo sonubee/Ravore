@@ -390,6 +390,29 @@ public class DownloadObjects {
             }
         });
 
+        new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("GoingEvents").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                MyApplication.goingFestivals.add(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
     }
 
 }
