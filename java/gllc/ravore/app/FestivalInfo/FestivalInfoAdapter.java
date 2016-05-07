@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -58,7 +59,7 @@ public class FestivalInfoAdapter extends BaseAdapter{
         holder.festivalDate = (TextView)convertView.findViewById(R.id.festivalDate);
         holder.festivalLocation = (TextView)convertView.findViewById(R.id.festivalLocation);
         holder.festivalImage = (ImageView)convertView.findViewById(R.id.festivalImage);
-        holder.goingToggle = (ToggleButton)convertView.findViewById(R.id.toggleGoingFestival);
+        holder.goingToggle = (Switch)convertView.findViewById(R.id.toggleGoingFestival);
 
         holder.festivalName.setText(MyApplication.allEvents.get(position).getName());
         holder.festivalDate.setText(MyApplication.allEvents.get(position).getDate());
@@ -96,6 +97,6 @@ public class FestivalInfoAdapter extends BaseAdapter{
         TextView festivalDate;
         TextView festivalLocation;
         ImageView festivalImage;
-        ToggleButton goingToggle;
+        Switch goingToggle;
     }
 }

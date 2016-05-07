@@ -121,8 +121,6 @@ public class MessagingFragment extends Fragment implements StartCamera {
     }
 
     public void setup() {
-
-
         alertadd = new AlertDialog.Builder(getContext());
 
         startCamera = (StartCamera)this;
@@ -132,7 +130,6 @@ public class MessagingFragment extends Fragment implements StartCamera {
         sendMessage = (EditText)getActivity().findViewById(R.id.message_to_send);
 
         client = new AsyncHttpClient();
-
     }
 
     public void setupKeyboardSendButton(){

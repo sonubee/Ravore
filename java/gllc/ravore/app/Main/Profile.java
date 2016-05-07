@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.braintreepayments.api.threedsecure.ThreeDSecureWebChromeClient;
 import com.firebase.client.Firebase;
 
 import gllc.ravore.app.Automation.AddBracelet;
@@ -41,8 +42,7 @@ import gllc.ravore.app.R;
 
 public class Profile extends Fragment implements StartCamera {
 
-    Context context = getActivity();
-    TextView ravorName;
+    TextView ravorName, gender, help;
     ImageView ravorImage;
     StartCamera startCamera;
     AlertDialog.Builder alertaddProfile;
@@ -59,6 +59,8 @@ public class Profile extends Fragment implements StartCamera {
         View view = inflater.inflate(R.layout.profile, container, false);
 
         ravorName = (TextView)view.findViewById(R.id.ravorName);
+        gender = (TextView)view.findViewById(R.id.gender);
+        help = (TextView)view.findViewById(R.id.help);
         ravorImage = (ImageView)view.findViewById(R.id.ravorImage);
 
         return view;
@@ -74,8 +76,10 @@ public class Profile extends Fragment implements StartCamera {
 
         SharedPreferences sharedPref = getActivity().getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
         String ravorNameString = sharedPref.getString("RavorName", "Ravor Name (Click Here)");
+        String genderString = sharedPref.getString("Gender", "Gender (Click Here)");
 
         ravorName.setText(ravorNameString);
+        gender.setText(genderString.substring(0,1).toUpperCase() + genderString.substring(1).toLowerCase());
 
         new LoadProfilePhoto(ravorImage, getContext(), startCamera);
 
@@ -104,6 +108,34 @@ public class Profile extends Fragment implements StartCamera {
                     }
                 });
 
+                builder.show();
+            }
+        });
+
+        gender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] items = {"Male", "Female"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Your Gender");
+
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("gender").setValue(items[item].toString().toLowerCase());
+                        gender.setText(items[item].toString());
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Your Gender");
+                builder.setMessage("Please enter a Ravor Name with 2 Words. This will not be used for login but will be displayed to others. Random characters and letters will be deleted. Examples: Happy Feet and Misty Eyes");
                 builder.show();
             }
         });

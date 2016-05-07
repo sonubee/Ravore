@@ -5,6 +5,7 @@
     android:background="#000">
 
     <ImageView
+        android:padding="20dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/ravorImage"
@@ -24,12 +25,24 @@
         android:textColor="#FFF"/>
 
     <TextView
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enter a Ravor Name with 2 Words. This will not be used for login but will be displayed to others. Random characters and letters will be deleted. Examples: Happy Feet and Misty Eyes"
-        android:id="@+id/textView19"
-        android:textColor="#6dffff"
-        android:padding="10dp"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Gender (Click Here)"
+        android:id="@+id/gender"
+        android:layout_gravity="center"
+        android:textColor="#FFF"/>
+
+
+    <TextView
+        android:layout_marginTop="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Help!"
+        android:id="@+id/help"
+        android:layout_gravity="center"
+        android:textColor="#FFF"/>
 
 </LinearLayout>

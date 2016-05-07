@@ -57,10 +57,13 @@ public class MyApplication extends Application {
     public static boolean firstOpen = true;
     public static boolean cameFromLogin = false;
     public static boolean displayNotifications = false;
+    public static String ravorName;
+    public static String gender;
 
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();
     public static ArrayList<Anon> allAnon = new ArrayList<>();
+    public static ArrayList<Anon> allAnon2 = new ArrayList<>();
     public static ArrayList<Orders> allOrders = new ArrayList<>();
     public static ArrayList<UserInfo> allUsers = new ArrayList<>();
     public static ArrayList<Token> allTokens = new ArrayList<>();
@@ -69,6 +72,8 @@ public class MyApplication extends Application {
     public static ArrayList<User> allUsersToken = new ArrayList<>();
     public static Festival pickedFestival;
     public static ArrayList<String> goingFestivals = new ArrayList<>();
+    public static ArrayList<String> allTried = new ArrayList<>();
+
 
     public static String useFirebase = "";
     public static ProfilePhoto file;
@@ -111,6 +116,10 @@ public class MyApplication extends Application {
         }
 
         if (devStatus.equals("production")){Mint.logEvent("Opened Ravore");}
+
+        SharedPreferences sharedPref = getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+        ravorName = sharedPref.getString("RavorName", "NA");
+        gender = sharedPref.getString("Gender", "NA");
 
     }
 

@@ -30,5 +30,4 @@ public class Anon {
     public String getFullPhotoUrl() {return fullPhotoUrl;}
 
     public String getFullPhotoVersion() {return fullPhotoVersion;}
-
 }

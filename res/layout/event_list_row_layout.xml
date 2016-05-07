@@ -18,13 +18,13 @@
         android:layout_marginTop="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Festival Name"
         android:id="@+id/festivalName"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/festivalImage"
-        android:textColor="#FFF"
-        android:layout_marginLeft="10dp"/>
+        android:textColor="#4dff4a"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,8 +34,8 @@
         android:id="@+id/festivalDate"
         android:layout_alignBottom="@+id/festivalImage"
         android:layout_toEndOf="@+id/festivalImage"
-        android:textColor="#FFF"
-        android:layout_marginLeft="10dp"/>
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:layout_marginTop="10dp"
@@ -46,7 +46,7 @@
         android:id="@+id/festivalLocation"
         android:layout_alignParentTop="@+id/festivalImage"
         android:layout_alignParentEnd="true"
-        android:textColor="#FFF"
+        android:textColor="#FFFFFF"
         android:layout_marginRight="10dp"/>
 
     <View
@@ -58,15 +58,22 @@
         android:layout_below="@+id/festivalDate"
         />
 
-    <ToggleButton
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
         android:id="@+id/toggleGoingFestival"
         android:layout_alignBottom="@+id/festivalDate"
         android:layout_alignParentEnd="true"
-        android:textOff="Not Going"
-        android:textOn  ="Going"
         android:focusable="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Going?"
+        android:id="@+id/textView11"
+        android:textColor="#FFF"
+        android:layout_above="@+id/toggleGoingFestival"
+        android:layout_alignEnd="@+id/toggleGoingFestival" />
 
 </RelativeLayout>

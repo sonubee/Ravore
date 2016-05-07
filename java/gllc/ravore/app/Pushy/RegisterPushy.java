@@ -96,15 +96,13 @@ public class RegisterPushy extends AsyncTask<Void, Void, Exception>
 
         Context context = activity;
 
-        SharedPreferences sharedPref = context.getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
-        String ravorName = sharedPref.getString("RavorName", "NA");
-
         Map<String, Object> putToken = new HashMap<String, Object>();
         putToken.put("token", MyApplication.registrationId);
         putToken.put("deviceId", MyApplication.android_id);
         putToken.put("os", "android");
         putToken.put("lastLogin", GetDateTimeInstance.getRegDate());
-        putToken.put("ravorName", ravorName);
+        putToken.put("ravorName", MyApplication.ravorName);
+        putToken.put("gender", MyApplication.gender);
 
         Log.i("--AllRegisterPushy", "Pushing Token: " + putToken);
 

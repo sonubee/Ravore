@@ -4,6 +4,7 @@
     <string name="search">Search</string>
     <string name="add">Add</string>
     <string name="story">Story</string>
+    <string name="preference">Filter</string>
 
     <string name="inbox">Messages</string>
     <string name="starred">Favorites</string>

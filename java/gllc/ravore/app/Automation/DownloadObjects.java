@@ -58,9 +58,7 @@ public class DownloadObjects {
 
                 if (!MyApplication.isAlreadyUser) {
                     if (bracelet.getGiverId().equals(MyApplication.android_id) || bracelet.getReceiverId().equals(MyApplication.android_id)) {
-                        //goToMainActivity.GoToMain();
                         MyApplication.isAlreadyUser = true;
-
                     }
                 }
 
@@ -172,9 +170,6 @@ public class DownloadObjects {
             }
             // ....
         });
-
-        //Firebase downloadAnonProfilePics = new Firebase(MyApplication.useFirebase+"Users/ProfilePics");
-        //Query getProfilePics = downloadAnonProfilePics.orderByChild("url");
 
         new Firebase(MyApplication.useFirebase+"Users/ProfilePics").addChildEventListener(new ChildEventListener() {
             @Override
@@ -410,6 +405,34 @@ public class DownloadObjects {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).child("ProfilePics").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Anon anon = dataSnapshot.getValue(Anon.class);
+                MyApplication.allAnon2.add(anon);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
 
