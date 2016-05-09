@@ -20,9 +20,7 @@ import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Festival;
-import gllc.ravore.app.Objects.FullUser;
 import gllc.ravore.app.Objects.Orders;
-import gllc.ravore.app.Objects.ProfilePics;
 import gllc.ravore.app.Objects.Token;
 import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Objects.UserInfo;
@@ -409,13 +407,12 @@ public class DownloadObjects {
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
-//USELESS. ANON ALREADY DOING THIS
-        new Firebase(MyApplication.useFirebase+"UserInfo").orderByChild(MyApplication.android_id).addChildEventListener(new ChildEventListener() {
+
+        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).child("ProfilePics").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                FullUser fullUser = dataSnapshot.getValue(FullUser.class);
-                MyApplication.allAnon3.add(fullUser);
-                Log.i("--AllDownloadObjects", "PassedOnce!!1" + fullUser.getDeviceId());
+                Anon anon = dataSnapshot.getValue(Anon.class);
+                MyApplication.allAnon2.add(anon);
             }
 
             @Override
@@ -438,36 +435,7 @@ public class DownloadObjects {
 
             }
         });
-/*
-        new Firebase(MyApplication.useFirebase+"UserInfo").child(MyApplication.android_id).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ProfilePics profilePics = dataSnapshot.getValue(ProfilePics.class);
-                MyApplication.allAnon4.add(profilePics);
-                Log.i("--AllDownloadObjects", "PassedOnce!!1");
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-*/
     }
 
 }

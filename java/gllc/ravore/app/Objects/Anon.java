@@ -1,12 +1,8 @@
 package gllc.ravore.app.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * Created by bhangoo on 2/5/2016.
  */
-
-@JsonIgnoreProperties({ "ProfilePics" })
 public class Anon {
 
     String userId;

@@ -26,7 +26,6 @@ import gllc.ravore.app.Interfaces.LoadMap;
 import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
-import gllc.ravore.app.Party.Party;
 import gllc.ravore.app.R;
 
 /**
@@ -130,6 +129,7 @@ public class FestivalDetailFragment extends Fragment {
 
                         if (MyApplication.gender.equals("NA")){
                             Toast.makeText(getContext(), "Please Select Your Gender from the Profile First", Toast.LENGTH_SHORT).show();
+                            break;
                         }
 
                         else {
@@ -143,14 +143,10 @@ public class FestivalDetailFragment extends Fragment {
                             }
 
                             if (!found){Toast.makeText(getContext(), "You Need To Attend the Festival To Get Matched", Toast.LENGTH_SHORT).show();}
-
+                            break;
                         }
 
-                        break;
 
-                    case 6:
-                        Intent intent = new Intent(getContext(), Party.class);
-                        startActivity(intent);
                 }
             }
         });

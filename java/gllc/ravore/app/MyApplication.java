@@ -30,8 +30,6 @@ import gllc.ravore.app.Automation.DownloadObjects;
 import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.Objects.Festival;
-import gllc.ravore.app.Objects.FullUser;
-import gllc.ravore.app.Objects.ProfilePics;
 import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Pushy.RegisterPushy;
 import gllc.ravore.app.Objects.Anon;
@@ -61,14 +59,11 @@ public class MyApplication extends Application {
     public static boolean displayNotifications = false;
     public static String ravorName;
     public static String gender;
-    public static String preference;
 
     public static ArrayList<Bracelet> allBracelets = new ArrayList<>();
     public static ArrayList<Bracelet> allGivenAndReceivedBraceletsObjects = new ArrayList<>();
     public static ArrayList<Anon> allAnon = new ArrayList<>();
     public static ArrayList<Anon> allAnon2 = new ArrayList<>();
-    public static ArrayList<FullUser> allAnon3 = new ArrayList<>();
-    public static ArrayList<ProfilePics> allAnon4 = new ArrayList<>();
     public static ArrayList<Orders> allOrders = new ArrayList<>();
     public static ArrayList<UserInfo> allUsers = new ArrayList<>();
     public static ArrayList<Token> allTokens = new ArrayList<>();
@@ -125,7 +120,6 @@ public class MyApplication extends Application {
         SharedPreferences sharedPref = getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
         ravorName = sharedPref.getString("RavorName", "NA");
         gender = sharedPref.getString("Gender", "NA");
-        preference = sharedPref.getString("GenderPreference" , "NA");
 
     }
 

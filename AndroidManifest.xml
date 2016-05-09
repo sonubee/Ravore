@@ -41,10 +41,6 @@
             android:label="Get Matched!" >
         </activity>
         <activity
-            android:name=".Party.Party"
-            android:label="Find a Pre-Party" >
-        </activity>
-        <activity
             android:name=".FestivalInfo.FestivalInfoActivity"
             android:label="Festival Info" >
         </activity>
