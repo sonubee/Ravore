@@ -146,20 +146,6 @@ public class OrderRavoreActivity extends AppCompatActivity {
                 Log.i("MyActivity", "In Home");
 
                 if (whichFragment.equals("ShoppingCartFragment")){
-                    //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    /*
-                    subTotalPrice =0;
-                    totalPrice=0.0;
-                    shippingPrice=0.35;
-                    beadCount=0;
-                    kandiCount=0;
-
-                    ShoppingCartFragment.total.setText("$0");
-                    ShoppingCartFragment.subtotal.setText("$0");
-                    ShoppingCartFragment.shipping.setText("$0");
-                    ShoppingCartFragment.beadCart.setText("Cart: 0");
-                    ShoppingCartFragment.kandiCart.setText("Cart: 0");*/
-
                     ShoppingCartAdapter.cartQty.clear();
                     ShoppingCartAdapter.beadAdapter.clear();
                     startActivity(new Intent(getBaseContext(), LoginActivity.class));
