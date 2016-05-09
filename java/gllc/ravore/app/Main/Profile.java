@@ -98,11 +98,12 @@ public class Profile extends Fragment implements StartCamera {
                     public void onClick(DialogInterface dialog, int which) {
                         new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("ravorName").setValue(input.getText().toString());
 
-                        Context context = getActivity();
-                        SharedPreferences sharedPref = context.getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("RavorName", input.getText().toString());
                         editor.commit();
+
+                        MyApplication.ravorName = input.getText().toString();
 
                         ravorName.setText(input.getText().toString());
                     }
@@ -124,6 +125,13 @@ public class Profile extends Fragment implements StartCamera {
                     public void onClick(DialogInterface dialog, int item) {
                         new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("gender").setValue(items[item].toString().toLowerCase());
                         gender.setText(items[item].toString());
+
+                        MyApplication.gender = items[item].toString().toLowerCase();
+
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("gllc.ravore.app.PREFERENCE_FILE_KEY", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("GenderPreference", items[item].toString());
+                        editor.commit();
                     }
                 });
                 builder.show();

@@ -1,24 +1,17 @@
 package gllc.ravore.app.GetMatched;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.R;
 
@@ -30,7 +23,7 @@ public class GetMatched extends AppCompatActivity {
     ImageView otherPersonImage;
     Button yes, no;
 
-    int tempNum = 0;
+    int tempNum = 1;
     Menu menu;
 
     @Override
@@ -39,7 +32,6 @@ public class GetMatched extends AppCompatActivity {
         setContentView(R.layout.get_matched);
 
         ActionBar actionBar = getSupportActionBar();
-
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);}

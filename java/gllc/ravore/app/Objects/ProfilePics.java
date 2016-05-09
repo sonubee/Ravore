@@ -3,11 +3,11 @@ package gllc.ravore.app.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by bhangoo on 2/5/2016.
+ * Created by bhangoo on 5/7/2016.
  */
 
-@JsonIgnoreProperties({ "ProfilePics" })
-public class Anon {
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ProfilePics {
 
     String userId;
     String url;
@@ -15,7 +15,7 @@ public class Anon {
     String fullPhotoUrl;
     String fullPhotoVersion;
 
-    public Anon(String userId, String url, String urlVersion, String fullPhotoUrl, String fullPhotoVersion) {
+    public ProfilePics(String userId, String url, String urlVersion, String fullPhotoUrl, String fullPhotoVersion) {
         this.userId = userId;
         this.url = url;
         this.urlVersion = urlVersion;
@@ -23,15 +23,12 @@ public class Anon {
         this.fullPhotoVersion = fullPhotoVersion;
     }
 
-    public Anon () {}
-
+    public ProfilePics () {}
     public String getUserId() {return userId;}
-
     public String getUrl() {return url;}
-
     public String getUrlVersion() {return urlVersion;}
-
     public String getFullPhotoUrl() {return fullPhotoUrl;}
-
     public String getFullPhotoVersion() {return fullPhotoVersion;}
+
+
 }
