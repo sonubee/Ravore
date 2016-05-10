@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +18,11 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.squareup.picasso.Picasso;
 
 import gllc.ravore.app.GetMatched.GetMatched;
 import gllc.ravore.app.Interfaces.LoadMap;
-import gllc.ravore.app.Messaging.ShowAllMessagesFragment;
 import gllc.ravore.app.MyApplication;
-import gllc.ravore.app.OrderRavore.OrderRavoreActivity;
-import gllc.ravore.app.Party.Party;
+import gllc.ravore.app.Party.PartyActivity;
 import gllc.ravore.app.R;
 
 /**
@@ -125,7 +121,15 @@ public class FestivalDetailFragment extends Fragment {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MyApplication.pickedFestival.getWebsite())));
                         break;
 
+                    case 4:
+                        Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
+                        break;
+
                     case 5:
+
+                        Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
+
+/*
                         Log.i("--AllFDetailFragment", "Clicked Match");
 
                         if (MyApplication.gender.equals("NA")){
@@ -145,12 +149,20 @@ public class FestivalDetailFragment extends Fragment {
                             if (!found){Toast.makeText(getContext(), "You Need To Attend the Festival To Get Matched", Toast.LENGTH_SHORT).show();}
 
                         }
-
+*/
                         break;
 
                     case 6:
-                        Intent intent = new Intent(getContext(), Party.class);
+                        Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
+                        /*
+                        Intent intent = new Intent(getContext(), PartyActivity.class);
                         startActivity(intent);
+                        */
+                        break;
+
+                    case 7:
+                        Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });

@@ -1,8 +1,11 @@
 package gllc.ravore.app.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by bhangoo on 4/29/2016.
  */
+@JsonIgnoreProperties({ "Parties"})
 public class Festival {
 
     String address;
