@@ -74,7 +74,6 @@ public class MessagingFragment extends Fragment implements StartCamera {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         braceletForMessaging = GetBracelet.getBracelet(selectedId);
     }
 
@@ -193,6 +192,7 @@ public class MessagingFragment extends Fragment implements StartCamera {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
             }
+
         });
 
 

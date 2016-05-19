@@ -1,18 +1,30 @@
 package gllc.ravore.app.GetMatched;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import gllc.ravore.app.Automation.GetDateTimeInstance;
+import gllc.ravore.app.Messaging.MessagingActivity;
 import gllc.ravore.app.MyApplication;
+import gllc.ravore.app.Objects.Match;
 import gllc.ravore.app.R;
 
 /**
@@ -46,6 +58,31 @@ public class GetMatched extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("Matching").child(MyApplication.pickedFestival.getName()).child(MyApplication.allAnon.get(tempNum).getUserId()).setValue(true);
+
+                new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.allAnon.get(tempNum).getUserId()).child("Matching").child(MyApplication.pickedFestival.getName()).child(MyApplication.android_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("--AllGetMatched", "Key: " + dataSnapshot.getKey());
+                        Log.i("--AllGetMatched", "Value: " + dataSnapshot.getValue());
+
+                        if (!(dataSnapshot.getValue() == null) && dataSnapshot.getValue().equals(true)) {
+                            Toast.makeText(getBaseContext(), "Match!!!", Toast.LENGTH_SHORT).show();
+
+                            Match newMatch = new Match(MyApplication.android_id, MyApplication.allAnon.get(tempNum).getUserId(), MyApplication.pickedFestival.getName(), GetDateTimeInstance.getRegDate());
+
+                            new Firebase(MyApplication.useFirebase).child("UserInfo").child(MyApplication.android_id).child("Matches").push().setValue(newMatch);
+
+                            MyApplication.selectedId = "1230";
+                            startActivity(new Intent(getBaseContext(), MessagingActivity.class));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
                 tempNum++;
 
                 while (MyApplication.allTried.contains(MyApplication.allAnon.get(tempNum).getUserId())) {
@@ -65,6 +102,7 @@ public class GetMatched extends AppCompatActivity {
                 while (MyApplication.allTried.contains(MyApplication.allAnon.get(tempNum).getUserId())) {
                     tempNum++;
                 }
+
 
                 Picasso.with(getBaseContext()).load(MyApplication.allAnon.get(tempNum).getFullPhotoUrl()).placeholder(R.drawable.placeholder).into(otherPersonImage);
             }

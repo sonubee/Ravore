@@ -31,6 +31,7 @@ import gllc.ravore.app.Automation.SetBracelet;
 import gllc.ravore.app.Interfaces.GoToMainActivity;
 import gllc.ravore.app.Objects.Festival;
 import gllc.ravore.app.Objects.FullUser;
+import gllc.ravore.app.Objects.Match;
 import gllc.ravore.app.Objects.ProfilePics;
 import gllc.ravore.app.Objects.User;
 import gllc.ravore.app.Pushy.RegisterPushy;
@@ -47,7 +48,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "production";
+    public final static String devStatus = "sandbox";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<>();
@@ -78,7 +79,7 @@ public class MyApplication extends Application {
     public static Festival pickedFestival;
     public static ArrayList<String> goingFestivals = new ArrayList<>();
     public static ArrayList<String> allTried = new ArrayList<>();
-
+    public static ArrayList<Match> allMatches = new ArrayList<>();
 
     public static String useFirebase = "";
     public static ProfilePhoto file;

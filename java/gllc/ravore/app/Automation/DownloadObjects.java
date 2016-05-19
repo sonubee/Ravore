@@ -21,6 +21,7 @@ import gllc.ravore.app.Objects.Anon;
 import gllc.ravore.app.Objects.Bracelet;
 import gllc.ravore.app.Objects.Festival;
 import gllc.ravore.app.Objects.FullUser;
+import gllc.ravore.app.Objects.Match;
 import gllc.ravore.app.Objects.Orders;
 import gllc.ravore.app.Objects.ProfilePics;
 import gllc.ravore.app.Objects.Token;
@@ -468,6 +469,35 @@ public class DownloadObjects {
             }
         });
 */
+
+        new Firebase(MyApplication.useFirebase+"UserInfo").child("Matches").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Match addMatch = dataSnapshot.getValue(Match.class);
+                MyApplication.allMatches.add(addMatch);
+                Log.i("--AllDownloadObjects", "Added " + addMatch.getEventName());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
 }

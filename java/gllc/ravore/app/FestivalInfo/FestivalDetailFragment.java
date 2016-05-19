@@ -127,9 +127,8 @@ public class FestivalDetailFragment extends Fragment {
 
                     case 5:
 
-                        Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "In Development", Toast.LENGTH_SHORT).show();
 
-/*
                         Log.i("--AllFDetailFragment", "Clicked Match");
 
                         if (MyApplication.gender.equals("NA")){
@@ -149,7 +148,7 @@ public class FestivalDetailFragment extends Fragment {
                             if (!found){Toast.makeText(getContext(), "You Need To Attend the Festival To Get Matched", Toast.LENGTH_SHORT).show();}
 
                         }
-*/
+
                         break;
 
                     case 6:
