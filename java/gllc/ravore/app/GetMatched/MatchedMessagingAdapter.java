@@ -30,8 +30,8 @@ public class MatchedMessagingAdapter extends ArrayAdapter<MatchedMessaging> {
         super(context, textViewResourceId, messages);
         this.context = context;
         messageArrayList = messages;
-
-        pullMessages = new Firebase(MyApplication.useFirebase).child("UserInfo").child("Matches").child(pushKey);
+//PULLMESSAGES NOT COMPLETE!
+        pullMessages = new Firebase(MyApplication.useFirebase).child("UserInfo").child("Matches").child("");
         Query queryRef = pullMessages.orderByKey().limitToLast(100);
         queryRef.addChildEventListener(firebaseChildListenerMessages = new ChildEventListener() {
             @Override

@@ -87,8 +87,6 @@ public class FestivalInfoAdapter extends BaseAdapter{
             }
         });
 
-
-
         return convertView;
     }
 

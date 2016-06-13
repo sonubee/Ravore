@@ -48,7 +48,7 @@ import me.pushy.sdk.Pushy;
  */
 public class MyApplication extends Application {
 
-    public final static String devStatus = "sandbox";
+    public final static String devStatus = "production";
 
     public static String android_id;
     public static Map<String, String> braceletKey = new HashMap<>();
@@ -56,6 +56,7 @@ public class MyApplication extends Application {
     public static Bracelet selectedBracelet;
     public static boolean currentUserIsGiver;
     public static boolean isAlreadyUser = false;
+    public static boolean showNotificationBracelet = false;
     public static String registrationId;
     public static boolean firstOpen = true;
     public static boolean cameFromLogin = false;

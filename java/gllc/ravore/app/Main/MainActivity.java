@@ -173,7 +173,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //with(this, Navigation.THEME_LIGHT). add theme light
 
         with(this) // default theme is dark
-                .startingPosition(1) //Starting position in the list
+                .startingPosition(2) //Starting position in the list
                 .addAllHelpItem(mHelpLiveo.getHelp())
                         //.footerItem(R.string.settings, R.mipmap.ic_settings_black_24dp)
                 .setOnClickUser(onClickPhoto)

@@ -63,7 +63,7 @@ public class ShowAllMessagesFragment extends Fragment {
 
         context = getContext();
         Log.i("--AllSAMessagesFragment", "SAM Activity Created");
-        adapterAllMessages = new ListAllMessagesAdapter(getActivity().getBaseContext());
+        adapterAllMessages = new ListAllMessagesAdapter(getActivity().getBaseContext(), getActivity());
 
         adapterAllMessages.notifyDataSetChanged();
         Log.i("--AllSAMessagesFragment", "Adapter Count: " + adapterAllMessages.getCount());

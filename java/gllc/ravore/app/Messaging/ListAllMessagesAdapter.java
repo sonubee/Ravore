@@ -1,13 +1,18 @@
 package gllc.ravore.app.Messaging;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -22,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import gllc.ravore.app.Automation.AddBracelet;
 import gllc.ravore.app.Main.LoginActivity;
 import gllc.ravore.app.MyApplication;
 import gllc.ravore.app.Objects.Bracelet;
@@ -37,12 +43,20 @@ public class ListAllMessagesAdapter extends BaseAdapter {
     private Context context;
     ViewHolder holder = new ViewHolder();
     public static ArrayList<Bracelet> braceletsAdapter;
+    AlertDialog.Builder builder;
 
-    public ListAllMessagesAdapter(Context context) {
+    public ListAllMessagesAdapter(Context context, Activity activity) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         braceletsAdapter = (ArrayList<Bracelet>)MyApplication.allGivenAndReceivedBraceletsObjects.clone();
 
+        builder = new AlertDialog.Builder(activity);
+        builder.setTitle("No Bracelets Added");
+        builder.setMessage("Click the plus arrow on the top right of the screen to add a bracelet and start chatting\n");
+        if (braceletsAdapter.size() == 0 && MyApplication.showNotificationBracelet == false){
+            builder.show();
+            MyApplication.showNotificationBracelet = true;
+        }
     }
 
     @Override

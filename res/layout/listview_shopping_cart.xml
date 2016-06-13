@@ -2,7 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/xml_of_listView_shopping_cart">
+    android:id="@+id/xml_of_listView_shopping_cart"
+    android:background="#000">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#000"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Each bead comes with a free label that you attach to your Kandi Bracelet or Accessory. Add that ID into the Messaging (in Menu) and then give that Kandi to someone and once they add the ID into the app you will then be able to chat with them. See http://ravore.club"
+            android:gravity="center_horizontal"
+            android:textColor="#FFF"/>
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"

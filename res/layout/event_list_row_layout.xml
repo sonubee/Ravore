@@ -64,7 +64,8 @@
         android:id="@+id/toggleGoingFestival"
         android:layout_alignBottom="@+id/festivalDate"
         android:layout_alignParentEnd="true"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,6 +75,7 @@
         android:id="@+id/textView11"
         android:textColor="#FFF"
         android:layout_above="@+id/toggleGoingFestival"
-        android:layout_alignEnd="@+id/toggleGoingFestival" />
+        android:layout_alignEnd="@+id/toggleGoingFestival"
+        android:visibility="gone"/>
 
 </RelativeLayout>
